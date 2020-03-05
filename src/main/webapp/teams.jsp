@@ -20,7 +20,7 @@
   <body>
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="#">Basketball Stats</a>
+      <a class="navbar-brand" href="/">Basketball Stats</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,8 +31,8 @@
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Models</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="/teams">Teams</a>
-              <a class="dropdown-item" href="#">Players</a>
-              <a class="dropdown-item" href="#">Coaches</a>
+              <a class="dropdown-item" href="/players">Players</a>
+              <a class="dropdown-item" href="/coaches">Coaches</a>
             </div>
           </li>
           <li class="nav-item">
@@ -49,8 +49,7 @@
     <main role="main" class="container">
 
       <div class="main-content">
-        <h1>Professional Basketball Statistics</h1>
-        <p class="lead">Welcome to Basketball Stats!<br> Feel free to look around at all the info we have to offer!</p>
+        <h1>List of Teams</h1>
       </div>
 
     </main><!-- /.container -->
