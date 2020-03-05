@@ -1,3 +1,9 @@
+<%@ page import="java.net.URL" %>
+<%@ page import="org.xml.sax.SAXException" %> 
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="org.json.simple.JSONObject" %>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -51,8 +57,16 @@
         <h1>List of Teams</h1>
       </div>
 
-    </main><!-- /.container -->
 
+<% 
+	URL url = new URL("http://api.espn.com/v1/sports/basketball/nba/teams");
+	HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	con.setRequestMethod("GET");
+
+
+%>
+    </main><!-- /.container -->
+		
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
