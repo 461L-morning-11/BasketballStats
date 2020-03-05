@@ -21,76 +21,19 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager">
-    <configuration name="Local Dev Server" type="gcp-app-engine-local-run" factoryName="Local" APPLICATION_SERVER_NAME="AppEngine Dev" ALTERNATIVE_JRE_ENABLED="false">
+    <configuration name="Local Dev Server" type="GoogleAppEngineDevServer" factoryName="Local" APPLICATION_SERVER_NAME="AppEngine Dev" ALTERNATIVE_JRE_ENABLED="false">
       <option name="BROWSER_ID" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
-      <server-settings>
-        <artifact>main:war exploded</artifact>
-      </server-settings>
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="54418" />
-      </RunnerSettings>
-      <ConfigurationWrapper VM_VAR="" RunnerId="Cover">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="" RunnerId="Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="" RunnerId="Run">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
+      <server-settings />
       <method v="2">
         <option name="Make" enabled="true" />
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="main:war exploded" />
-        </option>
       </method>
     </configuration>
-    <configuration default="true" type="gcp-app-engine-local-run" factoryName="Local" APPLICATION_SERVER_NAME="AppEngine Dev" ALTERNATIVE_JRE_ENABLED="false">
+    <configuration default="true" type="GoogleAppEngineDevServer" factoryName="Local" APPLICATION_SERVER_NAME="AppEngine Dev" ALTERNATIVE_JRE_ENABLED="false">
       <option name="BROWSER_ID" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
       <server-settings />
       <method v="2">
@@ -123,9 +66,6 @@
       <workItem from="1583425281247" duration="334000" />
       <workItem from="1583425681090" duration="686000" />
       <workItem from="1583426455934" duration="540000" />
-      <workItem from="1583427014930" duration="34000" />
-      <workItem from="1583427059129" duration="14000" />
-      <workItem from="1583427082628" duration="121000" />
     </task>
     <servers />
   </component>
@@ -141,14 +81,14 @@
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
     <state x="872" y="397" key="#Google_App_Engine_Dev_Server/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426916432" />
-    <state x="872" y="398" key="#Plugins" timestamp="1583427070772">
+    <state x="872" y="398" key="#Plugins" timestamp="1583426494688">
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
-    <state x="872" y="398" key="#Plugins/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583427070772" />
-    <state x="734" y="394" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583427202877">
+    <state x="872" y="398" key="#Plugins/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426494688" />
+    <state x="734" y="394" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583426975845">
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
-    <state x="734" y="394" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583427202877" />
+    <state x="734" y="394" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426975845" />
     <state x="960" y="467" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1583425609742">
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
@@ -157,13 +97,13 @@
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
     <state x="1060" y="494" key="FileChooserDialogImpl/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426913994" />
-    <state x="781" y="382" key="SettingsEditor" timestamp="1583427186325">
+    <state x="781" y="382" key="SettingsEditor" timestamp="1583426994783">
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
-    <state x="781" y="382" key="SettingsEditor/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583427186325" />
-    <state x="981" y="563" key="com.intellij.ide.util.TipDialog" timestamp="1583427085823">
+    <state x="781" y="382" key="SettingsEditor/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426994783" />
+    <state x="981" y="563" key="com.intellij.ide.util.TipDialog" timestamp="1583426455951">
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
-    <state x="981" y="563" key="com.intellij.ide.util.TipDialog/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583427085823" />
+    <state x="981" y="563" key="com.intellij.ide.util.TipDialog/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426455951" />
   </component>
 </project>

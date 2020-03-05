@@ -14,9 +14,6 @@
     <facet type="app-engine-standard" name="Google App Engine">
       <configuration />
     </facet>
-    <facet type="app-engine-standard" name="Google App Engine">
-      <configuration />
-    </facet>
     <facet type="google-app-engine" name="Google App Engine">
       <configuration />
     </facet>
