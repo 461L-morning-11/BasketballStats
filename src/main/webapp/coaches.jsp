@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>Teams</title>
+    <title>Coaches</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -48,7 +48,7 @@
     <main role="main" class="container">
 
       <div class="main-content">
-        <h1>List of Teams</h1>
+        <h1>List of Coaches</h1>
       </div>
 
     </main><!-- /.container -->

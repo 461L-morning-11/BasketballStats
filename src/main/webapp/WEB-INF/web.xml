@@ -30,6 +30,15 @@
 	<servlet-mapping>
 		<servlet-name>coaches</servlet-name>
 		<url-pattern>/coaches</url-pattern>
+	</servlet-mapping>	
+	
+	<servlet>
+		<servlet-name>about</servlet-name>
+		<jsp-file>/about.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>about</servlet-name>
+		<url-pattern>/about</url-pattern>
 	</servlet-mapping>
          
   <welcome-file-list>
