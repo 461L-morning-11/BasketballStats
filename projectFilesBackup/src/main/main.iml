@@ -11,7 +11,7 @@
         </webroots>
       </configuration>
     </facet>
-    <facet type="app-engine-standard" name="Google App Engine">
+    <facet type="google-app-engine" name="Google App Engine">
       <configuration />
     </facet>
   </component>
@@ -24,4 +24,3 @@
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
-
