@@ -13,6 +13,24 @@
 		<servlet-name>teams</servlet-name>
 		<url-pattern>/teams</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>players</servlet-name>
+		<jsp-file>/players.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>players</servlet-name>
+		<url-pattern>/players</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>coaches</servlet-name>
+		<jsp-file>/coaches.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>coaches</servlet-name>
+		<url-pattern>/coaches</url-pattern>
+	</servlet-mapping>
          
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
