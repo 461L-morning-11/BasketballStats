@@ -10,6 +10,7 @@
 <%@ page import="org.json.simple.JSONArray" %>
 <%@ page import="java.util.Scanner" %>
 <%@ page import="java.net.URI"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="en">
@@ -87,15 +88,19 @@
 
           JSONObject jobj = (JSONObject)parse.parse(res);
           JSONObject obj=(JSONObject)jobj.get("object");
-
-          return ""+obj.get("sha");
+          Thread.sleep(100);
+		  String ret=""+obj.get("sha");
+          return ret;
       }
       public static int getTotalCommits(String res) throws Exception{
-          JSONParser parse = new JSONParser();
+          /*JSONParser parse = new JSONParser();
 
           JSONObject jobj = (JSONObject)parse.parse(res);
           Long total=(Long) (jobj.get("total_commits"));
           return total.intValue() +1;
+          */
+          return getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=chloebryant"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=mikoyanhsch"));
+
       }
       public static int getUserCommits(String res) throws Exception{
           JSONParser parse = new JSONParser();
@@ -108,16 +113,22 @@
           return userCommits;
       }
       public static int getTotalIssues(String res) throws Exception {
-          JSONParser parse = new JSONParser();
+          
+    	  JSONParser parse = new JSONParser();
 
           JSONObject jobj = (JSONObject)parse.parse(res);
           Long total=(Long) (jobj.get("total_count"));
+          if(total!=null)
           return total.intValue();
+          else
+        	  return 0;
+          
+          
       }
       %> <% 
       String res= get("https://api.github.com/repos/461L-morning-11/BasketballStats/git/refs/heads/master");
-      String newSHA= getNewSHA(res);
-      pageContext.setAttribute("total_commits",getTotalCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/compare/98284fc9903dacfc123c6bb131d3d500ad75dad7..."+newSHA)));
+      //String newSHA= getNewSHA(res);
+      //pageContext.setAttribute("total_commits",getTotalCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/compare/98284fc9903dacfc123c6bb131d3d500ad75dad7..."+newSHA)));
       pageContext.setAttribute("colby_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka")));
       pageContext.setAttribute("corey_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei")));
       pageContext.setAttribute("barrett_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s")));
@@ -138,7 +149,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Barrett Stricklin</h4>
-    		<p class="card-text">Some example text.</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(barrett_commits)} <br>Issues:${fn:escapeXml(barrett_issues)}</p>
       	</div>
       </div>
       
@@ -150,7 +161,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Chloe Bryant</h4>
-    		<p class="card-text">Some example text.</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Issues:${fn:escapeXml(chloe_issues)}</p>
       	</div>
       </div>
       
@@ -162,7 +173,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Harry Schneider</h4>
-    		<p class="card-text">Some example text.</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(harry_commits)} <br>Issues:${fn:escapeXml(harry_issues)}</p>
       	</div>
       </div>
       
@@ -174,14 +185,14 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Corey Karnei</h4>
-    		<p class="card-text">Some example text.</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(corey_commits)} <br>Issues:${fn:escapeXml(corey_issues)}</p>
       	</div>
       </div>
       
       <br>
  	  <h2>Team Stats</h2>
-	  <h3>Total Commits:</h3>
-	  <h3>Total Issues:</h3>
+	  <h3>Total Commits:${fn:escapeXml(total_commits)}</h3>
+	  <h3>Total Issues:${fn:escapeXml(total_issues)}</h3>
 	  <h3>Total Unit Tests: 0</h3>
 	  
 	  <br>
