@@ -10,4 +10,12 @@ body {
     text-decoration:none;
     outline: 0;
 }
-
+.specificTeam {
+	margin: auto;
+	width: 50%;
+	border: 3px solid black;
+	padding: 10px;
+}
+.center {
+    text-align: center;
+}

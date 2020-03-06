@@ -130,28 +130,27 @@
 		
 	
 	%>
-	
-	 <hr>
-	   	<div class="container">
 	<div class="row">
-		<div>			
-		<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
-		<h1><b>${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}</b>
-		<%
-		if(jobj.get("height_feet") != null){
-			%>
-			- ${fn:escapeXml(player_height_feet)}'${fn:escapeXml(player_height_inches)}''
-			<%
-		}
-		if(jobj.get("weight_pounds") != null){
-			%> ${fn:escapeXml(player_weight)} lbs
-			<%
-		}
-		%>
-		</h1>
-			<div>	
-			<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the ${fn:escapeXml(player_team_name_long)} in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
-			</div>
+		<div class="specificTeam">
+			<div class="center">			
+				<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
+				<h1><b>${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}</b>
+				<%
+				if(jobj.get("height_feet") != null){
+					%>
+					- ${fn:escapeXml(player_height_feet)}'${fn:escapeXml(player_height_inches)}''
+					<%
+				}
+				if(jobj.get("weight_pounds") != null){
+					%> ${fn:escapeXml(player_weight)} lbs
+					<%
+				}
+				%>
+				</h1>
+				<div class="center">	
+					<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the ${fn:escapeXml(player_team_name_long)} in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
+				</div>
+   			</div>
     	</div>
     </div>
 	
