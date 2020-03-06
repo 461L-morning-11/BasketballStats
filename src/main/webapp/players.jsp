@@ -89,6 +89,20 @@
 
 	JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
 
+	%>
+	
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">First Name</th>
+				<th scope="col">Last Name</th>
+				<th scope="col">Position</th>
+				<th scope="col">Team</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+	<%
 
 	for(int i=0;i<jsonarr_1.size();i++)
 	{
@@ -127,19 +141,19 @@
 		pageContext.setAttribute("player_team", player_team.get("full_name"));
 	
 	%>
-	<hr>
-	<a class="itemCardLink" href="specificPlayer.jsp?playerId=${player_id}">
-    <p><b> ${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}, </b>position: ${fn:escapeXml(player_position)}</p>
-
-    <p class="postContent">Team: ${fn:escapeXml(player_team)}</p>
-    </a>
-    <% 
-	}
-
-
-%>
-	
-
+    
+    			<tr onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
+				
+				  	<td>${fn:escapeXml(player_first_name)}</td>
+				  	<td>${fn:escapeXml(player_last_name)}</td>
+				  	<td>${fn:escapeXml(player_position)}</td>
+				  	<td>${fn:escapeXml(player_team)}</td>
+					
+				  
+				</tr>
+			<% } %>
+		</tbody>
+	</table>
 
     </main><!-- /.container -->
 
