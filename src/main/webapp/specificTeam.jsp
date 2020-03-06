@@ -57,89 +57,12 @@
 
     <main role="main" class="container">
 
-
-
-<% 
-
-
-URL url = new URL("https://www.balldontlie.io/api/v1/teams");
-HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-conn.setRequestMethod("GET");
-conn.connect();
-int responsecode = conn.getResponseCode();
-String inline = "";
-if(responsecode != 200)
-    throw new RuntimeException("HttpResponseCode: " +responsecode);
-else
-{
-
-    Scanner sc = new Scanner(url.openStream());
-
-    while(sc.hasNext())
-    {
-        inline+=sc.nextLine();
-    }
-    System.out.println("\nJSON data in string format");
-    System.out.println(inline);
-    sc.close();
-}
-
-JSONParser parse = new JSONParser();
-
-JSONObject jobj = (JSONObject)parse.parse(inline);
-
-JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
-
-
-
+	<div class="main-content">
 	
-	%>
-    
-    
-    <div class="main-content">
-    <h1>List of Teams</h1>
-    <hr>
-	   	<div class="container">
-			<div class="row">
-				<% 
-				for(int i=0;i<jsonarr_1.size();i++)
-				{
-					JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
-					
-					
-				    //System.out.println("Elements under data array");
-				    
-				    pageContext.setAttribute("team_name_short", jsonobj_1.get("name"));
-
-					pageContext.setAttribute("team_city", jsonobj_1.get("city"));
-
-					pageContext.setAttribute("team_abbreviation", jsonobj_1.get("abbreviation"));
-					
-					pageContext.setAttribute("team_division", jsonobj_1.get("division"));
-					
-					pageContext.setAttribute("team_ID", jsonobj_1.get("id"));
-					
-				
-					pageContext.setAttribute("team_logo", "../img/logos/" + jsonobj_1.get("name") + ".png");
-					
-					
-				%>
-					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm">
-						<a href="specificTeam.jsp">
-						<input name="team_id" type="hidden" value="${fn:escapeXml(team_ID)}"/>
-								<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
-								<div class="card-body">
-									<p class="card-text"> ${fn:escapeXml(team_name_short)}: ${fn:escapeXml(team_ID)} </p>
-									<div class="d-flex justify-content-between align-items-center">
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				<%}%>
-			</div>
-		</div>
+	
+	<% pageContext.setAttribute("team_ID", request.getParameter("teamId"));%>
+	
+	<h1>team: ${fn:escapeXml(team_ID)}</h1>
 	</div>
     
 

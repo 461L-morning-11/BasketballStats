@@ -126,8 +126,7 @@ JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
 				%>
 					<div class="col-md-4">
 						<div class="card mb-4 shadow-sm">
-						<a href="specificTeam.jsp">
-						<input name="team_id" type="hidden" value="${fn:escapeXml(team_ID)}"/>
+						<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
 								<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
 								<div class="card-body">
 									<p class="card-text"> ${fn:escapeXml(team_name_short)}: ${fn:escapeXml(team_ID)} </p>
