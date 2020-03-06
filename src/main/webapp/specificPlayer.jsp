@@ -133,7 +133,7 @@
 	<div class="row">
 		<div class="specificTeam">
 			<div class="center">			
-				<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
+				<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
 				<h1><b>${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}</b>
 				<%
 				if(jobj.get("height_feet") != null){

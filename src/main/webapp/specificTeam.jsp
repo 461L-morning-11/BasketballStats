@@ -117,7 +117,7 @@
 
 		<div class="specificTeam">
 			<div class="center">
-				<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" align="middle" alt="Responsive image">
+				<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" align="middle" alt="Responsive image">
 				<h1>${fn:escapeXml(team_name_long)} (${fn:escapeXml(team_abbreviation)})</h1>	
 				<p>The ${fn:escapeXml(team_name_short)} from ${fn:escapeXml(team_city)} play in the ${fn:escapeXml(team_division)} division of the ${fn:escapeXml(team_conference)}ern Conference </p>
     		</div>
