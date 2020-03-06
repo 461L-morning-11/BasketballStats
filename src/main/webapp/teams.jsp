@@ -57,9 +57,6 @@
 
     <main role="main" class="container">
 
-      <div class="main-content">
-        <h1>List of Teams</h1>
-      </div>
 
 
 <% 
@@ -94,31 +91,54 @@ JSONObject jobj = (JSONObject)parse.parse(inline);
 JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
 
 
-for(int i=0;i<jsonarr_1.size();i++)
-{
-	JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
-	
-	
-    //System.out.println("Elements under data array");
-    
-    pageContext.setAttribute("team_name_short", jsonobj_1.get("name"));
 
-	pageContext.setAttribute("team_city", jsonobj_1.get("city"));
-
-	pageContext.setAttribute("team_abbreviation", jsonobj_1.get("abbreviation"));
-	
-	pageContext.setAttribute("team_division", jsonobj_1.get("division"));
 	
 	%>
-	<hr>
-    <p><b> ${fn:escapeXml(team_name_short)} </b> From: ${fn:escapeXml(team_city)} (${fn:escapeXml(team_abbreviation)})</p>
+    
+    
+    <div class="main-content">
+    <h1>List of Teams</h1>
+    <hr>
+	   	<div class="container">
+			<div class="row">
+				<% 
+				for(int i=0;i<jsonarr_1.size();i++)
+				{
+					JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+					
+					
+				    //System.out.println("Elements under data array");
+				    
+				    pageContext.setAttribute("team_name_short", jsonobj_1.get("name"));
 
-    <p class="postContent">Division: ${fn:escapeXml(team_division)}</p>
-    <% 
-}
+					pageContext.setAttribute("team_city", jsonobj_1.get("city"));
 
+					pageContext.setAttribute("team_abbreviation", jsonobj_1.get("abbreviation"));
+					
+					pageContext.setAttribute("team_division", jsonobj_1.get("division"));
+					
+				
+					pageContext.setAttribute("team_logo", "../img/" + jsonobj_1.get("name") + ".png");
+					
+					
+				%>
+					<div class="col-md-4">
+						<div class="card mb-4 shadow-sm">
+								<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
+								<div class="card-body">
+									<p class="card-text"> ${fn:escapeXml(team_name_short)} </p>
+									<div class="d-flex justify-content-between align-items-center">
+									</div>
+								</div>
+							
+						</div>
+					</div>
+				<%}%>
+			</div>
+		</div>
+	</div>
+    
 
-%>
     </main><!-- /.container -->
 		
     <!-- Bootstrap core JavaScript

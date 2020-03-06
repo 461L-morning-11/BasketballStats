@@ -130,38 +130,11 @@
 
     <p class="postContent">Team: ${fn:escapeXml(player_team)}</p>
     <% 
-}
+	}
 
 
 %>
-	<div class="main-content">
-	   	<div class="container">
-			<div class="row">
-				<% 
-				String[] teamsArray = {"Hawks", "Celtics", "Nets"};
-				for(int i = 0; i < 3; i++){
-					String team = teamsArray[i]; 
-					String teamLogo = "../img/" + team + ".png";
-					pageContext.setAttribute("team_name_short", team);
-					pageContext.setAttribute("team_logo", teamLogo);
-					
-				%>
-					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm">
-							<a href="thisPlayer.jsp" class="itemCardLink">
-								<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
-								<div class="card-body">
-									<p class="card-text"> ${fn:escapeXml(team_name_short)} </p>
-									<div class="d-flex justify-content-between align-items-center">
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				<%}%>
-			</div>
-		</div>
-	</div>
+	
 
 
     </main><!-- /.container -->
