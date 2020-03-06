@@ -17,7 +17,7 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>Teams</title>
+    <title>Game</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -58,6 +58,43 @@
     <main role="main" class="container">
 
 	<div class="main-content">
+	
+	
+	
+	<% 
+	pageContext.setAttribute("team_ID", request.getParameter("teamId"));			    
+	pageContext.setAttribute("team_name_short", "cool dudes");
+	pageContext.setAttribute("team_city", "ball city");
+	pageContext.setAttribute("team_abbreviation", "LOL");
+	pageContext.setAttribute("team_conference", "big texas");
+	pageContext.setAttribute("team_division", "loser division");			    
+	pageContext.setAttribute("team_name", "ball city cool dudes");
+	%>
+	
+	<h1>team: ${fn:escapeXml(team_ID)}</h1>
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Abbreviation</th>
+					<th scope="col">City</th>
+					<th scope="col">Conference</th>
+					<th scope="col">Division</th>
+					<th scope="col">Full Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				  <td>${fn:escapeXml(team_ID)}</td>
+				  <td>${fn:escapeXml(team_abbreviation)}</td>
+				  <td>${fn:escapeXml(team_city)}</td>
+				  <td>${fn:escapeXml(team_conference)}</td>
+				  <td>${fn:escapeXml(team_division)}</td>
+				  <td>${fn:escapeXml(team_name)}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
     
 
