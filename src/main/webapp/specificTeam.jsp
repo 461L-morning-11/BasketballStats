@@ -109,7 +109,6 @@
 	
 	pageContext.setAttribute("team_ID", jobj.get("id"));
 	
-
 	pageContext.setAttribute("team_logo", "../img/logos/" + jobj.get("name") + ".png");
 	%>
     
