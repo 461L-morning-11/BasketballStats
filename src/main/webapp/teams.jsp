@@ -116,7 +116,6 @@ JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
 					
 					pageContext.setAttribute("team_ID", jsonobj_1.get("id"));
 					
-				
 					pageContext.setAttribute("team_logo", "../img/logos/" + jsonobj_1.get("name") + ".png");
 					
 					
