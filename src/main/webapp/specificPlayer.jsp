@@ -104,7 +104,7 @@
 		
 		pageContext.setAttribute("player_team_name_long", playerTeam.get("full_name"));
 		
-		pageContext.setAttribute("player_team_division", playerTeam.get("division"));
+		pageContext.setAttribute("player_team_conference", playerTeam.get("conference"));
 		
 		pageContext.setAttribute("team_logo", "../img/logos/" + playerTeam.get("name") + ".png");
 		
@@ -150,7 +150,7 @@
 		%>
 		</h1>
 			<div>	
-			<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the ${fn:escapeXml(player_team_name_long)} in the ${fn:escapeXml(player_team_division)} division
+			<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the ${fn:escapeXml(player_team_name_long)} in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
 			</div>
     	</div>
     </div>
