@@ -48,7 +48,7 @@
     <main role="main" class="container">
 
       <div class="main-content">
-        <h1>List of Coaches</h1>
+        <h1>List of Coaches!</h1>
       </div>
 
     </main><!-- /.container -->
