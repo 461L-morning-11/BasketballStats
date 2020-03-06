@@ -104,8 +104,8 @@
       }
       public static int getUserCommits(String res) throws Exception{
           JSONParser parse = new JSONParser();
-          //JSONObject jobj = (JSONObject)parse.parse(res);
-          JSONArray jsonarr_1 = (JSONArray) parse.parse(res);
+          JSONObject jsonarr_1 = (JSONObject)parse.parse(res);
+          //JSONArray jsonarr_1 = (JSONArray) parse.parse(res);
           int userCommits=0;
           for(int i=0;i<jsonarr_1.size();i++) {
             userCommits++;
@@ -142,7 +142,6 @@
       pageContext.setAttribute("harry_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:mikoyanhsch")));
       
       %>
-      
       <div class="card" style="width:400px">
       	<div class="embed-responsive embed-responsive-1by1">
       		<img class="card-img-top embed-responsive-item" src="../img/Barrett.jpg" alt="Picture of Barrett">
@@ -162,6 +161,18 @@
       	<div class="card-body">
       		<h4 class="card-title">Chloe Bryant</h4>
     		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Issues:${fn:escapeXml(chloe_issues)}</p>
+      	</div>
+      </div>
+      
+      <br>
+      
+      <div class="card" style="width:400px">
+      	<div class="embed-responsive embed-responsive-1by1">
+      		<img class="card-img-top embed-responsive-item" src="../img/Colby.jpg" class="img-responsive" alt="Picture of Colby">
+      	</div>
+      	<div class="card-body">
+      		<h4 class="card-title">Colby Janecka</h4>
+    		<p class="card-text">Commits: ${fn:escapeXml(colby_commits)} <br>Issues:${fn:escapeXml(colby_issues)}</p>
       	</div>
       </div>
       
