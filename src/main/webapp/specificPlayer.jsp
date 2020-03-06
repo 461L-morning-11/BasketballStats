@@ -41,7 +41,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="/teams">Teams</a>
               <a class="dropdown-item" href="/players">Players</a>
-              <a class="dropdown-item" href="/games">Games</a>
+              <a class="dropdown-item" href="/coaches">Coaches</a>
             </div>
           </li>
           <li class="nav-item">
@@ -57,12 +57,10 @@
 
     <main role="main" class="container">
 
-      <div class="main-content">
-        <h1>List of Players</h1>
-      </div>
+      <div class="main-content"></div>
       
-     <%
-      URL url = new URL("https://www.balldontlie.io/api/v1/players");
+    <% //pageContext.setAttribute("team_ID", request.getParameter("teamId"));
+	URL url = new URL("https://www.balldontlie.io/api/v1/players/" + request.getParameter("playerId") );
 	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 	conn.setRequestMethod("GET");
 	conn.connect();
@@ -73,37 +71,44 @@
 	else
 	{
 
-    	Scanner sc = new Scanner(url.openStream());
+	    Scanner sc = new Scanner(url.openStream());
 
-    	while(sc.hasNext())
-    	{
-        	inline+=sc.nextLine();
-    	}
-    	
-    	sc.close();
+	    while(sc.hasNext())
+	    {
+	        inline+=sc.nextLine();
+	    }
+	    System.out.println("\nJSON data in string format");
+	    System.out.println(inline);
+	    sc.close();
 	}
 
 	JSONParser parse = new JSONParser();
 
 	JSONObject jobj = (JSONObject)parse.parse(inline);
-
-	JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
-
-
-	for(int i=0;i<jsonarr_1.size();i++)
-	{
-		JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
-	
-	
-    	//System.out.println("Elements under data array");
+	//System.out.println("Elements under data array");
+	JSONObject playerTeam = (JSONObject) jobj.get("team");
     
-    	pageContext.setAttribute("player_first_name", jsonobj_1.get("first_name"));
+    	pageContext.setAttribute("player_first_name", jobj.get("first_name"));
 
-		pageContext.setAttribute("player_last_name", jsonobj_1.get("last_name"));
-
-		pageContext.setAttribute("player_id", jsonobj_1.get("id"));
+		pageContext.setAttribute("player_last_name", jobj.get("last_name"));
 		
-		String short_position = (String) jsonobj_1.get("position");
+		pageContext.setAttribute("player_height_feet", jobj.get("height_feet"));
+		
+		pageContext.setAttribute("player_height_inches", jobj.get("height_inches"));
+		
+		pageContext.setAttribute("player_weight", jobj.get("weight_pounds"));
+		
+		
+		
+	    pageContext.setAttribute("player_team_name_short", playerTeam.get("name"));
+		
+		pageContext.setAttribute("player_team_name_long", playerTeam.get("full_name"));
+		
+		pageContext.setAttribute("player_team_conference", playerTeam.get("conference"));
+		
+		pageContext.setAttribute("team_logo", "../img/logos/" + playerTeam.get("name") + ".png");
+		
+		String short_position = (String) jobj.get("position");
 		String position = "";
 		char[] position_letters = short_position.toCharArray();
 		for(int j =0; j <short_position.length(); j++){
@@ -123,21 +128,32 @@
 		}
 		pageContext.setAttribute("player_position", position);
 		
-		JSONObject player_team = (JSONObject) jsonobj_1.get("team"); 
-		pageContext.setAttribute("player_team", player_team.get("full_name"));
 	
 	%>
-	<hr>
-	<a class="itemCardLink" href="specificPlayer.jsp?playerId=${player_id}">
-    <p><b> ${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}, </b>position: ${fn:escapeXml(player_position)}</p>
-
-    <p class="postContent">Team: ${fn:escapeXml(player_team)}</p>
-    </a>
-    <% 
-	}
-
-
-%>
+	
+	 <hr>
+	   	<div class="container">
+	<div class="row">
+		<div>			
+		<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
+		<h1><b>${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}</b>
+		<%
+		if(jobj.get("height_feet") != null){
+			%>
+			- ${fn:escapeXml(player_height_feet)}'${fn:escapeXml(player_height_inches)}''
+			<%
+		}
+		if(jobj.get("weight_pounds") != null){
+			%> ${fn:escapeXml(player_weight)} lbs
+			<%
+		}
+		%>
+		</h1>
+			<div>	
+			<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the ${fn:escapeXml(player_team_name_long)} in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
+			</div>
+    	</div>
+    </div>
 	
 
 

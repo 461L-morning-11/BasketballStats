@@ -109,7 +109,6 @@
 	
 	pageContext.setAttribute("team_ID", jobj.get("id"));
 	
-
 	pageContext.setAttribute("team_logo", "../img/logos/" + jobj.get("name") + ".png");
 	%>
     
@@ -120,7 +119,7 @@
 		<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
 		<h1>${fn:escapeXml(team_name_long)} (${fn:escapeXml(team_abbreviation)})</h1>
 			<div>	
-			<p>The ${fn:escapeXml(team_name_short)} from ${fn:escapeXml(team_city)} play in the ${fn:escapeXml(team_division)} division of the ${fn:escapeXml(team_conference)} conference </p>
+			<p>The ${fn:escapeXml(team_name_short)} from ${fn:escapeXml(team_city)} play in the ${fn:escapeXml(team_division)} division of the ${fn:escapeXml(team_conference)}ern Conference </p>
 			</div>
     	</div>
     </div>
