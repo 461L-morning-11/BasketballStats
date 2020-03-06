@@ -1,3 +1,16 @@
+<%@ page import="java.net.*" %>
+<%@ page import="java.net.http.HttpClient" %>
+<%@ page import="java.net.http.HttpRequest" %>
+<%@ page import="java.net.http.HttpResponse" %>
+<%@ page import="java.net.URL" %>
+<%@ page import="org.xml.sax.SAXException" %> 
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="java.util.Scanner" %>
+<%@ page import="java.net.URI"%>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -55,13 +68,76 @@
       <br>
       <h2>Meet the developers</h2>
       <br>
+      <%!
+      public static String get(String uri) throws Exception {
+          HttpClient client = HttpClient.newHttpClient();
+          HttpRequest request = HttpRequest.newBuilder()
+                  .uri(URI.create(uri))
+                  .GET()
+                  .build();
+
+          HttpResponse<String> response = client.send(request,
+                  HttpResponse.BodyHandlers.ofString());
+          return response.body();
+
+
+      }
+      public static String getNewSHA(String res) throws Exception {
+          JSONParser parse = new JSONParser();
+
+          JSONObject jobj = (JSONObject)parse.parse(res);
+          JSONObject obj=(JSONObject)jobj.get("object");
+
+          return ""+obj.get("sha");
+      }
+      public static int getTotalCommits(String res) throws Exception{
+          JSONParser parse = new JSONParser();
+
+          JSONObject jobj = (JSONObject)parse.parse(res);
+          Long total=(Long) (jobj.get("total_commits"));
+          return total.intValue() +1;
+      }
+      public static int getUserCommits(String res) throws Exception{
+          JSONParser parse = new JSONParser();
+          //JSONObject jobj = (JSONObject)parse.parse(res);
+          JSONArray jsonarr_1 = (JSONArray) parse.parse(res);
+          int userCommits=0;
+          for(int i=0;i<jsonarr_1.size();i++) {
+            userCommits++;
+          }
+          return userCommits;
+      }
+      public static int getTotalIssues(String res) throws Exception {
+          JSONParser parse = new JSONParser();
+
+          JSONObject jobj = (JSONObject)parse.parse(res);
+          Long total=(Long) (jobj.get("total_count"));
+          return total.intValue();
+      }
+      %> <% 
+      String res= get("https://api.github.com/repos/461L-morning-11/BasketballStats/git/refs/heads/master");
+      String newSHA= getNewSHA(res);
+      pageContext.setAttribute("total_commits",getTotalCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/compare/98284fc9903dacfc123c6bb131d3d500ad75dad7..."+newSHA)));
+      pageContext.setAttribute("colby_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka")));
+      pageContext.setAttribute("corey_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei")));
+      pageContext.setAttribute("barrett_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s")));
+      pageContext.setAttribute("chloe_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=chloebryant")));
+      pageContext.setAttribute("harry_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=mikoyanhsch")));
+      pageContext.setAttribute("total_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats")));
+      pageContext.setAttribute("colby_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:colbyjanecka")));
+      pageContext.setAttribute("corey_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:coreykarnei")));
+      pageContext.setAttribute("barrett_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:barrett-s")));
+      pageContext.setAttribute("chloe_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:chloebryant")));
+      pageContext.setAttribute("harry_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:mikoyanhsch")));
+      
+      %>
       
       <div class="card" style="width:400px">
       	<div class="embed-responsive embed-responsive-1by1">
       		<img class="card-img-top embed-responsive-item" src="../img/Barrett.jpg" alt="Picture of Barrett">
       	</div>
       	<div class="card-body">
-      		<h4 class="card-title">Barret Stricklin</h4>
+      		<h4 class="card-title">Barrett Stricklin</h4>
     		<p class="card-text">Some example text.</p>
       	</div>
       </div>

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" output="build/test-classes" path="src/test/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.google.cloud.tools.eclipse.appengine.standard.runtimeClasspathProvider/App Engine Standard Runtime">
@@ -24,5 +35,20 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/School/git/Basketball/BasketballStats/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar"/>
-	<classpathentry kind="output" path="build/classes"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/barrett/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar" sourcepath="/Users/barrett/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar">
+		<attributes>
+			<attribute name="com.google.cloud.tools.eclipse.appengine.libraries.repository" value="central"/>
+			<attribute name="com.google.cloud.tools.eclipse.appengine.libraries.groupid" value="javax.servlet"/>
+			<attribute name="com.google.cloud.tools.eclipse.appengine.libraries.artifactId" value="javax.servlet-api"/>
+			<attribute name="com.google.cloud.tools.eclipse.appengine.libraries.type" value="jar"/>
+			<attribute name="com.google.cloud.tools.eclipse.appengine.libraries.version" value="3.1.0"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
