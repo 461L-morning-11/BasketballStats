@@ -96,7 +96,7 @@
 		JSONObject jobj = (JSONObject)parse.parse(inline);
 	    JSONObject homeObj = (JSONObject) jobj.get("home_team");
 	    JSONObject visitorObj = (JSONObject) jobj.get("visitor_team");
-	
+
         String shortDate = (String) jobj.get("date");
 	    
 	    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
