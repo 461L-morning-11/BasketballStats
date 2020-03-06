@@ -1,3 +1,13 @@
+<%@ page import="java.net.URL" %>
+<%@ page import="org.xml.sax.SAXException" %> 
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="java.util.Scanner" %>
+<%@ page import="java.net.URI"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -50,6 +60,80 @@
       <div class="main-content">
         <h1>List of Players</h1>
       </div>
+      
+     <%
+      URL url = new URL("https://www.balldontlie.io/api/v1/players");
+	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+	conn.setRequestMethod("GET");
+	conn.connect();
+	int responsecode = conn.getResponseCode();
+	String inline = "";
+	if(responsecode != 200)
+	    throw new RuntimeException("HttpResponseCode: " +responsecode);
+	else
+	{
+
+    	Scanner sc = new Scanner(url.openStream());
+
+    	while(sc.hasNext())
+    	{
+        	inline+=sc.nextLine();
+    	}
+    	
+    	sc.close();
+	}
+
+	JSONParser parse = new JSONParser();
+
+	JSONObject jobj = (JSONObject)parse.parse(inline);
+
+	JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
+
+
+	for(int i=0;i<jsonarr_1.size();i++)
+	{
+		JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+	
+	
+    	//System.out.println("Elements under data array");
+    
+    	pageContext.setAttribute("player_first_name", jsonobj_1.get("first_name"));
+
+		pageContext.setAttribute("player_last_name", jsonobj_1.get("last_name"));
+
+		String short_position = (String) jsonobj_1.get("position");
+		String position = "";
+		char[] position_letters = short_position.toCharArray();
+		for(int j =0; j <short_position.length(); j++){
+			try{
+			if(position_letters[j] == 'C'){
+				position += "Center";
+			} else if(position_letters[j] == 'G'){
+				position += "Guard";
+			} else if(position_letters[j] == 'F'){
+				position += "Forward";
+			} else if(position_letters[j] == 'C'){
+				position += "Center";
+			} else if(position_letters[j] == '-'){
+				position += "-";
+			}
+			}catch(Exception e){}
+		}
+		pageContext.setAttribute("player_position", position);
+		
+		JSONObject player_team = (JSONObject) jsonobj_1.get("team"); 
+		pageContext.setAttribute("player_team", player_team.get("full_name"));
+	
+	%>
+	<hr>
+    <p><b> ${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}, </b>position: ${fn:escapeXml(player_position)}</p>
+
+    <p class="postContent">Team: ${fn:escapeXml(player_team)}</p>
+    <% 
+}
+
+
+%>
 
     </main><!-- /.container -->
 
