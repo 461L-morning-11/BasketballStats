@@ -48,9 +48,67 @@
     <main role="main" class="container">
 
       <div class="main-content">
-        <h1>About our Team</h1>
+        <h1>About our Page</h1>
       </div>
-
+      
+      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, coaches, and teams in the history of the NBA and WNBA. (ADD INTENDED USERS)  </h3>
+      <br>
+      <h2>Meet the developers</h2>
+      <br>
+      
+      <div class="card" style="width:400px">
+      	<div class="embed-responsive embed-responsive-1by1">
+      		<img class="card-img-top embed-responsive-item" src="../img/Barrett.jpg" alt="Picture of Barrett">
+      	</div>
+      	<div class="card-body">
+      		<h4 class="card-title">Barret Stricklin</h4>
+    		<p class="card-text">Some example text.</p>
+      	</div>
+      </div>
+      
+      <br>
+      
+      <div class="card" style="width:400px">
+      	<div class="embed-responsive embed-responsive-1by1">
+      		<img class="card-img-top embed-responsive-item" src="../img/chloe.jpg" class="img-responsive" alt="Picture of Chloe">
+      	</div>
+      	<div class="card-body">
+      		<h4 class="card-title">Chloe Bryant</h4>
+    		<p class="card-text">Some example text.</p>
+      	</div>
+      </div>
+      
+      <br>
+      
+      <div class="card" style="width:400px">
+      	<div class="embed-responsive embed-responsive-1by1">
+      		<img class="card-img-top embed-responsive-item" src="../img/Harry.jpg" class="img-responsive" alt="Picture of Harry">
+      	</div>
+      	<div class="card-body">
+      		<h4 class="card-title">Harry Schneider</h4>
+    		<p class="card-text">Some example text.</p>
+      	</div>
+      </div>
+      
+      <br>
+      
+      <div class="card" style="width:400px">
+      	<div class="embed-responsive embed-responsive-1by1">
+      		<img class="card-img-top embed-responsive-item" src="../img/Corey.jpg" class="img-responsive" alt="Picture of Corey">
+      	</div>
+      	<div class="card-body">
+      		<h4 class="card-title">Corey Karnei</h4>
+    		<p class="card-text">Some example text.</p>
+      	</div>
+      </div>
+      
+      <br>
+      
+      <%
+      
+      %>
+      <a href="https://github.com/461L-morning-11/BasketballStats.git"> Link to Github repo</a>
+		
     </main><!-- /.container -->
 
     <!-- Bootstrap core JavaScript
