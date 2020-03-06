@@ -103,10 +103,22 @@
       </div>
       
       <br>
-      
-      <%
-      
-      %>
+ 	  <h2>Team Stats</h2>
+	  <h3>Total Commits:</h3>
+	  <h3>Total Issues:</h3>
+	  <h3>Total Unit Tests: 0</h3>
+	  
+	  <br>
+	  
+	  <h2>Data</h2>
+	  <h3>add link to api and expain how it was scraped</h3>
+	  
+	  <br>
+	  
+	  <h2>Tools</h2>
+	  <h3>desribe tools and how they were used</h3>
+	  
+	  <br>
       <a href="https://github.com/461L-morning-11/BasketballStats.git"> Link to Github repo</a>
 		
     </main><!-- /.container -->
