@@ -58,8 +58,72 @@
     <main role="main" class="container">
 
 	<div class="main-content">
+
 	</div>
+
+	
+	
+	<% //pageContext.setAttribute("team_ID", request.getParameter("teamId"));
+	URL url = new URL("https://www.balldontlie.io/api/v1/teams/" + request.getParameter("teamId") );
+	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+	conn.setRequestMethod("GET");
+	conn.connect();
+	int responsecode = conn.getResponseCode();
+	String inline = "";
+	if(responsecode != 200)
+	    throw new RuntimeException("HttpResponseCode: " +responsecode);
+	else
+	{
+
+	    Scanner sc = new Scanner(url.openStream());
+
+	    while(sc.hasNext())
+	    {
+	        inline+=sc.nextLine();
+	    }
+	    System.out.println("\nJSON data in string format");
+	    System.out.println(inline);
+	    sc.close();
+	}
+
+	JSONParser parse = new JSONParser();
+
+	JSONObject jobj = (JSONObject)parse.parse(inline);
+	
+	
+	
+	
+    //System.out.println("Elements under data array");
     
+    pageContext.setAttribute("team_name_long", jobj.get("full_name"));
+    
+    pageContext.setAttribute("team_name_short", jobj.get("name"));
+
+	pageContext.setAttribute("team_city", jobj.get("city"));
+
+	pageContext.setAttribute("team_abbreviation", jobj.get("abbreviation"));
+	
+	pageContext.setAttribute("team_division", jobj.get("division"));
+	
+	pageContext.setAttribute("team_conference", jobj.get("conference"));
+	
+	pageContext.setAttribute("team_ID", jobj.get("id"));
+	
+
+	pageContext.setAttribute("team_logo", "../img/logos/" + jobj.get("name") + ".png");
+	%>
+    
+    <hr>
+	   	<div class="container">
+	<div class="row">
+		<div>			
+		<img src=${fn:escapeXml(team_logo)} class="img-fluid img-thumbnail" alt="Responsive image">
+		<h1>${fn:escapeXml(team_name_long)} (${fn:escapeXml(team_abbreviation)})</h1>
+			<div>	
+			<p>The ${fn:escapeXml(team_name_short)} from ${fn:escapeXml(team_city)} play in the ${fn:escapeXml(team_division)} division of the ${fn:escapeXml(team_conference)} conference </p>
+			</div>
+    	</div>
+    </div>
 
     </main><!-- /.container -->
 		
