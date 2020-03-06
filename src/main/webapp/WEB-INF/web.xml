@@ -24,12 +24,12 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>coaches</servlet-name>
-		<jsp-file>/coaches.jsp</jsp-file>
+		<servlet-name>games</servlet-name>
+		<jsp-file>/games.jsp</jsp-file>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>coaches</servlet-name>
-		<url-pattern>/coaches</url-pattern>
+		<servlet-name>games</servlet-name>
+		<url-pattern>/games</url-pattern>
 	</servlet-mapping>	
 	
 	<servlet>
