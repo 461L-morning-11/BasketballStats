@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="main:war exploded" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="da625cd9-31b0-42e5-aa66-f6c15ccd5b7b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/main.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +107,17 @@
       <list>
         <serviceView>
           <treeState>
-            <expand />
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Google App Engine Standard Local Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Google App Engine Standard Local Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+            </expand>
             <select />
           </treeState>
         </serviceView>
@@ -125,7 +139,7 @@
       <workItem from="1583426455934" duration="540000" />
       <workItem from="1583427014930" duration="34000" />
       <workItem from="1583427059129" duration="14000" />
-      <workItem from="1583427082628" duration="121000" />
+      <workItem from="1583427082628" duration="1393000" />
     </task>
     <servers />
   </component>
@@ -157,6 +171,22 @@
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
     <state x="1060" y="494" key="FileChooserDialogImpl/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583426913994" />
+    <state width="448" height="266" key="GridCell.Tab.0.bottom" timestamp="1583452974638">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="448" height="266" key="GridCell.Tab.0.bottom/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583452974638" />
+    <state width="448" height="266" key="GridCell.Tab.0.center" timestamp="1583452974638">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="448" height="266" key="GridCell.Tab.0.center/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583452974638" />
+    <state width="448" height="266" key="GridCell.Tab.0.left" timestamp="1583452974638">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="448" height="266" key="GridCell.Tab.0.left/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583452974638" />
+    <state width="448" height="266" key="GridCell.Tab.0.right" timestamp="1583452974638">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="448" height="266" key="GridCell.Tab.0.right/0.40.2560.1400/2560.0.2498.1440@0.40.2560.1400" timestamp="1583452974638" />
     <state x="781" y="382" key="SettingsEditor" timestamp="1583427186325">
       <screen x="0" y="40" width="2560" height="1400" />
     </state>
