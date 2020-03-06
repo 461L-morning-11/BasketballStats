@@ -1,8 +1,12 @@
 <%@ page import="java.net.URL" %>
 <%@ page import="org.xml.sax.SAXException" %> 
 <%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
 <%@ page import="org.json.simple.JSONObject" %>
-
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="java.util.Scanner" %>
+<%@ page import="java.net.URI"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="en">
@@ -59,9 +63,59 @@
 
 
 <% 
-	URL url = new URL("http://api.espn.com/v1/sports/basketball/nba/teams");
-	HttpURLConnection con = (HttpURLConnection) url.openConnection();
-	con.setRequestMethod("GET");
+
+
+URL url = new URL("https://www.balldontlie.io/api/v1/teams");
+HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+conn.setRequestMethod("GET");
+conn.connect();
+int responsecode = conn.getResponseCode();
+String inline = "";
+if(responsecode != 200)
+    throw new RuntimeException("HttpResponseCode: " +responsecode);
+else
+{
+
+    Scanner sc = new Scanner(url.openStream());
+
+    while(sc.hasNext())
+    {
+        inline+=sc.nextLine();
+    }
+    System.out.println("\nJSON data in string format");
+    System.out.println(inline);
+    sc.close();
+}
+
+JSONParser parse = new JSONParser();
+
+JSONObject jobj = (JSONObject)parse.parse(inline);
+
+JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
+
+
+for(int i=0;i<jsonarr_1.size();i++)
+{
+	JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+	
+	
+    //System.out.println("Elements under data array");
+    
+    pageContext.setAttribute("team_name_short", jsonobj_1.get("name"));
+
+	pageContext.setAttribute("team_city", jsonobj_1.get("city"));
+
+	pageContext.setAttribute("team_abbreviation", jsonobj_1.get("abbreviation"));
+	
+	pageContext.setAttribute("team_division", jsonobj_1.get("division"));
+	
+	%>
+	<hr>
+    <p><b> ${fn:escapeXml(team_name_short)} </b> From: ${fn:escapeXml(team_city)} (${fn:escapeXml(team_abbreviation)})</p>
+
+    <p class="postContent">Division: ${fn:escapeXml(team_division)}</p>
+    <% 
+}
 
 
 %>
