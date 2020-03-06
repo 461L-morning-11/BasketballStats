@@ -104,8 +104,8 @@
       }
       public static int getUserCommits(String res) throws Exception{
     	  JSONParser parse = new JSONParser();
-          JSONObject jsonarr_1 = (JSONObject)parse.parse(res);
-          //JSONArray jsonarr_1 = (JSONArray) parse.parse(res);
+          //JSONObject jsonarr_1 = (JSONObject)parse.parse(res);
+          JSONArray jsonarr_1 = (JSONArray) parse.parse(res);
           int userCommits=0;
           for(int i=0;i<jsonarr_1.size();i++) {
             userCommits++;
