@@ -89,9 +89,6 @@ JSONParser parse = new JSONParser();
 JSONObject jobj = (JSONObject)parse.parse(inline);
 
 JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
-
-
-
 	
 	%>
     

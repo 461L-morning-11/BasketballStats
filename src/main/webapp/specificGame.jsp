@@ -6,6 +6,13 @@
 <%@ page import="org.json.simple.JSONArray" %>
 <%@ page import="java.util.Scanner" %>
 <%@ page import="java.net.URI"%>
+<%@ page import="java.time.*" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
@@ -57,46 +64,88 @@
 
     <main role="main" class="container">
 
-	<div class="main-content">
+ <div class="main-content">
+		        
+		<% 
+		
+		
+		URL url = new URL("https://www.balldontlie.io/api/v1/games/" + request.getParameter("gameId"));
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.connect();
+		int responsecode = conn.getResponseCode();
+		String inline = "";
+		if(responsecode != 200)
+		    throw new RuntimeException("HttpResponseCode: " +responsecode);
+		else
+		{
+		
+		    Scanner sc = new Scanner(url.openStream());
+		
+		    while(sc.hasNext())
+		    {
+		        inline+=sc.nextLine();
+		    }
+		    System.out.println("\nJSON data in string format");
+		    System.out.println(inline);
+		    sc.close();
+		}
+		
+		JSONParser parse = new JSONParser();
+		
+		JSONObject jobj = (JSONObject)parse.parse(inline);
+	    JSONObject homeObj = (JSONObject) jobj.get("home_team");
+	    JSONObject visitorObj = (JSONObject) jobj.get("visitor_team");
 	
-	
-	
-	<% 
-	pageContext.setAttribute("team_ID", request.getParameter("teamId"));			    
-	pageContext.setAttribute("team_name_short", "cool dudes");
-	pageContext.setAttribute("team_city", "ball city");
-	pageContext.setAttribute("team_abbreviation", "LOL");
-	pageContext.setAttribute("team_conference", "big texas");
-	pageContext.setAttribute("team_division", "loser division");			    
-	pageContext.setAttribute("team_name", "ball city cool dudes");
+        String shortDate = (String) jobj.get("date");
+	    
+	    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+	    
+		pageContext.setAttribute("game_home_team", homeObj.get("name"));
+		pageContext.setAttribute("game_home_abbreviation", homeObj.get("abbreviation"));
+
+		pageContext.setAttribute("game_home_score", jobj.get("home_team_score"));
+		
+		pageContext.setAttribute("game_visitor_score", jobj.get("visitor_team_score"));
+		
+		pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
+		pageContext.setAttribute("game_visitor_abbreviation", visitorObj.get("abbreviation"));
+		
+		pageContext.setAttribute("game_ID", jobj.get("id"));
+		
 	%>
-	
-	<h1>team: ${fn:escapeXml(team_ID)}</h1>
+
+        <h1>${fn:escapeXml(game_home_abbreviation)} vs ${fn:escapeXml(game_visitor_abbreviation)}</h1>
+        <br><hr><br>
+        
 	
 		<table class="table">
 			<thead>
 				<tr>
-					<th scope="col">ID</th>
-					<th scope="col">Abbreviation</th>
-					<th scope="col">City</th>
-					<th scope="col">Conference</th>
-					<th scope="col">Division</th>
-					<th scope="col">Full Name</th>
+					<th scope="col">Date</th>
+					<th scope="col">Home Team</th>
+					<th scope="col">Home Score</th>
+					<th scope="col">Visitor Score</th>
+					<th scope="col">Visitor Team</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-				  <td>${fn:escapeXml(team_ID)}</td>
-				  <td>${fn:escapeXml(team_abbreviation)}</td>
-				  <td>${fn:escapeXml(team_city)}</td>
-				  <td>${fn:escapeXml(team_conference)}</td>
-				  <td>${fn:escapeXml(team_division)}</td>
-				  <td>${fn:escapeXml(team_name)}</td>
+			
+				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
+				
+				  	<td>${fn:escapeXml(game_date)}</td>
+				  	<td>${fn:escapeXml(game_home_team)}</td>
+				  	<td>${fn:escapeXml(game_home_score)}</td>
+				  	<td>${fn:escapeXml(game_visitor_score)}</td>
+				 	<td>${fn:escapeXml(game_visitor_team)}</td>
+					
+				  
 				</tr>
 			</tbody>
 		</table>
-	</div>
-    
+        
+      </div>
+
 
     </main><!-- /.container -->
 		

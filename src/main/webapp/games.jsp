@@ -1,3 +1,20 @@
+<%@ page import="java.net.URL" %>
+<%@ page import="org.xml.sax.SAXException" %> 
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="java.util.Scanner" %>
+<%@ page import="java.net.URI"%>
+<%@ page import="java.time.*" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -48,7 +65,96 @@
     <main role="main" class="container">
 
       <div class="main-content">
-        <h1>List of Coaches!</h1>
+        <h1>List of Games</h1>
+        <br><hr><br>
+        
+		        
+		<% 
+		
+		
+		URL url = new URL("https://www.balldontlie.io/api/v1/games");
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.connect();
+		int responsecode = conn.getResponseCode();
+		String inline = "";
+		if(responsecode != 200)
+		    throw new RuntimeException("HttpResponseCode: " +responsecode);
+		else
+		{
+		
+		    Scanner sc = new Scanner(url.openStream());
+		
+		    while(sc.hasNext())
+		    {
+		        inline+=sc.nextLine();
+		    }
+		    System.out.println("\nJSON data in string format");
+		    System.out.println(inline);
+		    sc.close();
+		}
+		
+		JSONParser parse = new JSONParser();
+		
+		JSONObject jobj = (JSONObject)parse.parse(inline);
+		
+		JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
+		
+		
+		%>
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Date</th>
+					<th scope="col">Home Team</th>
+					<th scope="col">Home Score</th>
+					<th scope="col">Visitor Score</th>
+					<th scope="col">Visitor Team</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			<%
+			for(int i=0;i<jsonarr_1.size();i++)
+			{
+				JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+				
+				
+			    //System.out.println("Elements under data array");
+			    
+			    JSONObject homeObj = (JSONObject)jsonobj_1.get("home_team");
+			    JSONObject visitorObj = (JSONObject)jsonobj_1.get("visitor_team");
+
+		        String shortDate = (String) jsonobj_1.get("date");
+			    
+			    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+
+				pageContext.setAttribute("game_home_team", homeObj.get("name"));
+
+				pageContext.setAttribute("game_home_score", jsonobj_1.get("home_team_score"));
+				
+				pageContext.setAttribute("game_visitor_score", jsonobj_1.get("visitor_team_score"));
+				
+				pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
+				
+				pageContext.setAttribute("game_ID", jsonobj_1.get("id"));
+				
+			%>
+				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
+				
+				  	<td>${fn:escapeXml(game_date)}</td>
+				  	<td>${fn:escapeXml(game_home_team)}</td>
+				  	<td>${fn:escapeXml(game_home_score)}</td>
+				  	<td>${fn:escapeXml(game_visitor_score)}</td>
+				 	<td>${fn:escapeXml(game_visitor_team)}</td>
+					
+				  
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+        
       </div>
 
     </main><!-- /.container -->
