@@ -41,5 +41,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/School/git/Basketball/BasketballStats/src/main/webapp/WEB-INF/lib/org-apache-commons-codec.jar"/>
+	<classpathentry kind="lib" path="C:/School/git/Basketball/BasketballStats/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,7 +1,4 @@
 <%@ page import="java.net.*" %>
-<%@ page import="java.net.http.HttpClient" %>
-<%@ page import="java.net.http.HttpRequest" %>
-<%@ page import="java.net.http.HttpResponse" %>
 <%@ page import="java.net.URL" %>
 <%@ page import="org.xml.sax.SAXException" %> 
 <%@ page import="java.net.HttpURLConnection" %>
@@ -9,6 +6,7 @@
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="org.json.simple.JSONArray" %>
 <%@ page import="java.util.Scanner" %>
+<%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="java.net.URI"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -70,76 +68,89 @@
       <h2>Meet the developers</h2>
       <br>
       <%!
-      public static String get(String uri) throws Exception {
-          HttpClient client = HttpClient.newHttpClient();
-          HttpRequest request = HttpRequest.newBuilder()
-                  .uri(URI.create(uri))
-                  .GET()
-                  .build();
-
-          HttpResponse<String> response = client.send(request,
-                  HttpResponse.BodyHandlers.ofString());
-          return response.body();
-
-
-      }
-      public static String getNewSHA(String res) throws Exception {
-          JSONParser parse = new JSONParser();
-
-          JSONObject jobj = (JSONObject)parse.parse(res);
-          JSONObject obj=(JSONObject)jobj.get("object");
-          Thread.sleep(100);
-		  String ret=""+obj.get("sha");
-          return ret;
-      }
-      public static int getTotalCommits(String res) throws Exception{
-          /*JSONParser parse = new JSONParser();
-
-          JSONObject jobj = (JSONObject)parse.parse(res);
-          Long total=(Long) (jobj.get("total_commits"));
-          return total.intValue() +1;
-          */
-          return getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=chloebryant"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei"))+getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=mikoyanhsch"));
-
-      }
-      public static int getUserCommits(String res) throws Exception{
-    	  JSONParser parse = new JSONParser();
-          //JSONObject jsonarr_1 = (JSONObject)parse.parse(res);
-          JSONArray jsonarr_1 = (JSONArray) parse.parse(res);
-          int userCommits=0;
-          for(int i=0;i<jsonarr_1.size();i++) {
-            userCommits++;
+      
+     // String res= get("https://api.github.com/repos/461L-morning-11/BasketballStats/git/refs/heads/master");
+      public static int getUserCommits(String res) throws Exception {
+          URL url = new URL(res);
+          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+          //String token = "1927d38bc89a3445e326b3665a4c289a40085b18";
+          //token = token + ":x-oauth-basic";
+	      //String authString = "Basic " + Base64.encodeBase64(token.getBytes());
+	      //conn.setRequestProperty("Accept", "application/octet-stream");
+	      //conn.setRequestProperty("HEADER_ACCEPT, accept);
+	      //conn.setRequestProperty("Accept", "application/vnd.github.cloak-preview");
+	      //conn.setRequestProperty("Authorization", authString);
+          conn.setRequestMethod("GET");
+          conn.connect();
+          int responsecode = conn.getResponseCode();
+          String inline = "";
+          if (responsecode != 200)
+              throw new RuntimeException("HttpResponseCode: " + responsecode);
+          else {
+              Scanner sc = new Scanner(url.openStream());
+              while (sc.hasNext()) {
+                  inline += sc.nextLine();
+              }//System.out.println("\nJSON data in string format");//System.out.println(inline);
+              sc.close();
           }
-          return userCommits;
-      }
-      public static int getTotalIssues(String res) throws Exception {
-          
-    	  JSONParser parse = new JSONParser();
 
-          JSONObject jobj = (JSONObject)parse.parse(res);
-          Long total=(Long) (jobj.get("total_count"));
-          if(total!=null)
-          return total.intValue();
-          else
-        	  return 0;
-          
-          
+          JSONParser parse = new JSONParser();
+          int cnt = 0;
+          JSONArray jobj = (JSONArray) parse.parse(inline);
+          for (int i = 0; i < jobj.size(); i++) {
+              cnt++;
+          }
+          return cnt;
       }
-      %> <% 
-      String res= get("https://api.github.com/repos/461L-morning-11/BasketballStats/git/refs/heads/master");
+      public static Long getTotalIssues(String res) throws Exception {
+
+          URL url = new URL(res);
+          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+          //String token = "1927d38bc89a3445e326b3665a4c289a40085b18";
+          //token = token + ":x-oauth-basic";
+	      //String authString = "Basic " + Base64.encodeBase64(token.getBytes());
+		  //conn.setRequestProperty("Authorization", authString);
+          conn.setRequestMethod("GET");
+          conn.connect();
+          int responsecode = conn.getResponseCode();
+          String inline = "";
+          if (responsecode != 200)
+              throw new RuntimeException("HttpResponseCode: " + responsecode);
+          else {
+              Scanner sc = new Scanner(url.openStream());
+              while (sc.hasNext()) {
+                  inline += sc.nextLine();
+              }//System.out.println("\nJSON data in string format");//System.out.println(inline);
+              sc.close();
+          }
+
+          JSONParser parse = new JSONParser();
+          Long cnt = Long.valueOf(0);
+          JSONObject jobj = (JSONObject) parse.parse(inline);
+          cnt = (Long) jobj.get("total_count");
+
+          return cnt;
+      }
+      
+      
+      
+      %> <%
+     
+
+      
       //String newSHA= getNewSHA(res);
       //pageContext.setAttribute("total_commits",getTotalCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/compare/98284fc9903dacfc123c6bb131d3d500ad75dad7..."+newSHA)));
-      pageContext.setAttribute("colby_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka")));
-      pageContext.setAttribute("corey_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei")));
-      pageContext.setAttribute("barrett_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s")));
-      pageContext.setAttribute("chloe_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=chloebryant")));
-      pageContext.setAttribute("harry_commits",getUserCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=mikoyanhsch")));
-      pageContext.setAttribute("total_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats")));
-      pageContext.setAttribute("colby_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:colbyjanecka")));
-      pageContext.setAttribute("corey_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:coreykarnei")));
-      pageContext.setAttribute("barrett_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:barrett-s")));
-      pageContext.setAttribute("chloe_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:chloebryant")));
-      pageContext.setAttribute("harry_issues",getTotalIssues(get("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:mikoyanhsch")));
+      pageContext.setAttribute("colby_commits", getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka"));
+      pageContext.setAttribute("corey_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei"));
+      pageContext.setAttribute("barrett_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s"));
+      pageContext.setAttribute("chloe_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=chloebryant"));
+      pageContext.setAttribute("harry_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=mikoyanhsch"));
+     //pageContext.setAttribute("total_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats"));
+      pageContext.setAttribute("colby_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:colbyjanecka"));
+      pageContext.setAttribute("corey_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:coreykarnei"));
+      pageContext.setAttribute("barrett_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:barrett-s"));
+      pageContext.setAttribute("chloe_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:chloebryant"));
+      pageContext.setAttribute("harry_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:mikoyanhsch"));
       
       %>
       <div class="card" style="width:400px">
