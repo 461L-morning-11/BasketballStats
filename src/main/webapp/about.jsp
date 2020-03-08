@@ -68,89 +68,93 @@
       <h2>Meet the developers</h2>
       <br>
       <%!
-      
-     // String res= get("https://api.github.com/repos/461L-morning-11/BasketballStats/git/refs/heads/master");
-      public static int getUserCommits(String res) throws Exception {
-          URL url = new URL(res);
-          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-          //String token = "1927d38bc89a3445e326b3665a4c289a40085b18";
-          //token = token + ":x-oauth-basic";
-	      //String authString = "Basic " + Base64.encodeBase64(token.getBytes());
-	      //conn.setRequestProperty("Accept", "application/octet-stream");
-	      //conn.setRequestProperty("HEADER_ACCEPT, accept);
-	      //conn.setRequestProperty("Accept", "application/vnd.github.cloak-preview");
-	      //conn.setRequestProperty("Authorization", authString);
-          conn.setRequestMethod("GET");
-          conn.connect();
-          int responsecode = conn.getResponseCode();
-          String inline = "";
-          if (responsecode != 200)
-              throw new RuntimeException("HttpResponseCode: " + responsecode);
-          else {
-              Scanner sc = new Scanner(url.openStream());
-              while (sc.hasNext()) {
-                  inline += sc.nextLine();
-              }//System.out.println("\nJSON data in string format");//System.out.println(inline);
-              sc.close();
-          }
+      public static int[] getStats(String res) throws Exception {
 
-          JSONParser parse = new JSONParser();
-          int cnt = 0;
-          JSONArray jobj = (JSONArray) parse.parse(inline);
-          for (int i = 0; i < jobj.size(); i++) {
-              cnt++;
-          }
-          return cnt;
-      }
-      public static Long getTotalIssues(String res) throws Exception {
 
-          URL url = new URL(res);
-          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-          //String token = "1927d38bc89a3445e326b3665a4c289a40085b18";
-          //token = token + ":x-oauth-basic";
-	      //String authString = "Basic " + Base64.encodeBase64(token.getBytes());
-		  //conn.setRequestProperty("Authorization", authString);
-          conn.setRequestMethod("GET");
-          conn.connect();
-          int responsecode = conn.getResponseCode();
-          String inline = "";
-          if (responsecode != 200)
-              throw new RuntimeException("HttpResponseCode: " + responsecode);
-          else {
-              Scanner sc = new Scanner(url.openStream());
-              while (sc.hasNext()) {
-                  inline += sc.nextLine();
-              }//System.out.println("\nJSON data in string format");//System.out.println(inline);
-              sc.close();
-          }
+    	        int[] CorBarColHarChl = {0,0,0,0,0};
+    	        URL url = new URL("res");
+    	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    	        conn.setRequestMethod("GET");
+    	        conn.connect();
+    	        int responsecode = conn.getResponseCode();
+    	        String inline = "";
+    	        if (responsecode != 200)
+    	            throw new RuntimeException("HttpResponseCode: " + responsecode);
+    	        else {
+    	            Scanner sc = new Scanner(url.openStream());
+    	            while (sc.hasNext()) {
+    	                inline += sc.nextLine();
+    	            }//System.out.println("\nJSON data in string format");//System.out.println(inline);
+    	            sc.close();
+    	        }
 
-          JSONParser parse = new JSONParser();
-          Long cnt = Long.valueOf(0);
-          JSONObject jobj = (JSONObject) parse.parse(inline);
-          cnt = (Long) jobj.get("total_count");
+    	        JSONParser parse = new JSONParser();
 
-          return cnt;
+    	        JSONArray jarr = (JSONArray) parse.parse(inline);
+    	        for(int i=0;i<jarr.size();i++) {
+    	            JSONObject jobj = (JSONObject) jarr.get(i);
+    	            JSONArray assignees = (JSONArray) jobj.get("assignees");
+    	            for (int j = 0; j < assignees.size(); j++) {
+    	                JSONObject user = (JSONObject) assignees.get(j);
+    	                String curUser = (String) user.get("login");
+    	                if(curUser.equals("coreykarnei")) {
+    	                    CorBarColHarChl[0]++;
+    	                }else if(curUser.equals("colbyjanecka")) {
+    	                    CorBarColHarChl[2]++;
+    	                }else if(curUser.equals("Barrett-S")) {
+    	                    CorBarColHarChl[1]++;
+    	                }else if(curUser.equals("mikoyanhsch")) {
+    	                    CorBarColHarChl[3]++;
+    	                }else if(curUser.equals("chloebryant")) {
+    	                    CorBarColHarChl[4]++;
+    	                }
+
+    	            }
+
+    	        }
+    	        return CorBarColHarChl;
       }
       
       
       
       %> <%
-     
-
+      String commitsURL = "https://api.github.com/repos/461L-morning-11/BasketballStats/stats/contributors";
+      String issuesURL = "https://api.github.com/repos/461L-morning-11/BasketballStats/issues";
+      
+      int[] commits = {0,0,0,0,0};
+	  int[] issues = {0,0,0,0,0};
+	  
+      try{
+      //both arrays VV have the following indecies: corey-0 barrett-1 colby-2 harry-3 chloe-4
+     commits = getStats(commitsURL);
+     issues = getStats(issuesURL);
+      }catch(Exception e){
+    	  //if github returns a "forbidden" error on api call, default to saved values
+    	  commits[2] = 26; 
+    	  commits[0] = 14; 
+    	  commits[1] = 3; 
+    	  commits[4] = 2; 
+    	  commits[3] = 2;
+    	  issues[2] = 0; 
+    	  issues[0] = 2; 
+    	  issues[1] = 1; 
+    	  issues[4] = 0; 
+    	  issues[3] = 0;
+      }
       
       //String newSHA= getNewSHA(res);
       //pageContext.setAttribute("total_commits",getTotalCommits(get("https://api.github.com/repos/461L-morning-11/BasketballStats/compare/98284fc9903dacfc123c6bb131d3d500ad75dad7..."+newSHA)));
-      pageContext.setAttribute("colby_commits", getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=colbyjanecka"));
-      pageContext.setAttribute("corey_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=coreykarnei"));
-      pageContext.setAttribute("barrett_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=barrett-s"));
-      pageContext.setAttribute("chloe_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=chloebryant"));
-      pageContext.setAttribute("harry_commits",getUserCommits("https://api.github.com/repos/461L-morning-11/BasketballStats/commits?author=mikoyanhsch"));
+      pageContext.setAttribute("colby_commits", commits[2]);
+      pageContext.setAttribute("corey_commits",commits[0]);
+      pageContext.setAttribute("barrett_commits",commits[1]);
+      pageContext.setAttribute("chloe_commits",commits[4]);
+      pageContext.setAttribute("harry_commits",commits[3]);
      //pageContext.setAttribute("total_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats"));
-      pageContext.setAttribute("colby_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:colbyjanecka"));
-      pageContext.setAttribute("corey_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:coreykarnei"));
-      pageContext.setAttribute("barrett_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:barrett-s"));
-      pageContext.setAttribute("chloe_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:chloebryant"));
-      pageContext.setAttribute("harry_issues",getTotalIssues("https://api.github.com/search/issues?q=repo:461L-morning-11/BasketballStats+author:mikoyanhsch"));
+      pageContext.setAttribute("colby_issues",issues[2]);
+      pageContext.setAttribute("corey_issues",issues[0]);
+      pageContext.setAttribute("barrett_issues",issues[1]);
+      pageContext.setAttribute("chloe_issues",issues[4]);
+      pageContext.setAttribute("harry_issues",issues[3]);
       
       %>
       <div class="card" style="width:400px">
@@ -159,7 +163,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Barrett Stricklin</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(barrett_commits)} <br>Issues:${fn:escapeXml(barrett_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(barrett_commits)} <br>Assigned Issues:${fn:escapeXml(barrett_issues)}</p>
       	</div>
       </div>
       
@@ -171,7 +175,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Chloe Bryant</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Issues:${fn:escapeXml(chloe_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues:${fn:escapeXml(chloe_issues)}</p>
       	</div>
       </div>
       
@@ -183,19 +187,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Colby Janecka</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(colby_commits)} <br>Issues:${fn:escapeXml(colby_issues)}</p>
-      	</div>
-      </div>
-      
-      <br>
-      
-      <div class="card" style="width:400px">
-      	<div class="embed-responsive embed-responsive-1by1">
-      		<img class="card-img-top embed-responsive-item" src="../img/Harry.jpg" class="img-responsive" alt="Picture of Harry">
-      	</div>
-      	<div class="card-body">
-      		<h4 class="card-title">Harry Schneider</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(harry_commits)} <br>Issues:${fn:escapeXml(harry_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(colby_commits)} <br>Assigned Issues:${fn:escapeXml(colby_issues)}</p>
       	</div>
       </div>
       
@@ -207,9 +199,24 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Corey Karnei</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(corey_commits)} <br>Issues:${fn:escapeXml(corey_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues:${fn:escapeXml(corey_issues)}</p>
       	</div>
       </div>
+      
+      <br>
+      
+      <div class="card" style="width:400px">
+      	<div class="embed-responsive embed-responsive-1by1">
+      		<img class="card-img-top embed-responsive-item" src="../img/Harry.jpg" class="img-responsive" alt="Picture of Harry">
+      	</div>
+      	<div class="card-body">
+      		<h4 class="card-title">Harry Schneider</h4>
+    		<p class="card-text">Commits: ${fn:escapeXml(harry_commits)} <br>Assigned Issues:${fn:escapeXml(harry_issues)}</p>
+      	</div>
+      </div>
+      
+      
+      
       
       <br>
  	  <h2>Team Stats</h2>
