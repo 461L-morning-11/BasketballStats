@@ -155,7 +155,8 @@
       pageContext.setAttribute("barrett_issues",issues[1]);
       pageContext.setAttribute("chloe_issues",issues[4]);
       pageContext.setAttribute("harry_issues",issues[3]);
-      
+      pageContext.setAttribute("total_issues",issues[0]+issues[1]+issues[2]+issues[3]+issues[4]);
+      pageContext.setAttribute("total_commits",commits[0]+ commits[1]+commits[2]+commits[3]+commits[4]);
       %>
       <div class="card" style="width:400px">
       	<div class="embed-responsive embed-responsive-1by1">
@@ -163,7 +164,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Barrett Stricklin</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(barrett_commits)} <br>Assigned Issues:${fn:escapeXml(barrett_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(barrett_commits)} <br>Assigned Issues: ${fn:escapeXml(barrett_issues)}</p>
       	</div>
       </div>
       
@@ -175,7 +176,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Chloe Bryant</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues:${fn:escapeXml(chloe_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues: ${fn:escapeXml(chloe_issues)}</p>
       	</div>
       </div>
       
@@ -187,7 +188,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Colby Janecka</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(colby_commits)} <br>Assigned Issues:${fn:escapeXml(colby_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(colby_commits)} <br>Assigned Issues: ${fn:escapeXml(colby_issues)}</p>
       	</div>
       </div>
       
@@ -199,7 +200,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Corey Karnei</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues:${fn:escapeXml(corey_issues)}</p>
+    		<p class="card-text">Born and raised in Waco, TX. An electrical engineering major at UT with a minor in business<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
       	</div>
       </div>
       
@@ -211,31 +212,36 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Harry Schneider</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(harry_commits)} <br>Assigned Issues:${fn:escapeXml(harry_issues)}</p>
+    		<p class="card-text">Commits: ${fn:escapeXml(harry_commits)} <br>Assigned Issues: ${fn:escapeXml(harry_issues)}</p>
       	</div>
       </div>
       
+      <br>
       
-      
-      
+      <a href="https://github.com/461L-morning-11/BasketballStats.git"> Github repo</a>
+      <br>
       <br>
  	  <h2>Team Stats</h2>
-	  <h3>Total Commits:${fn:escapeXml(total_commits)}</h3>
-	  <h3>Total Issues:${fn:escapeXml(total_issues)}</h3>
+	  <h3>Total Commits: ${fn:escapeXml(total_commits)}</h3>
+	  <h3>Total Issues Assigned: ${fn:escapeXml(total_issues)}</h3>
 	  <h3>Total Unit Tests: 0</h3>
 	  
 	  <br>
 	  
 	  <h2>Data</h2>
-	  <h3>add link to api and expain how it was scraped</h3>
+	  <p>Used https://www.balldontlie.io/#get-a-specific-team API to gather data about players, 
+	  teams, and games. Will be using more sources to include data about the WNBA, as well team and 
+	  player historical data in the future.</p>
 	  
 	  <br>
 	  
 	  <h2>Tools</h2>
-	  <h3>desribe tools and how they were used</h3>
+	  <p>Used BallDon'tLie API and github stats API to dynamically source content for our site. Added json-simple and apache-commons JAR files to facilitate our desired functionality</p>
 	  
 	  <br>
-      <a href="https://github.com/461L-morning-11/BasketballStats.git"> Link to Github repo</a>
+      
+      
+      <h3></h3>
 		
     </main><!-- /.container -->
 
