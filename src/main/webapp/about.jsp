@@ -68,11 +68,59 @@
       <h2>Meet the developers</h2>
       <br>
       <%!
-      public static int[] getStats(String res) throws Exception {
+      public static Long[] getCommits(String res) throws Exception{
+    	  Long[] CorBarColHarChl = new Long[5];
+          URL url = new URL(res);
+          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+          conn.setRequestMethod("GET");
+          conn.connect();
+          int responsecode = conn.getResponseCode();
+          String inline = "";
+          if (responsecode != 200)
+              throw new RuntimeException("HttpResponseCode: " + responsecode);
+          else {
+              Scanner sc = new Scanner(url.openStream());
+              while (sc.hasNext()) {
+                  inline += sc.nextLine();
+              }//System.out.println("\nJSON data in string format");//System.out.println(inline);
+              sc.close();
+          }
 
+          JSONParser parse = new JSONParser();
+
+          JSONArray jarr = (JSONArray) parse.parse(inline);
+              try {
+                  for (int j = 0; j < jarr.size(); j++) {
+                      JSONObject personObject = (JSONObject) jarr.get(j);
+                      System.out.println(personObject);
+                      Long totalCommits = (Long) personObject.get("total");
+                      JSONObject user = (JSONObject)  personObject.get("author");
+                      String curUser = (String) user.get("login");
+
+                      if (curUser.equals("coreykarnei")) {
+                          CorBarColHarChl[0] = totalCommits;
+                      } else if (curUser.equals("colbyjanecka")) {
+                          CorBarColHarChl[2] = totalCommits;
+                      } else if (curUser.equals("Barrett-S")) {
+                          CorBarColHarChl[1] = totalCommits;
+                      } else if (curUser.equals("mikoyanhsch")) {
+                          CorBarColHarChl[3] = totalCommits;
+                      } else if (curUser.equals("chloebryant")) {
+                          CorBarColHarChl[4] = totalCommits;
+                      }
+
+                  }
+
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+              return CorBarColHarChl;
+    	  
+      }
+      public static int[] getIssues(String res) throws Exception {
 
     	        int[] CorBarColHarChl = {0,0,0,0,0};
-    	        URL url = new URL("res");
+    	        URL url = new URL(res);
     	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     	        conn.setRequestMethod("GET");
     	        conn.connect();
@@ -121,20 +169,21 @@
       String commitsURL = "https://api.github.com/repos/461L-morning-11/BasketballStats/stats/contributors";
       String issuesURL = "https://api.github.com/repos/461L-morning-11/BasketballStats/issues";
       
-      int[] commits = {0,0,0,0,0};
+      Long[] commits = new Long[5];
 	  int[] issues = {0,0,0,0,0};
 	  
       try{
       //both arrays VV have the following indecies: corey-0 barrett-1 colby-2 harry-3 chloe-4
-     commits = getStats(commitsURL);
-     issues = getStats(issuesURL);
+     commits = getCommits(commitsURL);
+     issues = getIssues(issuesURL);
       }catch(Exception e){
+    	  e.printStackTrace();
     	  //if github returns a "forbidden" error on api call, default to saved values
-    	  commits[2] = 26; 
-    	  commits[0] = 14; 
-    	  commits[1] = 3; 
-    	  commits[4] = 2; 
-    	  commits[3] = 2;
+    	  commits[2] = new Long(26); 
+    	  commits[0] = new Long(17); 
+    	  commits[1] = new Long(3); 
+    	  commits[4] = new Long(2); 
+    	  commits[3] = new Long(2);
     	  issues[2] = 0; 
     	  issues[0] = 2; 
     	  issues[1] = 1; 
