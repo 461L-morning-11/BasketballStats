@@ -63,7 +63,7 @@
         <h1>About our Page</h1>
       </div>
       
-      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, coaches, and teams in the history of the NBA and WNBA. (ADD INTENDED USERS)  </h3>
+      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, coaches, and teams in the history of the NBA and WNBA. This information is intended for people of all ages with any level of interest in professional basketball. </h3>
       <br>
       <h2>Meet the developers</h2>
       <br>
@@ -225,7 +225,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Chloe Bryant</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues: ${fn:escapeXml(chloe_issues)}</p>
+    		<p class="card-text">A third year ECE major at UT from Houston, TX with a technical core in software engineering.<br> Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues: ${fn:escapeXml(chloe_issues)}</p>
       	</div>
       </div>
       
@@ -249,7 +249,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Corey Karnei</h4>
-    		<p class="card-text">Born and raised in Waco, TX. An electrical engineering major at UT with a minor in business<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
+    		<p class="card-text">Born and raised in Waco, TX. An electrical engineering major at UT with a minor in business.<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
       	</div>
       </div>
       
@@ -278,14 +278,14 @@
 	  <br>
 	  
 	  <h2>Data</h2>
-	  <p>Used https://www.balldontlie.io/#get-a-specific-team API to gather data about players, 
-	  teams, and games. Will be using more sources to include data about the WNBA, as well team and 
+	  <p><a href= "https://www.balldontlie.io/#get-a-specific-team"> Ball Don't Lie API</a>
+	  <br>We used the API linked above to gather data about players, teams, and games. A call to this API enabled us to extract and display specific information regarding each coach, player, and team in the NBA's past and present. We will be using more sources to include data about the WNBA, as well team and 
 	  player historical data in the future.</p>
 	  
 	  <br>
 	  
 	  <h2>Tools</h2>
-	  <p>Used BallDon'tLie API and github stats API to dynamically source content for our site. Added json-simple and apache-commons JAR files to facilitate our desired functionality</p>
+	  <p>We used the BallDon'tLie API and the Github statistics API to dynamically source content for our site. We also added json-simple and apache-commons JAR files to facilitate our desired functionality. As for the appearance, we used built in functions made available through Bootstrap to organize and display the acquired data throughout the site.</p>
 	  
 	  <br>
       
