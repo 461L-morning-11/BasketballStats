@@ -62,7 +62,11 @@
       </div>
       
      <%
-      URL url = new URL("https://www.balldontlie.io/api/v1/players");
+    String pageNumber = request.getParameter("page"); 
+    int pageInt = Integer.parseInt(pageNumber);
+	pageContext.setAttribute("page", pageInt);
+	
+    URL url = new URL("https://www.balldontlie.io/api/v1/players?per_page=100&page=" + pageNumber);
 	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 	conn.setRequestMethod("GET");
 	conn.connect();
@@ -157,16 +161,19 @@
 	
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
-			<li class="page-item disabled">
-				<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-			</li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-	 		<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item"><a class="page-link" href="#">4</a></li>
-	 		<li class="page-item"><a class="page-link" href="#">...</a></li>
 			<li class="page-item">
-				<a class="page-link" href="#">Next</a>
+				<a class="page-link" href="players.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+			</li>
+			<% if(!pageNumber.equals(1)){ %>
+			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-1}">${page-1}</a></li>
+			<% } %>
+	 		<li class="page-item"><a class="page-link" href="#">${page}</a></li>
+			</li>
+			<% if(!pageNumber.equals(1)){ %>
+			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+1}">${page+1}</a></li>
+			<% } %>
+			<li class="page-item">
+				<a class="page-link" href="players.jsp?page=${page+1}">Next</a>
 			</li>
 		</ul>
 	</nav>
