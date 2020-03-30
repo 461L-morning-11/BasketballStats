@@ -62,7 +62,11 @@
       </div>
       
      <%
-    String pageNumber = request.getParameter("page"); 
+
+    String pageNumber = request.getParameter("page");
+    if(pageNumber == null) {
+    	pageNumber = "1";
+    }
     int pageInt = Integer.parseInt(pageNumber);
 	pageContext.setAttribute("page", pageInt);
 	
@@ -164,13 +168,25 @@
 			<li class="page-item">
 				<a class="page-link" href="players.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
-			<% if(!pageNumber.equals(1)){ %>
+			<% if(pageInt > 3){ %>
+			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-3}">${page-3}</a></li>
+			<% } %>
+			<% if(pageInt > 2){ %>
+			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-2}">${page-2}</a></li>
+			<% } %>
+			<% if(pageInt > 1){ %>
 			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-1}">${page-1}</a></li>
 			<% } %>
-	 		<li class="page-item"><a class="page-link" href="#">${page}</a></li>
+	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
 			</li>
-			<% if(!pageNumber.equals(1)){ %>
+			<% if(pageInt < 33){ %>
 			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+1}">${page+1}</a></li>
+			<% } %>
+			<% if(pageInt < 32){ %>
+			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+2}">${page+2}</a></li>
+			<% } %>
+			<% if(pageInt < 31){ %>
+			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+3}">${page+3}</a></li>
 			<% } %>
 			<li class="page-item">
 				<a class="page-link" href="players.jsp?page=${page+1}">Next</a>
