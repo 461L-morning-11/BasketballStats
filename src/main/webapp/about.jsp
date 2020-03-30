@@ -249,7 +249,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Corey Karnei</h4>
-    		<p class="card-text">Born and raised in Waco, TX. Corey is an electrical engineering major at UT with a minor in business.<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
+    		<p class="card-text">Corey is an electrical engineering major at UT with a minor in business. Born and Raised in Waco, TX, he enjoys competition and the outdoors.<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
       	</div>
       </div>
       
@@ -273,7 +273,7 @@
  	  <h2>Team Stats</h2>
 	  <h3>Total Commits: ${fn:escapeXml(total_commits)}</h3>
 	  <h3>Total Issues Assigned: ${fn:escapeXml(total_issues)}</h3>
-	  <h3>Total Unit Tests: 0</h3>
+	  <h3>Total Unit Tests: 16</h3>
 	  
 	  <br>
 	  
@@ -285,7 +285,7 @@
 	  <br>
 	  
 	  <h2>Tools</h2>
-	  <p>We used the BallDon'tLie API and the Github statistics API to dynamically source content for our site. We also added json-simple and apache-commons JAR files to facilitate our desired functionality. As for the appearance, we used built in functions made available through Bootstrap to organize and display the acquired data throughout the site.</p>
+	  <p>We used the BallDon'tLie API and the Github statistics API to dynamically source content for our site. We also added json-simple and apache-commons JAR files to facilitate our desired functionality. We used the built-in google SQL service to store our data for this phase. In the future we intend to migrate to hosting the website ourselves, as well as using a more traditional database provider. As for the appearance, we used built in functions made available through Bootstrap to organize and display the acquired data throughout the site.</p>
 	  
 	  <br>
       
