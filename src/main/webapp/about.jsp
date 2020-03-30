@@ -63,7 +63,7 @@
         <h1>About our Page</h1>
       </div>
       
-      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, coaches, and teams in the history of the NBA and WNBA. This information is intended for people of all ages with any level of interest in professional basketball. </h3>
+      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, teams, and games in the history of the NBA and WNBA. This information is intended for people of all ages with any level of interest in professional basketball. </h3>
       <br>
       <h2>Meet the developers</h2>
       <br>
@@ -213,7 +213,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Barrett Stricklin</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(barrett_commits)} <br>Assigned Issues: ${fn:escapeXml(barrett_issues)}</p>
+    		<p class="card-text">Barrett is a junior studying Software Engineering at The University of Texas at Austin with experience in cybersecurity. He enjoys the outdoors and spending money on his home pc/audio setup. <br> Commits: ${fn:escapeXml(barrett_commits)} <br>Assigned Issues: ${fn:escapeXml(barrett_issues)}</p>
       	</div>
       </div>
       
@@ -225,7 +225,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Chloe Bryant</h4>
-    		<p class="card-text">A third year ECE major at UT from Houston, TX with a technical core in software engineering.<br> Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues: ${fn:escapeXml(chloe_issues)}</p>
+    		<p class="card-text">Chloe is a third year ECE major at UT from Houston, TX with a technical core in software engineering. In her free time, she enjoys playing guitar and being outdoors.<br> Commits: ${fn:escapeXml(chloe_commits)} <br>Assigned Issues: ${fn:escapeXml(chloe_issues)}</p>
       	</div>
       </div>
       
@@ -237,7 +237,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Colby Janecka</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(colby_commits)} <br>Assigned Issues: ${fn:escapeXml(colby_issues)}</p>
+    		<p class="card-text">Colby is an ECE major with a focus in Data Science, from Waco, TX, and enjoys making music. <br> Commits: ${fn:escapeXml(colby_commits)} <br>Assigned Issues: ${fn:escapeXml(colby_issues)}</p>
       	</div>
       </div>
       
@@ -249,7 +249,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Corey Karnei</h4>
-    		<p class="card-text">Born and raised in Waco, TX. An electrical engineering major at UT with a minor in business.<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
+    		<p class="card-text">Born and raised in Waco, TX. Corey is an electrical engineering major at UT with a minor in business.<br>Commits: ${fn:escapeXml(corey_commits)} <br>Assigned Issues: ${fn:escapeXml(corey_issues)}</p>
       	</div>
       </div>
       
@@ -261,7 +261,7 @@
       	</div>
       	<div class="card-body">
       		<h4 class="card-title">Harry Schneider</h4>
-    		<p class="card-text">Commits: ${fn:escapeXml(harry_commits)} <br>Assigned Issues: ${fn:escapeXml(harry_issues)}</p>
+    		<p class="card-text">Harry is a senior Computer Engineering major at UT with a specialty towards software and network security. He is currently employed at Cisco Systems and his hobbies include building ship models and guns. <br>Commits: ${fn:escapeXml(harry_commits)} <br>Assigned Issues: ${fn:escapeXml(harry_issues)}</p>
       	</div>
       </div>
       
@@ -279,7 +279,7 @@
 	  
 	  <h2>Data</h2>
 	  <p><a href= "https://www.balldontlie.io/#get-a-specific-team"> Ball Don't Lie API</a>
-	  <br>We used the API linked above to gather data about players, teams, and games. A call to this API enabled us to extract and display specific information regarding each coach, player, and team in the NBA's past and present. We will be using more sources to include data about the WNBA, as well team and 
+	  <br>We used the API linked above to gather data about players, teams, and games. A call to this API enabled us to extract and display specific information regarding each player, team, and game in the NBA's past and present. We will be using more sources to include data about the WNBA, as well team and 
 	  player historical data in the future.</p>
 	  
 	  <br>
