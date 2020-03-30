@@ -179,7 +179,6 @@
 			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-1}">${page-1}</a></li>
 			<% } %>
 	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
-			</li>
 			<% if(pageInt < 33){ %>
 			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+1}">${page+1}</a></li>
 			<% } %>
