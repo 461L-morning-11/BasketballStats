@@ -165,7 +165,8 @@
 	
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
-			<li class="page-item">
+			
+			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
 				<a class="page-link" href="players.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
 			<% if(pageInt > 3){ %>
