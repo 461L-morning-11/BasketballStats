@@ -104,7 +104,6 @@
 			<tr>
 				<th scope="col">First Name</th>
 				<th scope="col">Last Name</th>
-				<th scope="col">Position</th>
 				<th scope="col">Team</th>
 			</tr>
 		</thead>
@@ -154,7 +153,6 @@
 				
 				  	<td>${fn:escapeXml(player_first_name)}</td>
 				  	<td>${fn:escapeXml(player_last_name)}</td>
-				  	<td>${fn:escapeXml(player_position)}</td>
 				  	<td>${fn:escapeXml(player_team)}</td>
 					
 				  
@@ -188,7 +186,7 @@
 			<% if(pageInt < 31){ %>
 			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+3}">${page+3}</a></li>
 			<% } %>
-			<li class="page-item">
+			<li class="page-item <% if(pageInt == 33){ %> disabled <% } %>">
 				<a class="page-link" href="players.jsp?page=${page+1}">Next</a>
 			</li>
 		</ul>
