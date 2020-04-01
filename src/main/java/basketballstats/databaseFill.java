@@ -51,7 +51,6 @@ public class databaseFill extends HttpServlet {
 			String pass="Sr4*8DNgZbvHqnee";
 			String ip="104.154.138.136";
 			
-				fetchAPI();
 	   try {
 		   Class.forName("com.mysql.cj.jdbc.Driver");
 		   String host = "jdbc:mysql://" + ip + ":3306/" + db;
@@ -68,6 +67,10 @@ public class databaseFill extends HttpServlet {
 			  while (resultSet.next()) {
 			    System.out.println(resultSet.getString(1));
 			  }
+			  
+			  for(int i=1;i<489;i++) {
+					fetchAPI(i);
+				
 			  PreparedStatement ps=null;
 			  
 			  
@@ -76,21 +79,21 @@ public class databaseFill extends HttpServlet {
 			  
 			  
 			  ps=c.prepareStatement(ins);
-			  ps.setShort(6, id);
+			  ps.setShort(1, id);
 			  java.sql.Date sd=new java.sql.Date(date.getTime());
-			  ps.setDate(0, sd);
-			  ps.setShort(7,home_score);
+			  ps.setDate(2, sd);
+			  ps.setShort(3,home_score);
 			  ps.setShort(4, visitor_score);
-			  ps.setShort(3,season);
-			  ps.setShort(2, period);
-			  ps.setString(10, status);
+			  ps.setShort(5,season);
+			  ps.setShort(6, period);
+			  ps.setString(7, status);
 			  ps.setString(8, time);
-			  ps.setBoolean(1, postseason);
-			  ps.setShort(9, home_id);
-			  ps.setShort(5, visitor_id);
+			  ps.setBoolean(9, postseason);
+			  ps.setShort(10, home_id);
+			  ps.setShort(11, visitor_id);
 			  ps.executeUpdate();
 			  c.commit();
-
+			  }
 	   
 	   }catch(Exception e){
 			  e.printStackTrace();
@@ -103,11 +106,10 @@ public class databaseFill extends HttpServlet {
  	resp.sendRedirect("/teams.jsp");
 
 }
-	 public void fetchAPI() {
-			int page=1;
+	 public void fetchAPI(int pageNum) {
 			JSONParser parse = new JSONParser();
 			try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/games");
+			URL url = new URL("https://www.balldontlie.io/api/v1/games?per_page=100&page="+pageNum);
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.connect();
@@ -128,6 +130,7 @@ public class databaseFill extends HttpServlet {
 				   		JSONObject js=(JSONObject) o;
 				   		Long longtemp=(long)js.get("id");
 				   		id=longtemp.shortValue();
+				   		System.out.println(id);
 				   		String dateTemp=js.get("date")+"";
 				   		dateTemp=dateTemp.substring(0,10);
 				   		date=new SimpleDateFormat("dd-MM-yyyy").parse(dateTemp);
