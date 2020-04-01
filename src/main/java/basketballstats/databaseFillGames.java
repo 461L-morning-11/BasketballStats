@@ -77,7 +77,7 @@ public class databaseFillGames extends HttpServlet {
 					PreparedStatement ps=null;
 			  
 			  
-					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
+					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id,home_name,vistor_name) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					c.setAutoCommit(false);
 			  
 			  
@@ -94,6 +94,8 @@ public class databaseFillGames extends HttpServlet {
 				  ps.setBoolean(9, postseason);
 				  ps.setShort(10, home_id);
 				  ps.setShort(11, visitor_id);
+				  ps.setString(12,home_name);
+				  ps.setString(13,visitor_name);
 				  try {
 		            Thread.sleep(50);
 				  }
