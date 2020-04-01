@@ -23,9 +23,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.google.cloud.sql.jdbc.*;
-import com.google.cloud.sql.jdbc.Driver;
-
 
 
 public class databaseFill extends HttpServlet {
