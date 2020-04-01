@@ -15,10 +15,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
 public class playerFill extends HttpServlet {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
     private Players[] players;
