@@ -10,8 +10,11 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.sql.Connection" %>
 <%@ page import="java.util.*" %>
+<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
+<%@ page import="java.sql.*" %>
+
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -70,12 +73,20 @@
         
 		        
 		<% 
+		
+		// pagination ------------------------
 		String pageNumber = request.getParameter("page");
 	    if(pageNumber == null) {
 	    	pageNumber = "1";
 	    }
 	    int pageInt = Integer.parseInt(pageNumber);
 		pageContext.setAttribute("page", pageInt);
+		
+		
+	
+		
+   		
+   		// API pull ----------------------------
 		URL url = new URL("https://www.balldontlie.io/api/v1/games?per_page=100&page=" + pageNumber);
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.setRequestMethod("GET");
@@ -120,29 +131,76 @@
 			<tbody>
 				
 			<%
-			for(int i=0;i<jsonarr_1.size();i++)
-			{
-				JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+			
+			String db="basketball_web";
+			String user = "root";
+			String pass="Sr4*8DNgZbvHqnee";
+			String ip="104.154.138.136";
+			
+	   		try {
+	   			
+	   			System.out.println("trying to query from sql database;");
+			   	Class.forName("com.mysql.cj.jdbc.Driver");
+			   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+			   	Connection c = DriverManager.getConnection(
+		        	host,
+		        	user,
+		        	pass
+		        );
+			   	
+		
+		   		Statement statement = c.createStatement();
+		   		
+		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT 0, 100");
+		   		
+			
+				for(int i=0;i<100;i++)
+				{
 				
 				
-			    //System.out.println("Elements under data array");
-			    
-			    JSONObject homeObj = (JSONObject)jsonobj_1.get("home_team");
-			    JSONObject visitorObj = (JSONObject)jsonobj_1.get("visitor_team");
+				
+					JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+					
+					
+				    //System.out.println("Elements under data array");
+				    
+				    JSONObject homeObj = (JSONObject)jsonobj_1.get("home_team");
+				    JSONObject visitorObj = (JSONObject)jsonobj_1.get("visitor_team");
+	
+				    /*
+			        String shortDate = (String) jsonobj_1.get("date");
+				    
+				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+	
+					pageContext.setAttribute("game_home_team", homeObj.get("name"));
+	
+					pageContext.setAttribute("game_home_score", jsonobj_1.get("home_team_score"));
+					
+					pageContext.setAttribute("game_visitor_score", jsonobj_1.get("visitor_team_score"));
+					pageContext.setAttribute("game_ID", jsonobj_1.get("id"));
+					*/
 
-		        String shortDate = (String) jsonobj_1.get("date");
-			    
-			    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+					pageContext.setAttribute("game_home_team", homeObj.get("name"));
+					pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
+					
+					
+					
+		   			rs.next();
+			   		System.out.println("getting data for game " + rs.getString("id"));
+			   		
+			        String shortDate = (String) rs.getString("date");
+				    
+				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
 
-				pageContext.setAttribute("game_home_team", homeObj.get("name"));
 
-				pageContext.setAttribute("game_home_score", jsonobj_1.get("home_team_score"));
-				
-				pageContext.setAttribute("game_visitor_score", jsonobj_1.get("visitor_team_score"));
-				
-				pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
-				
-				pageContext.setAttribute("game_ID", jsonobj_1.get("id"));
+					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
+					
+					pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
+					
+					
+					pageContext.setAttribute("game_ID", rs.getString("id"));
+			   		
+		   		
 				
 			%>
 				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
@@ -155,7 +213,14 @@
 					
 				  
 				</tr>
-				<% } %>
+				<% 
+				}
+				
+			   	
+	   		}
+	   		catch(Exception e) {
+	   			e.printStackTrace();
+	   		}%>
 			</tbody>
 		</table>
 		

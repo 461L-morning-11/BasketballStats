@@ -101,12 +101,12 @@ public class databaseFillGames extends HttpServlet {
 				  }
 				  ps.executeUpdate();
 				  c.commit();
-			  
-			  	  }
+			  }
 	   
-	   }catch(Exception e){
-			  e.printStackTrace();
-			}
+	   }
+	   catch(Exception e){
+		   e.printStackTrace();
+	   }
 	   
 			
 

@@ -96,27 +96,90 @@
 		JSONObject jobj = (JSONObject)parse.parse(inline);
 	    JSONObject homeObj = (JSONObject) jobj.get("home_team");
 	    JSONObject visitorObj = (JSONObject) jobj.get("visitor_team");
-
-        String shortDate = (String) jobj.get("date");
-	    
-	    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
 	    
 		pageContext.setAttribute("game_home_team", homeObj.get("name"));
 		pageContext.setAttribute("game_home_abbreviation", homeObj.get("abbreviation"));
-
-		pageContext.setAttribute("game_home_score", jobj.get("home_team_score"));
-		
-		pageContext.setAttribute("game_visitor_score", jobj.get("visitor_team_score"));
-		
 		pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
 		pageContext.setAttribute("game_visitor_abbreviation", visitorObj.get("abbreviation"));
 		
-		pageContext.setAttribute("game_ID", jobj.get("id"));
 		
 	%>
+				
+			<%
+			
+			String db="basketball_web";
+			String user = "root";
+			String pass="Sr4*8DNgZbvHqnee";
+			String ip="104.154.138.136";
+			
+	   		try {
+	   			
+	   			System.out.println("trying to query from sql database;");
+			   	Class.forName("com.mysql.cj.jdbc.Driver");
+			   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+			   	Connection c = DriverManager.getConnection(
+		        	host,
+		        	user,
+		        	pass
+		        );
+			   	
+		
+		   		Statement statement = c.createStatement();
+		   		
+		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT 0, 100");
+		   		
+			
+				for(int i=0;i<100;i++)
+				{
+				
+				
+				
+					JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+					
+					
+				    //System.out.println("Elements under data array");
+				    
+				    JSONObject homeObj = (JSONObject)jsonobj_1.get("home_team");
+				    JSONObject visitorObj = (JSONObject)jsonobj_1.get("visitor_team");
+	
+				    /*
+			        String shortDate = (String) jsonobj_1.get("date");
+				    
+				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+	
+					pageContext.setAttribute("game_home_team", homeObj.get("name"));
+	
+					pageContext.setAttribute("game_home_score", jsonobj_1.get("home_team_score"));
+					
+					pageContext.setAttribute("game_visitor_score", jsonobj_1.get("visitor_team_score"));
+					pageContext.setAttribute("game_ID", jsonobj_1.get("id"));
+					*/
 
-        <h1>${fn:escapeXml(game_home_abbreviation)} vs ${fn:escapeXml(game_visitor_abbreviation)}</h1>
-        <br><hr><br>
+					pageContext.setAttribute("game_home_team", homeObj.get("name"));
+					pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
+					
+					
+					
+		   			rs.next();
+			   		System.out.println("getting data for game " + rs.getString("id"));
+			   		
+			        String shortDate = (String) rs.getString("date");
+				    
+				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+
+
+					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
+					
+					pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
+					
+					
+					pageContext.setAttribute("game_ID", rs.getString("id"));
+			   		
+		   		
+				
+			%>
+			<h1>${fn:escapeXml(game_home_abbreviation)} vs ${fn:escapeXml(game_visitor_abbreviation)}</h1>
+       	 	<br><hr><br>
         
 	
 		<table class="table">
@@ -130,7 +193,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			
+        
 				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
 				
 				  	<td>${fn:escapeXml(game_date)}</td>
@@ -141,6 +204,14 @@
 					
 				  
 				</tr>
+				<% 
+				}
+				
+			   	
+	   		}
+	   		catch(Exception e) {
+	   			e.printStackTrace();
+	   		}%>
 			</tbody>
 		</table>
         
