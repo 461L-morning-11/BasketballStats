@@ -28,7 +28,8 @@ import com.google.cloud.sql.jdbc.Driver;
 
 
 
-public class databaseFill extends HttpServlet {
+@SuppressWarnings("serial")
+public class databaseFillGames extends HttpServlet {
 	  int id;
 	  java.util.Date date;
 	  int home_score;
@@ -71,38 +72,37 @@ public class databaseFill extends HttpServlet {
 			  for(int i=1;i<489;i++) {
 					fetchAPI(i);
 				
-			  PreparedStatement ps=null;
+					PreparedStatement ps=null;
 			  
 			  
-			  String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
-			  c.setAutoCommit(false);
+					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
+					c.setAutoCommit(false);
 			  
 			  
-			  ps=c.prepareStatement(ins);
-			  ps.setInt(1, id);
-			  java.sql.Date sd=new java.sql.Date(date.getTime());
-			  ps.setDate(2, sd);
-			  ps.setInt(3,home_score);
-			  ps.setInt(4, visitor_score);
-			  ps.setInt(5,season);
-			  ps.setShort(6, period);
-			  ps.setString(7, status);
-			  ps.setString(8, time);
-			  ps.setBoolean(9, postseason);
-			  ps.setShort(10, home_id);
-			  ps.setShort(11, visitor_id);
-			  try
-		        {
+				  ps=c.prepareStatement(ins);
+				  ps.setInt(1, id);
+				  java.sql.Date sd=new java.sql.Date(date.getTime());
+				  ps.setDate(2, sd);
+				  ps.setInt(3,home_score);
+				  ps.setInt(4, visitor_score);
+				  ps.setInt(5,season);
+				  ps.setShort(6, period);
+				  ps.setString(7, status);
+				  ps.setString(8, time);
+				  ps.setBoolean(9, postseason);
+				  ps.setShort(10, home_id);
+				  ps.setShort(11, visitor_id);
+				  try {
 		            Thread.sleep(50);
-		        }
-		        catch (InterruptedException e)
-		        {
+				  }
+				  catch (InterruptedException e)
+				  {
 		            e.printStackTrace();
-		        }
-			  ps.executeUpdate();
-			  c.commit();
+				  }
+				  ps.executeUpdate();
+				  c.commit();
 			  
-			  }
+			  	  }
 	   
 	   }catch(Exception e){
 			  e.printStackTrace();

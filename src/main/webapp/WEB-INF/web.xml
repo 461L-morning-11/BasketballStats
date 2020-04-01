@@ -40,13 +40,14 @@
 		<servlet-name>about</servlet-name>
 		<url-pattern>/about</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
-		<servlet-name>databaseFill</servlet-name>
-		<servlet-class>basketballstats.databaseFill</servlet-class>
+		<servlet-name>databaseFillGames</servlet-name>
+		<servlet-class>basketballstats.databaseFillGames</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>databaseFill</servlet-name>
-		<url-pattern>/daily/db</url-pattern>
+		<servlet-name>databaseFillGames</servlet-name>
+		<url-pattern>/daily/dbgames</url-pattern>
 	</servlet-mapping>
          
   <welcome-file-list>
