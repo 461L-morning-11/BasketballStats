@@ -41,6 +41,8 @@ public class databaseFillGames extends HttpServlet {
 	  boolean postseason;
 	  short home_id;
 	  short visitor_id;
+	  String home_name;
+	  String visitor_name;
 	
 		
 	 public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -138,7 +140,7 @@ public class databaseFillGames extends HttpServlet {
 				   	for(Object o:jsonarr) {
 				   		JSONObject js=(JSONObject) o;
 				   		Long longtemp;
-				   		id=Integer.valueOf((js.get("id")+""));
+				   		id=(int) ((js.get("id")));
 				   		System.out.println(id);
 				   		String dateTemp=js.get("date")+"";
 				   		dateTemp=dateTemp.substring(0,10);
@@ -155,9 +157,11 @@ public class databaseFillGames extends HttpServlet {
 				   		postseason=(boolean)js.get("postseason");
 				   		JSONObject g=(JSONObject)js.get("home_team");
 				   		longtemp=(long)g.get("id");
+				   		home_name = (String) g.get("name");
 						home_id=longtemp.shortValue();
 						JSONObject gg=(JSONObject)js.get("visitor_team");
 				   		longtemp=(long)gg.get("id");
+				   		visitor_name = (String) gg.get("name");
 						visitor_id=longtemp.shortValue();
 				   	}
 				   		
