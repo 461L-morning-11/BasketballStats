@@ -41,6 +41,8 @@ public class databaseFillGames extends HttpServlet {
 	  boolean postseason;
 	  short home_id;
 	  short visitor_id;
+	  String home_name;
+	  String visitor_name;
 	
 		
 	 public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -75,7 +77,7 @@ public class databaseFillGames extends HttpServlet {
 					PreparedStatement ps=null;
 			  
 			  
-					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
+					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id,home_name,vistor_name) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					c.setAutoCommit(false);
 			  
 			  
@@ -92,6 +94,8 @@ public class databaseFillGames extends HttpServlet {
 				  ps.setBoolean(9, postseason);
 				  ps.setShort(10, home_id);
 				  ps.setShort(11, visitor_id);
+				  ps.setString(12,home_name);
+				  ps.setString(13,visitor_name);
 				  try {
 		            Thread.sleep(50);
 				  }
@@ -138,7 +142,7 @@ public class databaseFillGames extends HttpServlet {
 				   	for(Object o:jsonarr) {
 				   		JSONObject js=(JSONObject) o;
 				   		Long longtemp;
-				   		id=Integer.valueOf((js.get("id")+""));
+				   		id=(int) ((js.get("id")));
 				   		System.out.println(id);
 				   		String dateTemp=js.get("date")+"";
 				   		dateTemp=dateTemp.substring(0,10);
@@ -155,9 +159,11 @@ public class databaseFillGames extends HttpServlet {
 				   		postseason=(boolean)js.get("postseason");
 				   		JSONObject g=(JSONObject)js.get("home_team");
 				   		longtemp=(long)g.get("id");
+				   		home_name = (String) g.get("name");
 						home_id=longtemp.shortValue();
 						JSONObject gg=(JSONObject)js.get("visitor_team");
 				   		longtemp=(long)gg.get("id");
+				   		visitor_name = (String) gg.get("name");
 						visitor_id=longtemp.shortValue();
 				   	}
 				   		
