@@ -76,18 +76,18 @@ public class databaseFill extends HttpServlet {
 			  
 			  
 			  ps=c.prepareStatement(ins);
-			  ps.setShort(1, id);
+			  ps.setShort(6, id);
 			  java.sql.Date sd=new java.sql.Date(date.getTime());
-			  ps.setDate(2, sd);
-			  ps.setShort(3,home_score);
+			  ps.setDate(0, sd);
+			  ps.setShort(7,home_score);
 			  ps.setShort(4, visitor_score);
-			  ps.setShort(5,season);
-			  ps.setShort(6, period);
-			  ps.setString(7, status);
+			  ps.setShort(3,season);
+			  ps.setShort(2, period);
+			  ps.setString(10, status);
 			  ps.setString(8, time);
-			  ps.setBoolean(9, postseason);
-			  ps.setShort(10, home_id);
-			  ps.setShort(11, visitor_id);
+			  ps.setBoolean(1, postseason);
+			  ps.setShort(9, home_id);
+			  ps.setShort(5, visitor_id);
 			  ps.executeUpdate();
 			  c.commit();
 
@@ -142,8 +142,13 @@ public class databaseFill extends HttpServlet {
 				   		status=js.get("status")+"";
 				   		time=js.get("time")+"";
 				   		postseason=(boolean)js.get("postseason");
-				   		home_id=(short)js.get("home_team");
-				   		visitor_id=(short)js.get("visitor_team");
+				   		JSONObject g=(JSONObject)js.get("home_team");
+				   		longtemp=(long)g.get("id");
+						home_id=longtemp.shortValue();
+						JSONObject gg=(JSONObject)js.get("visitor_team");
+				   		longtemp=(long)gg.get("id");
+						visitor_id=longtemp.shortValue();
+				   		
 				   		
 				   	}
 			   }
