@@ -76,7 +76,6 @@
 	    }
 	    int pageInt = Integer.parseInt(pageNumber);
 		pageContext.setAttribute("page", pageInt);
-		
 		URL url = new URL("https://www.balldontlie.io/api/v1/games?per_page=100&page=" + pageNumber);
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.setRequestMethod("GET");
