@@ -29,11 +29,11 @@ import com.google.cloud.sql.jdbc.Driver;
 
 
 public class databaseFill extends HttpServlet {
-	  short id;
+	  int id;
 	  java.util.Date date;
-	  short home_score;
-	  short visitor_score;
-	  short season;
+	  int home_score;
+	  int visitor_score;
+	  int season;
 	  short period;
 	  String status;
 	  String time;
@@ -79,20 +79,29 @@ public class databaseFill extends HttpServlet {
 			  
 			  
 			  ps=c.prepareStatement(ins);
-			  ps.setShort(1, id);
+			  ps.setInt(1, id);
 			  java.sql.Date sd=new java.sql.Date(date.getTime());
 			  ps.setDate(2, sd);
-			  ps.setShort(3,home_score);
-			  ps.setShort(4, visitor_score);
-			  ps.setShort(5,season);
+			  ps.setInt(3,home_score);
+			  ps.setInt(4, visitor_score);
+			  ps.setInt(5,season);
 			  ps.setShort(6, period);
 			  ps.setString(7, status);
 			  ps.setString(8, time);
 			  ps.setBoolean(9, postseason);
 			  ps.setShort(10, home_id);
 			  ps.setShort(11, visitor_id);
+			  try
+		        {
+		            Thread.sleep(50);
+		        }
+		        catch (InterruptedException e)
+		        {
+		            e.printStackTrace();
+		        }
 			  ps.executeUpdate();
 			  c.commit();
+			  
 			  }
 	   
 	   }catch(Exception e){
@@ -128,18 +137,17 @@ public class databaseFill extends HttpServlet {
 				   
 				   	for(Object o:jsonarr) {
 				   		JSONObject js=(JSONObject) o;
-				   		Long longtemp=(long)js.get("id");
-				   		id=longtemp.shortValue();
+				   		Long longtemp;
+				   		id=Integer.valueOf((js.get("id")+""));
 				   		System.out.println(id);
 				   		String dateTemp=js.get("date")+"";
 				   		dateTemp=dateTemp.substring(0,10);
 				   		date=new SimpleDateFormat("dd-MM-yyyy").parse(dateTemp);
-				   		longtemp=(long)js.get("home_team_score");
-				   		home_score=longtemp.shortValue();
-				   		longtemp=(long)js.get("visitor_team_score");
-				   		visitor_score=longtemp.shortValue();
-				   		longtemp=(long)js.get("season");
-						season=longtemp.shortValue();
+				   		home_score=Integer.valueOf((js.get("home_team_score")+""));
+				   		
+				   		visitor_score=Integer.valueOf((js.get("visitor_team_score")+""));
+
+				   		season=Integer.valueOf((js.get("season")+""));
 						longtemp=(long)js.get("period");
 						period=longtemp.shortValue();
 				   		status=js.get("status")+"";
@@ -151,23 +159,22 @@ public class databaseFill extends HttpServlet {
 						JSONObject gg=(JSONObject)js.get("visitor_team");
 				   		longtemp=(long)gg.get("id");
 						visitor_id=longtemp.shortValue();
-				   		
-				   		
 				   	}
-			   }
-			   in.close();
+				   		
+				   	}}
+			conn.disconnect();
+			   
+			}catch(Exception e) {
+			   		e.printStackTrace();
+			   	}
+			   
 			}
 			
-				
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
+		
 			
 			
 		 }
-	 }
+	 
 		
     
 
