@@ -30,7 +30,7 @@ import com.google.cloud.sql.jdbc.Driver;
 
 @SuppressWarnings("serial")
 public class databaseFillGames extends HttpServlet {
-	  int id;
+	  Long id;
 	  java.util.Date date;
 	  int home_score;
 	  int visitor_score;
@@ -82,7 +82,7 @@ public class databaseFillGames extends HttpServlet {
 			  
 			  
 				  ps=c.prepareStatement(ins);
-				  ps.setInt(1, id);
+				  ps.setLong(1, id);
 				  java.sql.Date sd=new java.sql.Date(date.getTime());
 				  ps.setDate(2, sd);
 				  ps.setInt(3,home_score);
@@ -142,7 +142,7 @@ public class databaseFillGames extends HttpServlet {
 				   	for(Object o:jsonarr) {
 				   		JSONObject js=(JSONObject) o;
 				   		Long longtemp;
-				   		id=(int) ((js.get("id")));
+				   		id= (Long) js.get("id");
 				   		System.out.println(id);
 				   		String dateTemp=js.get("date")+"";
 				   		dateTemp=dateTemp.substring(0,10);
