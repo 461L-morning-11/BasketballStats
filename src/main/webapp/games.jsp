@@ -156,36 +156,14 @@
 			
 				for(int i=0;i<100;i++)
 				{
-				
-				
-				
-					JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
-					
-					
-				    //System.out.println("Elements under data array");
-				    
-				    JSONObject homeObj = (JSONObject)jsonobj_1.get("home_team");
-				    JSONObject visitorObj = (JSONObject)jsonobj_1.get("visitor_team");
-	
-				    /*
-			        String shortDate = (String) jsonobj_1.get("date");
-				    
-				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
-	
-					pageContext.setAttribute("game_home_team", homeObj.get("name"));
-	
-					pageContext.setAttribute("game_home_score", jsonobj_1.get("home_team_score"));
-					
-					pageContext.setAttribute("game_visitor_score", jsonobj_1.get("visitor_team_score"));
-					pageContext.setAttribute("game_ID", jsonobj_1.get("id"));
-					*/
-
-					pageContext.setAttribute("game_home_team", homeObj.get("name"));
-					pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
-					
-					
-					
 		   			rs.next();
+		
+
+					pageContext.setAttribute("game_home_team", rs.getString("home_name"));
+					pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
+					
+					
+					
 			   		System.out.println("getting data for game " + rs.getString("id"));
 			   		
 			        String shortDate = (String) rs.getString("date");

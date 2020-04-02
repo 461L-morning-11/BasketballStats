@@ -13,6 +13,11 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
+<%@ page import="java.sql.*" %>
+
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
@@ -129,31 +134,7 @@
 		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT 0, 100");
 		   		
 			
-				for(int i=0;i<100;i++)
-				{
-				
-				
-				
-					JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
-					
-					
-				    //System.out.println("Elements under data array");
-				    
-				    JSONObject homeObj = (JSONObject)jsonobj_1.get("home_team");
-				    JSONObject visitorObj = (JSONObject)jsonobj_1.get("visitor_team");
-	
-				    /*
-			        String shortDate = (String) jsonobj_1.get("date");
-				    
-				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
-	
-					pageContext.setAttribute("game_home_team", homeObj.get("name"));
-	
-					pageContext.setAttribute("game_home_score", jsonobj_1.get("home_team_score"));
-					
-					pageContext.setAttribute("game_visitor_score", jsonobj_1.get("visitor_team_score"));
-					pageContext.setAttribute("game_ID", jsonobj_1.get("id"));
-					*/
+
 
 					pageContext.setAttribute("game_home_team", homeObj.get("name"));
 					pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
@@ -204,10 +185,8 @@
 					
 				  
 				</tr>
-				<% 
-				}
 				
-			   	
+			<%   	
 	   		}
 	   		catch(Exception e) {
 	   			e.printStackTrace();

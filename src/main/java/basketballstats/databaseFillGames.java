@@ -30,6 +30,7 @@ import com.google.cloud.sql.jdbc.Driver;
 
 @SuppressWarnings("serial")
 public class databaseFillGames extends HttpServlet {
+	  boolean fill;
 	  Long id;
 	  java.util.Date date;
 	  int home_score;
@@ -48,6 +49,7 @@ public class databaseFillGames extends HttpServlet {
 	 public void doGet(HttpServletRequest req, HttpServletResponse resp)
          throws IOException {
 		 
+		 	fill = false;
 		 	String instance = "basketball-db";
 		 	String db="basketball_web";
 			String user = "root";
@@ -73,11 +75,13 @@ public class databaseFillGames extends HttpServlet {
 			  
 			  for(int i=1;i<489;i++) {
 					fetchAPI(i);
+					
+					if(fill) {
 				
 					PreparedStatement ps=null;
 			  
 			  
-					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id,home_name,vistor_name) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String ins="INSERT INTO games (id,date,home_team_score,visitor_team_score,season, period, status, time, postseason, home_team_id,visitor_team_id,home_name,visitor_name) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					c.setAutoCommit(false);
 			  
 			  
@@ -105,6 +109,7 @@ public class databaseFillGames extends HttpServlet {
 				  }
 				  ps.executeUpdate();
 				  c.commit();
+					}
 			  }
 	   
 	   }
@@ -119,7 +124,7 @@ public class databaseFillGames extends HttpServlet {
  	resp.sendRedirect("/teams.jsp");
 
 }
-	 public void fetchAPI(int pageNum) {
+	 public void fetchAPI(int pageNum){
 			JSONParser parse = new JSONParser();
 			try {
 			URL url = new URL("https://www.balldontlie.io/api/v1/games?per_page=100&page="+pageNum);
@@ -128,11 +133,13 @@ public class databaseFillGames extends HttpServlet {
 			conn.connect();
 			int responsecode = conn.getResponseCode();
 			String inline = "";
-			if(responsecode != 200)
+			if(responsecode != 200) {
+				fill = false;
 			    throw new RuntimeException("HttpResponseCode: " +responsecode);
+			}
 			else
 			{
-			
+				fill = true;
 			    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
 			   while((inline=in.readLine())!=null) {
