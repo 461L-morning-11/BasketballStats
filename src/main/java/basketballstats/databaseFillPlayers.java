@@ -31,13 +31,17 @@ import com.google.cloud.sql.jdbc.Driver;
 import java.util.Map;
 
 @SuppressWarnings("serial")
-public class databaseFillTeams extends HttpServlet {
+public class databaseFillPlayers extends HttpServlet {
 		  Long id;
-		  String division;
-		  String abbreviation;
-		  String city;
-		  String short_name;
-		  String long_name;
+		  String first_name;
+		  String last_name;
+		  String position;
+		  int height_feet;
+		  int height_inches;
+		  int weight_pounds;
+		  Long team_id;
+		  String team_name;
+		  String team_conference;
 		
 		
 			
@@ -67,26 +71,29 @@ public class databaseFillTeams extends HttpServlet {
 				    System.out.println(resultSet.getString(1));
 				  }
 				  
-				  for(int i=1;i<30;i++) {
+				  for(int i=1;i<2000;i++) {	//only getting 2000 for now. There are more
 						fetchAPI(i);
 					
 						PreparedStatement ps=null;
 				  
 				  
-						String ins="INSERT INTO teams (id,division,abbreviation,city,full_name,short_name) VALUE (?,?,?,?,?,?)";
+						String ins="INSERT INTO players (id,first_name, last_name, position, height_feet, height_inches, weight_pounds, team_id, team_name, team_conference;) VALUE (?,?,?,?,?,?,?,?,?,?)";
 						c.setAutoCommit(false);
 				  
 				  
 					  ps=c.prepareStatement(ins);
 					  ps.setLong(1, id);
-					  ps.setString(2, division);
-					  ps.setString(3,abbreviation);
-					  ps.setString(4, city);
-					  ps.setString(5,long_name);
-					  ps.setString(6,short_name);
-					
+					  ps.setString(2, first_name);
+					  ps.setString(3, last_name);
+					  ps.setString(4, position);
+					  ps.setInt(5, height_feet);
+					  ps.setInt(6, height_inches);
+					  ps.setInt(7, weight_pounds);
+					  ps.setLong(8, team_id);
+					  ps.setString(9,team_name);
+					  ps.setString(10,team_conference);
 					  try {
-			            Thread.sleep(50);
+			            Thread.sleep(10);
 					  }
 					  catch (InterruptedException e)
 					  {
@@ -111,7 +118,7 @@ public class databaseFillTeams extends HttpServlet {
 		 public void fetchAPI(int pageNum) {
 				JSONParser parse = new JSONParser();
 				try {
-				URL url = new URL("https://www.balldontlie.io/api/v1/teams/" + pageNum);
+				URL url = new URL("https://www.balldontlie.io/api/v1/players/" + pageNum);
 				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 				conn.setRequestMethod("GET");
 				conn.connect();
@@ -125,20 +132,21 @@ public class databaseFillTeams extends HttpServlet {
 				    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 				
 				   while((inline=in.readLine())!=null) {
-					   JSONObject jobj = (JSONObject)parse.parse(inline);
-					   JSONArray jsonarr = (JSONArray) jobj.get("data");
-					   
-					   	for(Object o:jsonarr) {
-					   		JSONObject js=(JSONObject) o;
+					   JSONObject js = (JSONObject)parse.parse(inline);
+					 
 					   		
 					   		id= (Long) js.get("id");
 					   		System.out.println(id);
-					   		division = (String) js.get("division");
-					   		abbreviation = (String) js.get("abbreviation");
-					   		city = (String) js.get("city");
-					   		long_name = (String) js.get("full_name");
-					   		short_name = (String) js.get("name");
-					   	}
+					   		first_name = (String) js.get("first_name");
+					   		last_name = (String) js.get("last_name");
+					   		height_feet = (int) js.get("height_feet");
+					   		weight_pounds = (int) js.get("weight_pounds");
+					   		height_inches = (int) js.get("height_inches");
+					   		position = (String) js.get("position");
+					   		JSONObject t =(JSONObject)js.get("team");
+					   		team_id = (Long) t.get("id");
+					   		team_name = (String) t.get("full_name");
+					   		team_conference = (String) t.get("conference");
 					   		
 					   	}}
 				conn.disconnect();
