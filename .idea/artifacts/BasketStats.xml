@@ -1,12 +1,14 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="my-app">
-    <output-path>$PROJECT_DIR$/out/artifacts/my_app</output-path>
+  <artifact type="exploded-war" build-on-make="true" name="BasketStats">
+    <output-path>$PROJECT_DIR$/out/artifacts/BasketStats</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="my-app" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="my-app/web/Web" />
+      <element id="module-source" name="my-app" />
     </root>
   </artifact>
 </component>
