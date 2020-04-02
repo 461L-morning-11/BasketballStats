@@ -6,6 +6,10 @@
 <%@ page import="org.json.simple.JSONArray" %>
 <%@ page import="java.util.Scanner" %>
 <%@ page import="java.net.URI"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
+<%@ page import="java.sql.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
@@ -63,53 +67,56 @@
 
 	
 	
-	<% //pageContext.setAttribute("team_ID", request.getParameter("teamId"));
-	URL url = new URL("https://www.balldontlie.io/api/v1/teams/" + request.getParameter("teamId") );
-	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-	conn.setRequestMethod("GET");
-	conn.connect();
-	int responsecode = conn.getResponseCode();
-	String inline = "";
-	if(responsecode != 200)
-	    throw new RuntimeException("HttpResponseCode: " +responsecode);
-	else
-	{
+	<%
+	pageContext.setAttribute("team_ID", request.getParameter("teamId"));
+	String team_ID = request.getParameter("teamId");
+	
+	String db="basketball_web";
+	String user = "root";
+	String pass="Sr4*8DNgZbvHqnee";
+	String ip="104.154.138.136";
 
-	    Scanner sc = new Scanner(url.openStream());
+		try {
+			
+			System.out.println("trying to query from sql database;");
+		   	Class.forName("com.mysql.cj.jdbc.Driver");
+		   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+		   	Connection c = DriverManager.getConnection(
+		    	host,
+		    	user,
+		    	pass
+		    );
+	   	
 
-	    while(sc.hasNext())
-	    {
-	        inline+=sc.nextLine();
-	    }
-	    System.out.println("\nJSON data in string format");
-	    System.out.println(inline);
-	    sc.close();
-	}
+			Statement statement = c.createStatement();
+			
+			ResultSet rs = statement.executeQuery("SELECT * FROM teams WHERE id = " + team_ID);
 
-	JSONParser parse = new JSONParser();
-
-	JSONObject jobj = (JSONObject)parse.parse(inline);
-	
-	
-	
-	
-    //System.out.println("Elements under data array");
-    
-    pageContext.setAttribute("team_name_long", jobj.get("full_name"));
-    
-    pageContext.setAttribute("team_name_short", jobj.get("name"));
-
-	pageContext.setAttribute("team_city", jobj.get("city"));
-
-	pageContext.setAttribute("team_abbreviation", jobj.get("abbreviation"));
-	
-	pageContext.setAttribute("team_division", jobj.get("division"));
-	
-	pageContext.setAttribute("team_conference", jobj.get("conference"));
-	
-	pageContext.setAttribute("team_ID", jobj.get("id"));
-	
-	pageContext.setAttribute("team_logo", "../img/logos/" + jobj.get("name") + ".png");
+			rs.next();
+					
+		
+		    pageContext.setAttribute("team_name_long", rs.getString("full_name"));
+		
+		    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
+		
+			pageContext.setAttribute("team_city", rs.getString("city"));
+		
+			pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
+			
+			pageContext.setAttribute("team_division", rs.getString("division"));
+			
+			pageContext.setAttribute("team_conference", rs.getString("conference"));
+		
+			pageContext.setAttribute("team_ID", rs.getString("id"));
+		
+			pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
+		
+				
+	   	
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	%>
     
     <hr>

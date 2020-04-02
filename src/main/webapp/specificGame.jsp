@@ -73,44 +73,8 @@
 		        
 		<% 
 		
+			String game_ID = request.getParameter("gameId");
 		
-		URL url = new URL("https://www.balldontlie.io/api/v1/games/" + request.getParameter("gameId"));
-		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.connect();
-		int responsecode = conn.getResponseCode();
-		String inline = "";
-		if(responsecode != 200)
-		    throw new RuntimeException("HttpResponseCode: " +responsecode);
-		else
-		{
-		
-		    Scanner sc = new Scanner(url.openStream());
-		
-		    while(sc.hasNext())
-		    {
-		        inline+=sc.nextLine();
-		    }
-		    System.out.println("\nJSON data in string format");
-		    System.out.println(inline);
-		    sc.close();
-		}
-		
-		JSONParser parse = new JSONParser();
-		
-		JSONObject jobj = (JSONObject)parse.parse(inline);
-	    JSONObject homeObj = (JSONObject) jobj.get("home_team");
-	    JSONObject visitorObj = (JSONObject) jobj.get("visitor_team");
-	    
-		pageContext.setAttribute("game_home_team", homeObj.get("name"));
-		pageContext.setAttribute("game_home_abbreviation", homeObj.get("abbreviation"));
-		pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
-		pageContext.setAttribute("game_visitor_abbreviation", visitorObj.get("abbreviation"));
-		
-		
-	%>
-				
-			<%
 			
 			String db="basketball_web";
 			String user = "root";
@@ -131,30 +95,26 @@
 		
 		   		Statement statement = c.createStatement();
 		   		
-		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT 0, 100");
+		   		ResultSet rs = statement.executeQuery("SELECT * FROM games WHERE id = " + game_ID);
 		   		
-			
+
+	   			rs.next();
+		   		System.out.println("getting data for game " + rs.getString("id"));
 
 
-					pageContext.setAttribute("game_home_team", homeObj.get("name"));
-					pageContext.setAttribute("game_visitor_team", visitorObj.get("name"));
-					
-					
-					
-		   			rs.next();
-			   		System.out.println("getting data for game " + rs.getString("id"));
-			   		
-			        String shortDate = (String) rs.getString("date");
-				    
-				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+				pageContext.setAttribute("game_home_team", rs.getString("home_name"));
+				pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
+				
+		   		
+		        String shortDate = (String) rs.getString("date");
+			    
+			    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
 
-
-					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
-					
-					pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
-					
-					
-					pageContext.setAttribute("game_ID", rs.getString("id"));
+				pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
+				
+				pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
+				
+				
 			   		
 		   		
 				
