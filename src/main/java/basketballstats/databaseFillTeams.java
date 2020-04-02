@@ -38,6 +38,7 @@ public class databaseFillTeams extends HttpServlet {
 		  String city;
 		  String short_name;
 		  String long_name;
+		  String conference;
 		
 		
 			
@@ -67,13 +68,13 @@ public class databaseFillTeams extends HttpServlet {
 				    System.out.println(resultSet.getString(1));
 				  }
 				  
-				  for(int i=1;i<30;i++) {
+				  for(int i=1;i<31;i++) {
 						fetchAPI(i);
 					
 						PreparedStatement ps=null;
 				  
 				  
-						String ins="INSERT INTO teams (id,division,abbreviation,city,full_name,short_name) VALUE (?,?,?,?,?,?)";
+						String ins="INSERT INTO teams (id,division,abbreviation,city,full_name,short_name, conference) VALUE (?,?,?,?,?,?,?)";
 						c.setAutoCommit(false);
 				  
 				  
@@ -84,6 +85,7 @@ public class databaseFillTeams extends HttpServlet {
 					  ps.setString(4, city);
 					  ps.setString(5,long_name);
 					  ps.setString(6,short_name);
+					  ps.setString(7, conference);
 					
 					  try {
 			            Thread.sleep(50);
@@ -111,7 +113,7 @@ public class databaseFillTeams extends HttpServlet {
 		 public void fetchAPI(int pageNum) {
 				JSONParser parse = new JSONParser();
 				try {
-				URL url = new URL("https://www.balldontlie.io/api/v1/teams");
+				URL url = new URL("https://www.balldontlie.io/api/v1/teams/" + pageNum);
 				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 				conn.setRequestMethod("GET");
 				conn.connect();
@@ -126,21 +128,18 @@ public class databaseFillTeams extends HttpServlet {
 				
 				   while((inline=in.readLine())!=null) {
 					   JSONObject jobj = (JSONObject)parse.parse(inline);
-					   JSONArray jsonarr = (JSONArray) jobj.get("data");
 					   
-					   	for(Object o:jsonarr) {
-					   		JSONObject js=(JSONObject) o;
-					   		
-					   		id= (Long) js.get("id");
+					   		id= (Long) jobj.get("id");
 					   		System.out.println(id);
-					   		division = (String) js.get("division");
-					   		abbreviation = (String) js.get("abbreviation");
-					   		city = (String) js.get("city");
-					   		long_name = (String) js.get("full_name");
-					   		short_name = (String) js.get("name");
+					   		division = (String) jobj.get("division");
+					   		abbreviation = (String) jobj.get("abbreviation");
+					   		city = (String) jobj.get("city");
+					   		long_name = (String) jobj.get("full_name");
+					   		short_name = (String) jobj.get("name");
+					   		conference = (String) jobj.get("conference");
 					   	}
 					   		
-					   	}}
+					   	}
 				conn.disconnect();
 				   
 				}catch(Exception e) {

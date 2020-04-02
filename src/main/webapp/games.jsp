@@ -82,6 +82,8 @@
 	    int pageInt = Integer.parseInt(pageNumber);
 		pageContext.setAttribute("page", pageInt);
 		
+		int startInt = (pageInt * 25) - 24;
+		int endInt = pageInt * 25;
 		
 	
 		
@@ -151,7 +153,7 @@
 		
 		   		Statement statement = c.createStatement();
 		   		
-		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT 0, 100");
+		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT " + startInt + ", " + endInt);
 		   		
 			
 				for(int i=0;i<100;i++)
@@ -168,7 +170,7 @@
 			   		
 			        String shortDate = (String) rs.getString("date");
 				    
-				    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+				    pageContext.setAttribute("game_date", shortDate.substring(5, 10));
 
 
 					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
