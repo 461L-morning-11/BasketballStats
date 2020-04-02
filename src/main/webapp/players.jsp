@@ -6,6 +6,10 @@
 <%@ page import="org.json.simple.JSONArray" %>
 <%@ page import="java.util.Scanner" %>
 <%@ page import="java.net.URI"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
+<%@ page import="java.sql.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
@@ -63,41 +67,18 @@
       
      <%
 
-    String pageNumber = request.getParameter("page");
-    if(pageNumber == null) {
-    	pageNumber = "1";
-    }
-    int pageInt = Integer.parseInt(pageNumber);
-	pageContext.setAttribute("page", pageInt);
-	
-    URL url = new URL("https://www.balldontlie.io/api/v1/players?per_page=100&page=" + pageNumber);
-	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-	conn.setRequestMethod("GET");
-	conn.connect();
-	int responsecode = conn.getResponseCode();
-	String inline = "";
-	if(responsecode != 200)
-	    throw new RuntimeException("HttpResponseCode: " +responsecode);
-	else
-	{
-
-    	Scanner sc = new Scanner(url.openStream());
-
-    	while(sc.hasNext())
-    	{
-        	inline+=sc.nextLine();
-    	}
-    	
-    	sc.close();
-	}
-
-	JSONParser parse = new JSONParser();
-
-	JSONObject jobj = (JSONObject)parse.parse(inline);
-
-	JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
-
-	%>
+  // pagination ------------------------
+  		String pageNumber = request.getParameter("page");
+  	    if(pageNumber == null) {
+  	    	pageNumber = "1";
+  	    }
+  	    int pageInt = Integer.parseInt(pageNumber);
+  		pageContext.setAttribute("page", pageInt);
+  		
+  		int startInt = (pageInt * 25) - 24;
+  		int endInt = pageInt * 25;
+  		
+ %>
 	
 	<table  class="table table-striped table-hover">
 		<thead>
@@ -110,21 +91,45 @@
 		<tbody>
 			
 	<%
+	
+	String db="basketball_web";
+	String user = "root";
+	String pass="Sr4*8DNgZbvHqnee";
+	String ip="104.154.138.136";
+	
+		try {
+			
+			System.out.println("trying to query from sql database;");
+	   	Class.forName("com.mysql.cj.jdbc.Driver");
+	   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+	   	Connection c = DriverManager.getConnection(
+        	host,
+        	user,
+        	pass
+        );
+	   	
 
-	for(int i=0;i<jsonarr_1.size();i++)
-	{
-		JSONObject jsonobj_1 = (JSONObject)jsonarr_1.get(i);
+   		Statement statement = c.createStatement();
+   		
+   		ResultSet rs = statement.executeQuery("SELECT * FROM players LIMIT " + startInt + ", " + endInt);
+   		
+	
+		for(int i=0;i<25;i++)
+		{
+   			rs.next();
 	
 	
-    	//System.out.println("Elements under data array");
     
-    	pageContext.setAttribute("player_first_name", jsonobj_1.get("first_name"));
+    	pageContext.setAttribute("player_first_name", rs.getString("first_name"));
 
-		pageContext.setAttribute("player_last_name", jsonobj_1.get("last_name"));
-
-		pageContext.setAttribute("player_id", jsonobj_1.get("id"));
+		pageContext.setAttribute("player_last_name", rs.getString("last_name"));
 		
-		String short_position = (String) jsonobj_1.get("position");
+		pageContext.setAttribute("player_team", rs.getString("team_name"));
+		System.out.println(rs.getString("team_conference"));
+
+		pageContext.setAttribute("player_id", rs.getString("id"));
+		
+		String short_position = (String) rs.getString("position");
 		String position = "";
 		char[] position_letters = short_position.toCharArray();
 		for(int j =0; j <short_position.length(); j++){
@@ -144,8 +149,6 @@
 		}
 		pageContext.setAttribute("player_position", position);
 		
-		JSONObject player_team = (JSONObject) jsonobj_1.get("team"); 
-		pageContext.setAttribute("player_team", player_team.get("full_name"));
 	
 	%>
     
@@ -157,7 +160,14 @@
 					
 				  
 				</tr>
-			<% } %>
+			<% 
+				}
+				
+			   	
+	   		}
+	   		catch(Exception e) {
+	   			e.printStackTrace();
+	   		}%>
 		</tbody>
 	</table>
 	
