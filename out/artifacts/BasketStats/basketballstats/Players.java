@@ -8,6 +8,11 @@ import java.util.Map;
 public class Players {
     @JsonIgnoreProperties(ignoreUnknown = true)
 
+    @JsonProperty("id")
+    private int id;
+    public int getId() { return this.id; }
+    public void setId(int id) { this.id = id; }
+
     @JsonProperty("first_name")
     private String first_name;
     public String getFirstName() { return this.first_name; }
@@ -33,18 +38,17 @@ public class Players {
     public int getHeightInches() { return this.height_inches; }
     public void setHeightInches(int height_inches) { this.height_inches = height_inches; }
 
+    @JsonProperty("team")
+    private Map<String, String> team;
+    public int getTeamId() {
+        assert(this.team != null);
+        return Integer.parseInt(this.team.get("id"));
+    }
+
     @JsonProperty("weight_pounds")
     private int weight;
     public int getWeight() { return this.weight; }
     public void setWeight(int weight) { this.weight = weight; }
-
-    @SuppressWarnings("unchecked")
-    @JsonProperty("team")
-    private int team_id;
-    private void unpackTeam(Map<String, Object> team) {
-        this.team_id = (int)team.get("id");
-    }
-    public int getId() { return this.team_id; }
 
     public Players() {}
 }

@@ -5,8 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,7 +21,7 @@ import org.apache.http.util.EntityUtils;
 
 public class playerFill extends HttpServlet {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    private Players[] players;
+    private List<Players> players;
 
     private void close() throws IOException {
         httpClient.close();
@@ -33,21 +37,26 @@ public class playerFill extends HttpServlet {
         String host = "jdbc:mysql://" + ip + ":3306/" + db;
 
         String query = "insert into players(first_name, last_name, position, height_feet, height_inches," +
-                " weight_pounds, team_id) VALUES(?,?,?,?,?,?,?)";
+                " weight_pounds, team_id, id, team_name, team_conference) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         try {
             // Attempt connection to SQL server via JDBC. Ironically this does not require forName import (Deprecated)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Connecting.");
             Connection c = DriverManager.getConnection(host, user, pass);
+            System.out.println("Connected.");
 
             Statement s = c.createStatement();
             ResultSet r = s.executeQuery("show tables");
 
             while(r.next()) {
+                System.out.println("Result Set:");
                 System.out.println(r.getString(1));
             }
             PreparedStatement ps;
-
+            c.setAutoCommit(false);
             for (int i = 1; i <= 33; i++) {
+                System.out.println("Handling Page " + i + " Now");
                 apiRequest("https://www.balldontlie.io/api/v1/players?per_page=100&page=" + i);
                 for (Players p : players) {
                     ps = c.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
@@ -58,7 +67,10 @@ public class playerFill extends HttpServlet {
                     ps.setInt(4, p.getHeightFeet());
                     ps.setInt(5, p.getHeightInches());
                     ps.setInt(6, p.getWeight());
-                    ps.setInt(7, p.getId());
+                    ps.setInt(7, p.getTeamId());
+                    ps.setInt(8, p.getId());
+                    ps.setString(9, "");
+                    ps.setString(10,"");
 
                     ps.executeUpdate();
                     c.commit();
@@ -86,7 +98,15 @@ public class playerFill extends HttpServlet {
                 ObjectMapper mapper = new ObjectMapper();
                 String jsonInString = EntityUtils.toString(entity);
 
-                players = mapper.readValue(jsonInString, Players[].class);
+                final JsonNode playertree = mapper.readTree(jsonInString).path("data");
+
+                final CollectionType collectionType =
+                        TypeFactory
+                                .defaultInstance()
+                                .constructCollectionType(List.class, Players.class);
+
+                players = mapper.readerFor(collectionType).readValue(playertree);
+                //players = mapper.readValue(jsonInString, Players[].class);
             }
         }
     }
