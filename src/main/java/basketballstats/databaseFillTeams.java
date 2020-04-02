@@ -36,7 +36,8 @@ public class databaseFillTeams extends HttpServlet {
 		  String division;
 		  String abbreviation;
 		  String city;
-		  String name;
+		  String short_name;
+		  String long_name;
 		
 		
 			
@@ -72,7 +73,7 @@ public class databaseFillTeams extends HttpServlet {
 						PreparedStatement ps=null;
 				  
 				  
-						String ins="INSERT INTO teams (id,division,abbreviation,city,name) VALUE (?,?,?,?,?)";
+						String ins="INSERT INTO teams (id,division,abbreviation,city,full_name,short_name) VALUE (?,?,?,?,?,?)";
 						c.setAutoCommit(false);
 				  
 				  
@@ -81,7 +82,8 @@ public class databaseFillTeams extends HttpServlet {
 					  ps.setString(2, division);
 					  ps.setString(3,abbreviation);
 					  ps.setString(4, city);
-					  ps.setString(5,name);
+					  ps.setString(5,long_name);
+					  ps.setString(6,short_name);
 					
 					  try {
 			            Thread.sleep(50);
@@ -134,8 +136,8 @@ public class databaseFillTeams extends HttpServlet {
 					   		division = (String) js.get("division");
 					   		abbreviation = (String) js.get("abbreviation");
 					   		city = (String) js.get("city");
-					   		name = (String) js.get("name");
-					   		
+					   		long_name = (String) js.get("full_name");
+					   		short_name = (String) js.get("name");
 					   	}
 					   		
 					   	}}
