@@ -125,7 +125,7 @@
 		pageContext.setAttribute("player_last_name", rs.getString("last_name"));
 		
 		pageContext.setAttribute("player_team", rs.getString("team_name"));
-		System.out.println(rs.getString("team_conference"));
+		//System.out.println(rs.getString("team_conference"));
 
 		pageContext.setAttribute("player_id", rs.getString("id"));
 		
