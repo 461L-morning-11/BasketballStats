@@ -6,6 +6,10 @@
 <%@ page import="org.json.simple.JSONArray" %>
 <%@ page import="java.util.Scanner" %>
 <%@ page import="java.net.URI"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
+<%@ page import="java.sql.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
@@ -60,55 +64,56 @@
       <div class="main-content"></div>
       
     <% //pageContext.setAttribute("team_ID", request.getParameter("teamId"));
-	URL url = new URL("https://www.balldontlie.io/api/v1/players/" + request.getParameter("playerId") );
-	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-	conn.setRequestMethod("GET");
-	conn.connect();
-	int responsecode = conn.getResponseCode();
-	String inline = "";
-	if(responsecode != 200)
-	    throw new RuntimeException("HttpResponseCode: " +responsecode);
-	else
-	{
-
-	    Scanner sc = new Scanner(url.openStream());
-
-	    while(sc.hasNext())
-	    {
-	        inline+=sc.nextLine();
-	    }
-	    System.out.println("\nJSON data in string format");
-	    System.out.println(inline);
-	    sc.close();
-	}
-
-	JSONParser parse = new JSONParser();
-
-	JSONObject jobj = (JSONObject)parse.parse(inline);
-	//System.out.println("Elements under data array");
-	JSONObject playerTeam = (JSONObject) jobj.get("team");
     
-    	pageContext.setAttribute("player_first_name", jobj.get("first_name"));
+    String player_ID = request.getParameter("playerId");
+    
+    String db="basketball_web";
+	String user = "root";
+	String pass="Sr4*8DNgZbvHqnee";
+	String ip="104.154.138.136";
+	
+		try {
+			
+			System.out.println("trying to query from sql database;");
+	   	Class.forName("com.mysql.cj.jdbc.Driver");
+	   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+	   	Connection c = DriverManager.getConnection(
+        	host,
+        	user,
+        	pass
+        );
+	   	
 
-		pageContext.setAttribute("player_last_name", jobj.get("last_name"));
+   		Statement statement = c.createStatement();
+   		
+   		ResultSet rs = statement.executeQuery("SELECT * FROM players WHERE id = " + player_ID);
+   		
+
+			rs.next();
+   		System.out.println("getting data for player " + rs.getString("id"));
+
+    
+    	pageContext.setAttribute("player_first_name", rs.getString("first_name"));
+
+		pageContext.setAttribute("player_last_name", rs.getString("last_name"));
 		
-		pageContext.setAttribute("player_height_feet", jobj.get("height_feet"));
+		pageContext.setAttribute("player_height_feet", rs.getString("height_feet"));
 		
-		pageContext.setAttribute("player_height_inches", jobj.get("height_inches"));
+		pageContext.setAttribute("player_height_inches", rs.getString("height_inches"));
 		
-		pageContext.setAttribute("player_weight", jobj.get("weight_pounds"));
+		pageContext.setAttribute("player_weight", rs.getString("weight_pounds"));
 		
 		
 		
-	    pageContext.setAttribute("player_team_name_short", playerTeam.get("name"));
+	    pageContext.setAttribute("player_team_name_short", rs.getString("team_name"));
 		
-		pageContext.setAttribute("player_team_name_long", playerTeam.get("full_name"));
+		pageContext.setAttribute("player_team_name_long", rs.getString("team_name"));
 		
-		pageContext.setAttribute("player_team_conference", playerTeam.get("conference"));
+		pageContext.setAttribute("player_team_conference", rs.getString("team_conference"));
 		
-		pageContext.setAttribute("team_logo", "../img/logos/" + playerTeam.get("name") + ".png");
+		pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("team_name") + ".png");
 		
-		String short_position = (String) jobj.get("position");
+		String short_position = (String) rs.getString("position");
 		String position = "";
 		char[] position_letters = short_position.toCharArray();
 		for(int j =0; j <short_position.length(); j++){
@@ -132,16 +137,15 @@
 	%>
 	<div class="row">
 		<div class="specificTeam">
-			<div class="center">			
-				<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+			<div class="center">
 				<h1><b>${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}</b>
 				<%
-				if(jobj.get("height_feet") != null){
+				if(rs.getString("height_feet") != null){
 					%>
 					- ${fn:escapeXml(player_height_feet)}'${fn:escapeXml(player_height_inches)}''
 					<%
 				}
-				if(jobj.get("weight_pounds") != null){
+				if(rs.getString("weight_pounds") != null){
 					%> ${fn:escapeXml(player_weight)} lbs
 					<%
 				}
@@ -153,6 +157,11 @@
    			</div>
     	</div>
     </div>
+    <%   	
+	   		}
+	   		catch(Exception e) {
+	   			e.printStackTrace();
+	   		}%>
 	
 
 

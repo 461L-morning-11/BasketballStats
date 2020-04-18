@@ -108,7 +108,7 @@
 		   		
 		        String shortDate = (String) rs.getString("date");
 			    
-			    pageContext.setAttribute("game_date", shortDate.substring(0, 10));
+			    pageContext.setAttribute("game_date", shortDate.substring(5, 10));
 
 				pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
 				
@@ -119,7 +119,7 @@
 		   		
 				
 			%>
-			<h1>${fn:escapeXml(game_home_abbreviation)} vs ${fn:escapeXml(game_visitor_abbreviation)}</h1>
+			<h1>${fn:escapeXml(game_home_team)} vs ${fn:escapeXml(game_visitor_team)}</h1>
        	 	<br><hr><br>
         
 	

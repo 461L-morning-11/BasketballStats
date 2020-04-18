@@ -74,9 +74,11 @@ public class databaseFillGames extends HttpServlet {
 			  }
 			  
 			  for(int i=1;i<489;i++) {
-					fetchAPI(i);
-					
-					if(fill) {
+				  fill = false;
+				  while(!fill) {
+					  fetchAPI(i);
+					  System.out.println("waiting..");
+				  }
 				
 					PreparedStatement ps=null;
 			  
@@ -112,7 +114,6 @@ public class databaseFillGames extends HttpServlet {
 					}
 			  }
 	   
-	   }
 	   catch(Exception e){
 		   e.printStackTrace();
 	   }

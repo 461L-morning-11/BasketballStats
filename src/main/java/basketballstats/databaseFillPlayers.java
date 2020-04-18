@@ -36,12 +36,13 @@ public class databaseFillPlayers extends HttpServlet {
 		  String first_name;
 		  String last_name;
 		  String position;
-		  int height_feet;
-		  int height_inches;
-		  int weight_pounds;
+		  long height_feet;
+		  long height_inches;
+		  long weight_pounds;
 		  Long team_id;
 		  String team_name;
 		  String team_conference;
+		  boolean fill;
 		
 		
 			
@@ -72,12 +73,16 @@ public class databaseFillPlayers extends HttpServlet {
 				  }
 				  
 				  for(int i=1;i<2000;i++) {	//only getting 2000 for now. There are more
-						fetchAPI(i);
-					
+					  fill = false;
+					  while(!fill) {
+						  fetchAPI(i);
+						  System.out.println("waiting..");
+					  }
+						
 						PreparedStatement ps=null;
 				  
 				  
-						String ins="INSERT INTO players (id,first_name, last_name, position, height_feet, height_inches, weight_pounds, team_id, team_name, team_conference;) VALUE (?,?,?,?,?,?,?,?,?,?)";
+						String ins="INSERT INTO players (id,first_name, last_name, position, height_feet, height_inches, weight_pounds, team_id, team_name, team_conference) VALUE (?,?,?,?,?,?,?,?,?,?)";
 						c.setAutoCommit(false);
 				  
 				  
@@ -86,12 +91,13 @@ public class databaseFillPlayers extends HttpServlet {
 					  ps.setString(2, first_name);
 					  ps.setString(3, last_name);
 					  ps.setString(4, position);
-					  ps.setInt(5, height_feet);
-					  ps.setInt(6, height_inches);
-					  ps.setInt(7, weight_pounds);
+					  ps.setLong(5, height_feet);
+					  ps.setLong(6, height_inches);
+					  ps.setLong(7, weight_pounds);
 					  ps.setLong(8, team_id);
 					  ps.setString(9,team_name);
 					  ps.setString(10,team_conference);
+					  /*
 					  try {
 			            Thread.sleep(10);
 					  }
@@ -99,11 +105,11 @@ public class databaseFillPlayers extends HttpServlet {
 					  {
 			            e.printStackTrace();
 					  }
+					  */
 					  ps.executeUpdate();
 					  c.commit();
 				  
 				  	  }
-		   
 		   }catch(Exception e){
 				  e.printStackTrace();
 				}
@@ -124,11 +130,13 @@ public class databaseFillPlayers extends HttpServlet {
 				conn.connect();
 				int responsecode = conn.getResponseCode();
 				String inline = "";
-				if(responsecode != 200)
-				    throw new RuntimeException("HttpResponseCode: " +responsecode);
+				if(responsecode != 200) {
+					fill = false;
+					throw new RuntimeException("HttpResponseCode: " +responsecode);
+				}
 				else
 				{
-				
+					fill = true;
 				    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 				
 				   while((inline=in.readLine())!=null) {
@@ -139,9 +147,9 @@ public class databaseFillPlayers extends HttpServlet {
 					   		System.out.println(id);
 					   		first_name = (String) js.get("first_name");
 					   		last_name = (String) js.get("last_name");
-					   		height_feet = (int) js.get("height_feet");
-					   		weight_pounds = (int) js.get("weight_pounds");
-					   		height_inches = (int) js.get("height_inches");
+					   		height_feet = (long) js.get("height_feet");
+					   		weight_pounds = (long) js.get("weight_pounds");
+					   		height_inches = (long) js.get("height_inches");
 					   		position = (String) js.get("position");
 					   		JSONObject t =(JSONObject)js.get("team");
 					   		team_id = (Long) t.get("id");

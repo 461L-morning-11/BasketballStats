@@ -156,7 +156,7 @@
 		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT " + startInt + ", " + endInt);
 		   		
 			
-				for(int i=0;i<100;i++)
+				for(int i=0;i<25;i++)
 				{
 		   			rs.next();
 		

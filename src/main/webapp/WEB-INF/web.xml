@@ -58,6 +58,15 @@
 		<servlet-name>databaseFillTeams</servlet-name>
 		<url-pattern>/daily/dbteams</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>databaseFillPlayers</servlet-name>
+		<servlet-class>basketballstats.databaseFillPlayers</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>databaseFillPlayers</servlet-name>
+		<url-pattern>/daily/dbplayers</url-pattern>
+	</servlet-mapping>
          
          
   <welcome-file-list>
