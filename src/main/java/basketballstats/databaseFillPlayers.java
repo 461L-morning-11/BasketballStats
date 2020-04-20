@@ -42,13 +42,30 @@ public class databaseFillPlayers extends HttpServlet {
 		  Long team_id;
 		  String team_name;
 		  String team_conference;
+		  Long nine_pts;
+		  Long nine_ast;
+		  Long nine_rbs;
+		  Long nine_ft_pct;
+		  Long eight_pts;
+		  Long eight_ast;
+		  Long eight_rbs;
+		  Long eight_ft_pct;
+		  Long seven_pts;
+		  Long seven_ast;
+		  Long seven_rbs;
+		  Long seven_ft_pct;
+		  Long six_pts;
+		  Long six_ast;
+		  Long six_rbs;
+		  Long six_ft_pct;
+		  int count;
 		  boolean fill;
 		
 		
 			
 		 public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	         throws IOException {
-			 
+			 count = 0;
 			 	String instance = "basketball-db";
 			 	String db="basketball_web";
 				String user = "root";
@@ -73,16 +90,17 @@ public class databaseFillPlayers extends HttpServlet {
 				  }
 				  
 				  for(int i=1;i<2000;i++) {	//only getting 2000 for now. There are more
+					  i++;
 					  fill = false;
 					  while(!fill) {
 						  fetchAPI(i);
-						  System.out.println("waiting..");
+						  System.out.println("waiting..!");
 					  }
 						
 						PreparedStatement ps=null;
 				  
 				  
-						String ins="INSERT INTO players (id,first_name, last_name, position, height_feet, height_inches, weight_pounds, team_id, team_name, team_conference) VALUE (?,?,?,?,?,?,?,?,?,?)";
+						String ins="INSERT INTO players (id,first_name, last_name, position, height_feet, height_inches, weight_pounds, team_id, team_name, team_conference,2019_pts,2019_ast,2019_rbs,2019_ft_pct,2018_pts,2018_ast,2018_rbs,2018_ft_pct,2017_pts,2017_ast,2017_rbs,2017_ft_pct,2016_pts,2016_ast,2016_rbs,2016_ft_pct) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 						c.setAutoCommit(false);
 				  
 				  
@@ -97,6 +115,22 @@ public class databaseFillPlayers extends HttpServlet {
 					  ps.setLong(8, team_id);
 					  ps.setString(9,team_name);
 					  ps.setString(10,team_conference);
+					  ps.setLong(11, nine_pts);
+					  ps.setLong(12, nine_ast);
+					  ps.setLong(13, nine_rbs);
+					  ps.setLong(14, nine_ft_pct);
+					  ps.setLong(15, eight_pts);
+					  ps.setLong(16, eight_ast);
+					  ps.setLong(17, eight_rbs);
+					  ps.setLong(18, eight_ft_pct);
+					  ps.setLong(19, seven_pts);
+					  ps.setLong(20, seven_ast);
+					  ps.setLong(21, seven_rbs);
+					  ps.setLong(22, seven_ft_pct);
+					  ps.setLong(23, six_pts);
+					  ps.setLong(24, six_ast);
+					  ps.setLong(25, six_rbs);
+					  ps.setLong(26, six_ft_pct);
 					  /*
 					  try {
 			            Thread.sleep(10);
@@ -108,6 +142,10 @@ public class databaseFillPlayers extends HttpServlet {
 					  */
 					  ps.executeUpdate();
 					  c.commit();
+					  if(i==11) {
+						  Thread.sleep(60000);
+						  i=0;
+					  }
 				  
 				  	  }
 		   }catch(Exception e){
@@ -159,13 +197,191 @@ public class databaseFillPlayers extends HttpServlet {
 					   	}}
 				conn.disconnect();
 				   
-				}catch(Exception e) {
-				   		e.printStackTrace();
+				}catch(Exception e0) {
+				   		e0.printStackTrace();
 				   	}
 				   
-				}
 				
+		 
+		 
+		 
+		 		//2019 stats
+				parse = new JSONParser();
+			try {
+				URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2019&player_ids[]=" + pageNum);
+				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.connect();
+				int responsecode = conn.getResponseCode();
+				String inline = "";
+				if(responsecode != 200) {
+					fill = false;
+					throw new RuntimeException("HttpResponseCode: " +responsecode);
+				}
+				else
+				{
+					fill = true;
+				    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				
+				   while((inline=in.readLine())!=null) {
+					   JSONObject js = (JSONObject)parse.parse(inline);
+					 
+					   		
+					   	
+					   		JSONObject t =(JSONObject)js.get("data");
+					   		nine_pts = (Long) t.get("pts");
+					   		nine_ast = (Long) t.get("ast");
+					   		nine_rbs = (Long) t.get("rbs");
+					   		nine_ft_pct = (Long) t.get("ft_pct");
+				   		
+				   	}}
+			conn.disconnect();
+			   
+			}catch(NullPointerException n) {
+				nine_pts = null;
+		   		nine_ast = null;
+		   		nine_rbs = null;
+		   		nine_ft_pct = null;
+		   	}catch(Exception e1) {
+			   		e1.printStackTrace();
+			   	}
+			   
 			
+		 
+		 
+		//2018 stats
+			parse = new JSONParser();
+		try {
+			URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2018&player_ids[]=" + pageNum);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.connect();
+			int responsecode = conn.getResponseCode();
+			String inline = "";
+			if(responsecode != 200) {
+				fill = false;
+				throw new RuntimeException("HttpResponseCode: " +responsecode);
+			}
+			else
+			{
+				fill = true;
+			    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			
+			   while((inline=in.readLine())!=null) {
+				   JSONObject js = (JSONObject)parse.parse(inline);
+				 
+				   		
+				   	
+				   		JSONObject t =(JSONObject)js.get("data");
+				   		eight_pts = (Long) t.get("pts");
+				   		eight_ast = (Long) t.get("ast");
+				   		eight_rbs = (Long) t.get("rbs");
+				   		eight_ft_pct = (Long) t.get("ft_pct");
+			   		
+			   	}
+			   }
+		conn.disconnect();
+		   
+		}catch(NullPointerException n) {
+			eight_pts = null;
+	   		eight_ast = null;
+	   		eight_rbs = null;
+	   		eight_ft_pct = null;
+	   	}catch(Exception e2) {
+		   		e2.printStackTrace();
+		   	}
+		   
+		
+
+
+
+		
+		//2017 stats
+		parse = new JSONParser();
+		try {
+		URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2017&player_ids[]=" + pageNum);
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.connect();
+		int responsecode = conn.getResponseCode();
+		String inline = "";
+		if(responsecode != 200) {
+			fill = false;
+			throw new RuntimeException("HttpResponseCode: " +responsecode);
+		}
+		else
+		{
+			fill = true;
+		    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		
+		   while((inline=in.readLine())!=null) {
+			   JSONObject js = (JSONObject)parse.parse(inline);
+			 
+			   		
+			   	
+			   		JSONObject t =(JSONObject)js.get("data");
+			   		seven_pts = (Long) t.get("pts");
+			   		seven_ast = (Long) t.get("ast");
+			   		seven_rbs = (Long) t.get("rbs");
+			   		seven_ft_pct = (Long) t.get("ft_pct");
+		   		
+		   	}}
+		conn.disconnect();
+		
+		}catch(NullPointerException n) {
+			seven_pts = null;
+	   		seven_ast = null;
+	   		seven_rbs = null;
+	   		seven_ft_pct = null;
+	   	}catch(Exception e3) {
+				e3.printStackTrace();
+			}
+		
+		
+		
+		//2016 stats
+				parse = new JSONParser();
+				try {
+				URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2016&player_ids[]=" + pageNum);
+				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.connect();
+				int responsecode = conn.getResponseCode();
+				String inline = "";
+				if(responsecode != 200) {
+					fill = false;
+					throw new RuntimeException("HttpResponseCode: " +responsecode);
+				}
+				else
+				{
+					fill = true;
+				    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				
+				   while((inline=in.readLine())!=null) {
+					   JSONObject js = (JSONObject)parse.parse(inline);
+					 
+					   		
+					   	
+					   		JSONObject t =(JSONObject)js.get("data");
+					   		six_pts = (Long) t.get("pts");
+					   		six_ast = (Long) t.get("ast");
+					   		six_rbs = (Long) t.get("rbs");
+					   		six_ft_pct = (Long) t.get("ft_pct");
+				   		
+				   	}}
+				conn.disconnect();
+				
+				}catch(NullPointerException n) {
+					six_pts = null;
+			   		six_ast = null;
+			   		six_rbs = null;
+			   		six_ft_pct = null;
+			   	}catch(Exception e4) {
+						e4.printStackTrace();
+					}
+		
+		}
+					
 				
 				
 			 }

@@ -76,6 +76,8 @@
 		<servlet-name>databaseFillPlayers</servlet-name>
 		<url-pattern>/daily/dbplayers</url-pattern>
 	</servlet-mapping>
+	
+	
          
          
   <welcome-file-list>
