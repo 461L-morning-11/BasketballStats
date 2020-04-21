@@ -39,6 +39,7 @@ public class databaseFillTeams extends HttpServlet {
 		  String short_name;
 		  String long_name;
 		  String conference;
+		  
 		
 		
 			
@@ -50,6 +51,8 @@ public class databaseFillTeams extends HttpServlet {
 				String user = "root";
 				String pass="Sr4*8DNgZbvHqnee";
 				String ip="104.154.138.136";
+				
+
 				
 		   try {
 			   Class.forName("com.mysql.cj.jdbc.Driver");
@@ -67,14 +70,16 @@ public class databaseFillTeams extends HttpServlet {
 				  while (resultSet.next()) {
 				    System.out.println(resultSet.getString(1));
 				  }
-				  
+				  int[] total_champ = {1,17,0,0,6,1,1,0,3,6,2,0,0,16,0,3,1,0,0,2,1,0,3,0,1,1,5,1,0,1};
+				  int[] total_tries = {4,21,2,0,6,5,2,0,7,11,4,1,0,31,0,5,2,0,0,8,4,2,9,2,3,1,6,1,2,4};
+				  int[] recent_champ = {1958,2008,2003,0,1998,2016,2011,0,2004,2018,1995,2000,0,2010,0,2013,0,0,1973,1979,2009,1983,1993,1977,1951,2014,2019,1998,1978};
 				  for(int i=1;i<31;i++) {
 						fetchAPI(i);
-					
+						
 						PreparedStatement ps=null;
 				  
 				  
-						String ins="INSERT INTO teams (id,division,abbreviation,city,full_name,short_name, conference) VALUE (?,?,?,?,?,?,?)";
+						String ins="INSERT INTO teams (id,division,abbreviation,city,full_name,short_name, conference, total_champ, total_tries, recent_champ) VALUE (?,?,?,?,?,?,?,?,?,?)";
 						c.setAutoCommit(false);
 				  
 				  
@@ -86,7 +91,10 @@ public class databaseFillTeams extends HttpServlet {
 					  ps.setString(5,long_name);
 					  ps.setString(6,short_name);
 					  ps.setString(7, conference);
-					
+					  ps.setInt(8,total_champ[i]);
+					  ps.setInt(9,total_tries[i]);
+					  ps.setInt(10, recent_champ[i]);
+					 
 					  try {
 			            Thread.sleep(50);
 					  }
