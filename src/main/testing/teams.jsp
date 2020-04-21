@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" href="../img/basketball.png">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
     <title>Teams</title>
 
@@ -64,12 +64,10 @@
 
 
 <% 
-
 String db="basketball_web";
 String user = "root";
 String pass="Sr4*8DNgZbvHqnee";
 String ip="104.154.138.136";
-
 	try {
 		
 		System.out.println("trying to query from sql database;");
@@ -81,12 +79,10 @@ String ip="104.154.138.136";
     	pass
     );
    	
-
 		Statement statement = c.createStatement();
 		
 		ResultSet rs = statement.executeQuery("SELECT * FROM teams LIMIT 0, 31");
 		
-
 	%>
     
     
@@ -99,12 +95,8 @@ String ip="104.154.138.136";
 				for(int i=0;i<30;i++)
 				{
 					rs.next();
-
-
 				    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
-
 					pageContext.setAttribute("team_city", rs.getString("city"));
-
 					pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
 					
 					pageContext.setAttribute("team_division", rs.getString("division"));
