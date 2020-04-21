@@ -185,14 +185,14 @@ public class databaseFillPlayers extends HttpServlet {
 					   		System.out.println(id);
 					   		first_name = (String) js.get("first_name");
 					   		last_name = (String) js.get("last_name");
-					   		height_feet = (long) js.get("height_feet");
-					   		weight_pounds = (long) js.get("weight_pounds");
-					   		height_inches = (long) js.get("height_inches");
 					   		position = (String) js.get("position");
 					   		JSONObject t =(JSONObject)js.get("team");
 					   		team_id = (Long) t.get("id");
 					   		team_name = (String) t.get("full_name");
 					   		team_conference = (String) t.get("conference");
+					   		height_feet = (long) js.get("height_feet");
+					   		weight_pounds = (long) js.get("weight_pounds");
+					   		height_inches = (long) js.get("height_inches");
 					   		
 					   	}}
 				conn.disconnect();
