@@ -129,7 +129,7 @@
     		<table  class="table table-hover">
 	   		<thead>
 	   			<tr>
-	   				<th scope="col">Players</th>
+	   				<th scope="col">${fn:escapeXml(team_name_short)} Players</th>
 	   			</tr>
 	   		</thead>
 	   		<tbody>

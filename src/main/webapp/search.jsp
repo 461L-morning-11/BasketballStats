@@ -65,7 +65,7 @@
         	pass
         );
 	   	
-	   	String Query = "SELECT * FROM players WHERE MATCH(first_name, last_name, team_name, team_conference) AGAINST( '"+request.getParameter("search")+"')";
+	   	String Query = "SELECT * FROM players WHERE MATCH(first_name, last_name, team_name, team_conference, position) AGAINST( '"+request.getParameter("search")+"')";
 	   	Statement stm = c.createStatement();
 	   	ResultSet rs = stm.executeQuery(Query);
 	   	%>

@@ -66,6 +66,7 @@
     <% //pageContext.setAttribute("team_ID", request.getParameter("teamId"));
     String height_feet = null;
     String weight_pounds = null;
+    int team_id = -1;
    	int nine_pts = -1;
    	int eight_pts = -1;
    	int seven_pts = -1;
@@ -111,6 +112,11 @@
 		
 		
 	    pageContext.setAttribute("player_team_name_short", rs.getString("team_name"));
+	    
+	    
+	    team_id = rs.getInt("team_id");
+	    pageContext.setAttribute("player_team_id", team_id);
+	   
 		
 		pageContext.setAttribute("player_team_name_long", rs.getString("team_name"));
 		
@@ -209,7 +215,7 @@
 				%>
 				</h1>
 				<div class="center">	
-					<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the ${fn:escapeXml(player_team_name_long)} in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
+					<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the <a href="specificTeam.jsp?teamId=${fn:escapeXml(player_team_id)}">${fn:escapeXml(player_team_name_long)}</a> in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
 				</div>
    			</div>
     	</div>
