@@ -91,9 +91,9 @@ public class databaseFillTeams extends HttpServlet {
 					  ps.setString(5,long_name);
 					  ps.setString(6,short_name);
 					  ps.setString(7, conference);
-					  ps.setInt(8,total_champ[i]);
-					  ps.setInt(9,total_tries[i]);
-					  ps.setInt(10, recent_champ[i]);
+					  ps.setInt(8,total_champ[i-1]);
+					  ps.setInt(9,total_tries[i-1]);
+					  ps.setInt(10, recent_champ[i-1]);
 					 
 					  try {
 			            Thread.sleep(50);
