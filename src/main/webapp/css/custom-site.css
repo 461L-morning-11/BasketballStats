@@ -16,6 +16,24 @@ body {
 	border: 3px solid black;
 	padding: 10px;
 }
+.seasonAverages {
+	margin: auto;
+	width: 24%;
+	border: 3px solid black;
+	padding: 10px;
+	display: inline-block;
+}
+.title{
+	text-align: center;
+	font-weight: bold;
+}
 .center {
     text-align: center;
+}
+.title{
+	text-align: center;
+	font-weight: bold;
+}
+#wrapper{
+	text-align: center;
 }

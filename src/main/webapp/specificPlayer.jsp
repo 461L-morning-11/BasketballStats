@@ -12,7 +12,7 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -64,7 +64,12 @@
       <div class="main-content"></div>
       
     <% //pageContext.setAttribute("team_ID", request.getParameter("teamId"));
-    
+    String height_feet = null;
+    String weight_pounds = null;
+   	int nine_pts = -1;
+   	int eight_pts = -1;
+   	int seven_pts = -1;
+   	int six_pts = -1;
     String player_ID = request.getParameter("playerId");
     
     String db="basketball_web";
@@ -98,11 +103,11 @@
 		pageContext.setAttribute("player_last_name", rs.getString("last_name"));
 		
 		pageContext.setAttribute("player_height_feet", rs.getString("height_feet"));
-		
+	 	height_feet = rs.getString("height_feet");
 		pageContext.setAttribute("player_height_inches", rs.getString("height_inches"));
 		
 		pageContext.setAttribute("player_weight", rs.getString("weight_pounds"));
-		
+		weight_pounds = rs.getString("weight_pounds");
 		
 		
 	    pageContext.setAttribute("player_team_name_short", rs.getString("team_name"));
@@ -133,6 +138,58 @@
 		}
 		pageContext.setAttribute("player_position", position);
 		
+		pageContext.setAttribute("2019_pts", 0);
+		pageContext.setAttribute("2019_ast", 0);
+		pageContext.setAttribute("2019_rbs", 0);
+		pageContext.setAttribute("2019_ft_pct", 0);
+		
+		if(rs.getFloat("2019_pts") != -1){
+			pageContext.setAttribute("2019_pts", rs.getString("2019_pts"));
+			pageContext.setAttribute("2019_ast", rs.getString("2019_ast"));
+			pageContext.setAttribute("2019_rbs", rs.getString("2019_rbs"));
+			pageContext.setAttribute("2019_ft_pct", rs.getString("2019_ft_pct"));	
+		}
+		
+		if(rs.getFloat("2018_pts") != -1){
+			pageContext.setAttribute("2018_pts", rs.getString("2018_pts"));
+			pageContext.setAttribute("2018_ast", rs.getString("2018_ast"));
+			pageContext.setAttribute("2018_rbs", rs.getString("2018_rbs"));
+			pageContext.setAttribute("2018_ft_pct", rs.getString("2018_ft_pct"));	
+		} else{
+			pageContext.setAttribute("2018_pts", 0);
+			pageContext.setAttribute("2018_ast", 0);
+			pageContext.setAttribute("2018_rbs", 0);
+			pageContext.setAttribute("2018_ft_pct", 0);
+		}
+		
+		if(rs.getFloat("2017_pts") != -1){
+			pageContext.setAttribute("2017_pts", rs.getString("2017_pts"));
+			pageContext.setAttribute("2017_ast", rs.getString("2017_ast"));
+			pageContext.setAttribute("2017_rbs", rs.getString("2017_rbs"));
+			pageContext.setAttribute("2017_ft_pct", rs.getString("2017_ft_pct"));	
+		} else{
+			pageContext.setAttribute("2017_pts", 0);
+			pageContext.setAttribute("2017_ast", 0);
+			pageContext.setAttribute("2017_rbs", 0);
+			pageContext.setAttribute("2017_ft_pct", 0);
+		}
+		
+		if(rs.getFloat("2016_pts") != -1){
+			pageContext.setAttribute("2016_pts", rs.getString("2016_pts"));
+			pageContext.setAttribute("2016_ast", rs.getString("2016_ast"));
+			pageContext.setAttribute("2016_rbs", rs.getString("2016_rbs"));
+			pageContext.setAttribute("2016_ft_pct", rs.getString("2016_ft_pct"));	
+		} else{
+			pageContext.setAttribute("2016_pts", 0);
+			pageContext.setAttribute("2016_ast", 0);
+			pageContext.setAttribute("2016_rbs", 0);
+			pageContext.setAttribute("2016_ft_pct", 0);
+		}
+		
+		}
+   		catch(Exception e) {
+   			e.printStackTrace();
+   		}
 	
 	%>
 	<div class="row">
@@ -140,12 +197,12 @@
 			<div class="center">
 				<h1><b>${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)}</b>
 				<%
-				if(rs.getString("height_feet") != null){
-					%>
+				if(height_feet != null){
+					%><br>
 					- ${fn:escapeXml(player_height_feet)}'${fn:escapeXml(player_height_inches)}''
 					<%
 				}
-				if(rs.getString("weight_pounds") != null){
+				if(weight_pounds != null){
 					%> ${fn:escapeXml(player_weight)} lbs
 					<%
 				}
@@ -156,15 +213,161 @@
 				</div>
    			</div>
     	</div>
+    	
     </div>
-    <%   	
-	   		}
-	   		catch(Exception e) {
-	   			e.printStackTrace();
-	   		}%>
+    <br>
+    <div id="wrapper">
+    <% 
+    
+    
+    db="basketball_web";
+	user = "root";
+	pass="Sr4*8DNgZbvHqnee";
+	ip="104.154.138.136";
 	
+		try {
+			
+			System.out.println("trying to query from sql database;");
+	   	Class.forName("com.mysql.cj.jdbc.Driver");
+	   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+	   	Connection c = DriverManager.getConnection(
+        	host,
+        	user,
+        	pass
+        );
+	   	
 
+   		Statement statement = c.createStatement();
+   		
+   		ResultSet rs = statement.executeQuery("SELECT * FROM players WHERE id = " + player_ID);
+   		
 
+			rs.next();
+			pageContext.setAttribute("nine_pts", rs.getString("2019_pts"));
+			nine_pts =  rs.getInt("2019_pts");
+			pageContext.setAttribute("nine_ast", rs.getString("2019_ast"));
+			pageContext.setAttribute("nine_rbs", rs.getString("2019_rbs"));
+			pageContext.setAttribute("nine_ft_pct", rs.getString("2019_ft_pct"));
+			pageContext.setAttribute("eight_pts", rs.getString("2018_pts"));
+			eight_pts =  rs.getInt("2018_pts");
+			pageContext.setAttribute("eight_ast", rs.getString("2018_ast"));
+			pageContext.setAttribute("eight_rbs", rs.getString("2018_rbs"));
+			pageContext.setAttribute("eight_ft_pct", rs.getString("2018_ft_pct"));
+			pageContext.setAttribute("seven_pts", rs.getString("2017_pts"));
+			seven_pts =  rs.getInt("2017_pts");
+			pageContext.setAttribute("seven_ast", rs.getString("2017_ast"));
+			pageContext.setAttribute("seven_rbs", rs.getString("2017_rbs"));
+			pageContext.setAttribute("seven_ft_pct", rs.getString("2017_ft_pct"));
+			pageContext.setAttribute("six_pts", rs.getString("2016_pts"));
+			six_pts =  rs.getInt("2016_pts");
+			pageContext.setAttribute("six_ast", rs.getString("2016_ast"));
+			pageContext.setAttribute("six_rbs", rs.getString("2016_rbs"));
+			pageContext.setAttribute("six_ft_pct", rs.getString("2016_ft_pct"));
+			%>
+			<%if(nine_pts != -1 ){ %>
+    <div class="seasonAverages" >
+    	<header class="title">2019 Season Stats</header>
+    	
+   		<table style="width:100%">
+		  <tr>
+		    <td>Average Points:</td>
+		    <td>${nine_pts}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Assists:</td>
+		    <td>${nine_ast}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Rebounds:</td>
+		    <td>${nine_rbs}</td>
+		  </tr>
+		  <tr>
+		    <td>Free Throw Percent:</td>
+		    <td>${nine_ft_pct}</td>
+		  </tr>
+		</table>
+   	</div>
+   	<%} %>
+   	<%if(eight_pts != -1 ){ %>
+    <div class="seasonAverages" >
+    	<header class="title">2018 Season Stats</header>
+    	
+   		<table style="width:100%">
+		  <tr>
+		    <td>Average Points:</td>
+		    <td>${eight_pts}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Assists:</td>
+		    <td>${eight_ast}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Rebounds:</td>
+		    <td>${eight_rbs}</td>
+		  </tr>
+		  <tr>
+		    <td>Free Throw Percent:</td>
+		    <td>${eight_ft_pct}</td>
+		  </tr>
+		</table>
+   	</div>
+   	<%} %>
+   	<%if(seven_pts != -1 ){ %>
+    <div class="seasonAverages" >
+    	<header class="title">2017 Season Stats</header>
+   		<table style="width:100%">
+		  <tr>
+		    <td>Average Points:</td>
+		    <td>${seven_pts}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Assists:</td>
+		    <td>${seven_ast}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Rebounds:</td>
+		    <td>${seven_rbs}</td>
+		  </tr>
+		  <tr>
+		    <td>Free Throw Percent:</td>
+		    <td>${seven_ft_pct}</td>
+		  </tr>
+		</table>
+   	</div>
+   	<%} %>
+   	<%if(six_pts != -1 ){ %>
+    <div class="seasonAverages">
+    	<header class="title">2016 Season Stats</header>
+   		<table style="width:100%">
+		  <tr>
+		    <td>Average Points:</td>
+		    <td>${six_pts}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Assists:</td>
+		    <td>${six_ast}</td>
+		  </tr>
+		  <tr>
+		    <td>Average Rebounds:</td>
+		    <td>${six_rbs}</td>
+		  </tr>
+		  <tr>
+		    <td>Free Throw Percent:</td>
+		    <td>${six_ft_pct}</td>
+		  </tr>
+		</table>
+   	</div>
+   	<%} %>
+   	<%if(six_pts == -1 && seven_pts == -1 && eight_pts == -1 && nine_pts == -1){ %>
+	<p>We have no record of this player playing in the NBA since at least 2015</p>   	
+   	<%} %>
+    <% }
+   		catch(Exception e) {
+   			e.printStackTrace();
+   		}
+	   		%>
+	
+	</div>
     </main><!-- /.container -->
 
     <!-- Bootstrap core JavaScript
