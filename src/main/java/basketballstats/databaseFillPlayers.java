@@ -244,6 +244,11 @@ public class databaseFillPlayers extends HttpServlet {
 		   		nine_ast = null;
 		   		nine_rbs = null;
 		   		nine_ft_pct = null;
+		   	}catch(NullPointerException n) {
+				nine_pts = null;
+		   		nine_ast = null;
+		   		nine_rbs = null;
+		   		nine_ft_pct = null;
 		   	}catch(Exception e1) {
 			   		e1.printStackTrace();
 			   	}
@@ -287,6 +292,11 @@ public class databaseFillPlayers extends HttpServlet {
 		conn.disconnect();
 		   
 		}catch(IndexOutOfBoundsException n) {
+			eight_pts = null;
+	   		eight_ast = null;
+	   		eight_rbs = null;
+	   		eight_ft_pct = null;
+	   	}catch(NullPointerException n) {
 			eight_pts = null;
 	   		eight_ast = null;
 	   		eight_rbs = null;
@@ -339,6 +349,11 @@ public class databaseFillPlayers extends HttpServlet {
 	   		seven_ast = null;
 	   		seven_rbs = null;
 	   		seven_ft_pct = null;
+	   	}catch(NullPointerException n) {
+	   		seven_pts = null;
+	   		seven_ast = null;
+	   		seven_rbs = null;
+	   		seven_ft_pct = null;
 	   	}catch(Exception e3) {
 				e3.printStackTrace();
 			}
@@ -380,6 +395,12 @@ public class databaseFillPlayers extends HttpServlet {
 				conn.disconnect();
 				
 				}catch(IndexOutOfBoundsException n) {
+					six_pts = null;
+			   		six_ast = null;
+			   		six_rbs = null;
+			   		six_ft_pct = null;
+			   	}
+				catch(NullPointerException n) {
 					six_pts = null;
 			   		six_ast = null;
 			   		six_rbs = null;
