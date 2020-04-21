@@ -90,7 +90,7 @@ public class databaseFillPlayers extends HttpServlet {
 				  }
 				  
 				  for(int i=1;i<2000;i++) {	//only getting 2000 for now. There are more
-					  i++;
+					  count++;
 					  fill = false;
 					  while(!fill) {
 						  fetchAPI(i);
@@ -142,9 +142,9 @@ public class databaseFillPlayers extends HttpServlet {
 					  */
 					  ps.executeUpdate();
 					  c.commit();
-					  if(i==11) {
+					  if(count==11) {
 						  Thread.sleep(60000);
-						  i=0;
+						  count=0;
 					  }
 				  
 				  	  }
