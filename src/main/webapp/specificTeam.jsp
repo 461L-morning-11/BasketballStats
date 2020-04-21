@@ -110,15 +110,51 @@
 			pageContext.setAttribute("team_ID", rs.getString("id"));
 		
 			pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
-		
-				
-	   	
+			%>
+
+
+			
+			<hr>
+			<div class="row">
+				<div class="specificTeam">
+					<div class="center">
+						<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" align="middle" alt="Responsive image">
+						<h1>${fn:escapeXml(team_name_long)} (${fn:escapeXml(team_abbreviation)})</h1>	
+						<p>The ${fn:escapeXml(team_name_short)} from ${fn:escapeXml(team_city)} play in the ${fn:escapeXml(team_division)} division of the ${fn:escapeXml(team_conference)}ern Conference </p>
+    				</div>
+    			</div>
+    		</div>
+    		
+    		<br>
+    		<table  class="table table-hover">
+	   		<thead>
+	   			<tr>
+	   				<th scope="col">Players</th>
+	   			</tr>
+	   		</thead>
+	   		<tbody>
+    		<% 
+			
+			ResultSet rs2 = statement.executeQuery("SELECT * FROM players WHERE team_id = " + team_ID);
+    		while(rs2.next()){
+    			pageContext.setAttribute("player_id", rs2.getString("id"));
+    	   		%>
+    	   			<tr onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
+    	   				<td><%=rs2.getString("first_name") %></td>
+    	   				<td><%=rs2.getString("last_name") %></td>
+    	   				<td><%=rs2.getString("position") %></td>   			
+    	   			</tr>
+    	   		<%} %>
+    	   		</tbody>
+    		</table>
+    		<br>
+    		<% 	
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 	%>
-    
+
     <hr>
 	<div class="row">
 
