@@ -42,22 +42,22 @@ public class databaseFillPlayers extends HttpServlet {
 		  Long team_id;
 		  String team_name;
 		  String team_conference;
-		  Long nine_pts;
-		  Long nine_ast;
-		  Long nine_rbs;
-		  Long nine_ft_pct;
-		  Long eight_pts;
-		  Long eight_ast;
-		  Long eight_rbs;
-		  Long eight_ft_pct;
-		  Long seven_pts;
-		  Long seven_ast;
-		  Long seven_rbs;
-		  Long seven_ft_pct;
-		  Long six_pts;
-		  Long six_ast;
-		  Long six_rbs;
-		  Long six_ft_pct;
+		  Double nine_pts;
+		  Double nine_ast;
+		  Double nine_rbs;
+		  Double nine_ft_pct;
+		  Double eight_pts;
+		  Double eight_ast;
+		  Double eight_rbs;
+		  Double eight_ft_pct;
+		  Double seven_pts;
+		  Double seven_ast;
+		  Double seven_rbs;
+		  Double seven_ft_pct;
+		  Double six_pts;
+		  Double six_ast;
+		  Double six_rbs;
+		  Double six_ft_pct;
 		  int count;
 		  boolean fill;
 		
@@ -115,22 +115,22 @@ public class databaseFillPlayers extends HttpServlet {
 					  ps.setLong(8, team_id);
 					  ps.setString(9,team_name);
 					  ps.setString(10,team_conference);
-					  ps.setLong(11, nine_pts);
-					  ps.setLong(12, nine_ast);
-					  ps.setLong(13, nine_rbs);
-					  ps.setLong(14, nine_ft_pct);
-					  ps.setLong(15, eight_pts);
-					  ps.setLong(16, eight_ast);
-					  ps.setLong(17, eight_rbs);
-					  ps.setLong(18, eight_ft_pct);
-					  ps.setLong(19, seven_pts);
-					  ps.setLong(20, seven_ast);
-					  ps.setLong(21, seven_rbs);
-					  ps.setLong(22, seven_ft_pct);
-					  ps.setLong(23, six_pts);
-					  ps.setLong(24, six_ast);
-					  ps.setLong(25, six_rbs);
-					  ps.setLong(26, six_ft_pct);
+					  ps.setDouble(11, nine_pts);
+					  ps.setDouble(12, nine_ast);
+					  ps.setDouble(13, nine_rbs);
+					  ps.setDouble(14, nine_ft_pct);
+					  ps.setDouble(15, eight_pts);
+					  ps.setDouble(16, eight_ast);
+					  ps.setDouble(17, eight_rbs);
+					  ps.setDouble(18, eight_ft_pct);
+					  ps.setDouble(19, seven_pts);
+					  ps.setDouble(20, seven_ast);
+					  ps.setDouble(21, seven_rbs);
+					  ps.setDouble(22, seven_ft_pct);
+					  ps.setDouble(23, six_pts);
+					  ps.setDouble(24, six_ast);
+					  ps.setDouble(25, six_rbs);
+					  ps.setDouble(26, six_ft_pct);
 					  /*
 					  try {
 			            Thread.sleep(10);
@@ -228,11 +228,13 @@ public class databaseFillPlayers extends HttpServlet {
 					 
 					   		
 					   	
-					   		JSONObject t =(JSONObject)js.get("data");
-					   		nine_pts = (Long) t.get("pts");
-					   		nine_ast = (Long) t.get("ast");
-					   		nine_rbs = (Long) t.get("rbs");
-					   		nine_ft_pct = (Long) t.get("ft_pct");
+					   JSONArray t =(JSONArray) js.get("data");
+		                JSONObject g = (JSONObject) t.get(0);
+
+		                nine_pts = (Double) g.get("pts");
+		                nine_ast = (Double) g.get("ast");
+		                nine_rbs = (Double) g.get("reb");
+		                nine_ft_pct = (Double) g.get("ft_pct");
 				   		
 				   	}}
 			conn.disconnect();
@@ -272,11 +274,13 @@ public class databaseFillPlayers extends HttpServlet {
 				 
 				   		
 				   	
-				   		JSONObject t =(JSONObject)js.get("data");
-				   		eight_pts = (Long) t.get("pts");
-				   		eight_ast = (Long) t.get("ast");
-				   		eight_rbs = (Long) t.get("rbs");
-				   		eight_ft_pct = (Long) t.get("ft_pct");
+				   JSONArray t =(JSONArray) js.get("data");
+	                JSONObject g = (JSONObject) t.get(0);
+
+	                eight_pts = (Double) g.get("pts");
+	                eight_ast = (Double) g.get("ast");
+	                eight_rbs = (Double) g.get("reb");
+	                eight_ft_pct = (Double) g.get("ft_pct");
 			   		
 			   	}
 			   }
@@ -319,11 +323,13 @@ public class databaseFillPlayers extends HttpServlet {
 			 
 			   		
 			   	
-			   		JSONObject t =(JSONObject)js.get("data");
-			   		seven_pts = (Long) t.get("pts");
-			   		seven_ast = (Long) t.get("ast");
-			   		seven_rbs = (Long) t.get("rbs");
-			   		seven_ft_pct = (Long) t.get("ft_pct");
+			   JSONArray t =(JSONArray) js.get("data");
+               JSONObject g = (JSONObject) t.get(0);
+
+               seven_pts = (Double) g.get("pts");
+               seven_ast = (Double) g.get("ast");
+               seven_rbs = (Double) g.get("reb");
+               seven_ft_pct = (Double) g.get("ft_pct");
 		   		
 		   	}}
 		conn.disconnect();
@@ -362,11 +368,13 @@ public class databaseFillPlayers extends HttpServlet {
 					 
 					   		
 					   	
-					   		JSONObject t =(JSONObject)js.get("data");
-					   		six_pts = (Long) t.get("pts");
-					   		six_ast = (Long) t.get("ast");
-					   		six_rbs = (Long) t.get("rbs");
-					   		six_ft_pct = (Long) t.get("ft_pct");
+					   JSONArray t =(JSONArray) js.get("data");
+		                JSONObject g = (JSONObject) t.get(0);
+
+		                six_pts = (Double) g.get("pts");
+		                six_ast = (Double) g.get("ast");
+		                six_rbs = (Double) g.get("reb");
+		                six_ft_pct = (Double) g.get("ft_pct");
 				   		
 				   	}}
 				conn.disconnect();

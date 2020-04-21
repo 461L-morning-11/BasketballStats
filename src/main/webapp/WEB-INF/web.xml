@@ -77,8 +77,6 @@
 		<url-pattern>/daily/dbplayers</url-pattern>
 	</servlet-mapping>
 	
-	
-         
          
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
