@@ -229,26 +229,24 @@ public class databaseFillPlayers extends HttpServlet {
 					   		
 					   	
 					   JSONArray t =(JSONArray) js.get("data");
+					   if(t.size()!=0) {
 		                JSONObject g = (JSONObject) t.get(0);
 
 		                nine_pts = (Double) g.get("pts");
 		                nine_ast = (Double) g.get("ast");
 		                nine_rbs = (Double) g.get("reb");
 		                nine_ft_pct = (Double) g.get("ft_pct");
+					   }
+					   else {
+						   nine_pts = -1.0;
+					   		nine_ast = -1.0;
+					   		nine_rbs = -1.0;
+					   		nine_ft_pct = -1.0;
+					   }
 				   		
 				   	}}
 			conn.disconnect();
 			   
-			}catch(IndexOutOfBoundsException n) {
-				nine_pts = null;
-		   		nine_ast = null;
-		   		nine_rbs = null;
-		   		nine_ft_pct = null;
-		   	}catch(NullPointerException n) {
-				nine_pts = null;
-		   		nine_ast = null;
-		   		nine_rbs = null;
-		   		nine_ft_pct = null;
 		   	}catch(Exception e1) {
 			   		e1.printStackTrace();
 			   	}
@@ -280,27 +278,26 @@ public class databaseFillPlayers extends HttpServlet {
 				   		
 				   	
 				   JSONArray t =(JSONArray) js.get("data");
+				   if(t.size() != 0) {
 	                JSONObject g = (JSONObject) t.get(0);
 
 	                eight_pts = (Double) g.get("pts");
 	                eight_ast = (Double) g.get("ast");
 	                eight_rbs = (Double) g.get("reb");
 	                eight_ft_pct = (Double) g.get("ft_pct");
+				   }
+				   else {
+					   eight_pts = -1.0;
+				   		eight_ast = -1.0;
+				   		eight_rbs = -1.0;
+				   		eight_ft_pct = -1.0;
+				   }
 			   		
 			   	}
 			   }
 		conn.disconnect();
 		   
-		}catch(IndexOutOfBoundsException n) {
-			eight_pts = null;
-	   		eight_ast = null;
-	   		eight_rbs = null;
-	   		eight_ft_pct = null;
-	   	}catch(NullPointerException n) {
-			eight_pts = null;
-	   		eight_ast = null;
-	   		eight_rbs = null;
-	   		eight_ft_pct = null;
+
 	   	}catch(Exception e2) {
 		   		e2.printStackTrace();
 		   	}
@@ -334,26 +331,24 @@ public class databaseFillPlayers extends HttpServlet {
 			   		
 			   	
 			   JSONArray t =(JSONArray) js.get("data");
+			   if(t.size() != 0) {
                JSONObject g = (JSONObject) t.get(0);
 
                seven_pts = (Double) g.get("pts");
                seven_ast = (Double) g.get("ast");
                seven_rbs = (Double) g.get("reb");
                seven_ft_pct = (Double) g.get("ft_pct");
+			   }
+			   else {
+				   seven_pts = -1.0;
+			   		seven_ast = -1.0;
+			   		seven_rbs = -1.0;
+			   		seven_ft_pct = -1.0;
+			   }
 		   		
 		   	}}
 		conn.disconnect();
 		
-		}catch(IndexOutOfBoundsException n) {
-			seven_pts = null;
-	   		seven_ast = null;
-	   		seven_rbs = null;
-	   		seven_ft_pct = null;
-	   	}catch(NullPointerException n) {
-	   		seven_pts = null;
-	   		seven_ast = null;
-	   		seven_rbs = null;
-	   		seven_ft_pct = null;
 	   	}catch(Exception e3) {
 				e3.printStackTrace();
 			}
@@ -384,27 +379,24 @@ public class databaseFillPlayers extends HttpServlet {
 					   		
 					   	
 					   JSONArray t =(JSONArray) js.get("data");
+					   if(t.size()!=0) {
 		                JSONObject g = (JSONObject) t.get(0);
 
 		                six_pts = (Double) g.get("pts");
 		                six_ast = (Double) g.get("ast");
 		                six_rbs = (Double) g.get("reb");
 		                six_ft_pct = (Double) g.get("ft_pct");
+					   }
+					   else {
+						   six_pts = -1.0;
+					   		six_ast = -1.0;
+					   		six_rbs = -1.0;
+					   		six_ft_pct = -1.0;
+					   }
 				   		
 				   	}}
 				conn.disconnect();
 				
-				}catch(IndexOutOfBoundsException n) {
-					six_pts = null;
-			   		six_ast = null;
-			   		six_rbs = null;
-			   		six_ft_pct = null;
-			   	}
-				catch(NullPointerException n) {
-					six_pts = null;
-			   		six_ast = null;
-			   		six_rbs = null;
-			   		six_ft_pct = null;
 			   	}catch(Exception e4) {
 						e4.printStackTrace();
 					}
