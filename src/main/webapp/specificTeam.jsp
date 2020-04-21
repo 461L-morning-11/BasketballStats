@@ -142,7 +142,26 @@
     	   			<tr onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
     	   				<td><%=rs2.getString("first_name") %></td>
     	   				<td><%=rs2.getString("last_name") %></td>
-    	   				<td><%=rs2.getString("position") %></td>   			
+    	   				<%String short_position = (String) rs2.getString("position");
+    	   				String position = "";
+    	   				char[] position_letters = short_position.toCharArray();
+    	   				for(int j =0; j <short_position.length(); j++){
+    	   					try{
+    	   					if(position_letters[j] == 'C'){
+    	   						position += "Center";
+    	   					} else if(position_letters[j] == 'G'){
+    	   						position += "Guard";
+    	   					} else if(position_letters[j] == 'F'){
+    	   						position += "Forward";
+    	   					} else if(position_letters[j] == 'C'){
+    	   						position += "Center";
+    	   					} else if(position_letters[j] == '-'){
+    	   						position += "-";
+    	   					}
+    	   					}catch(Exception e){}
+    	   				}
+    	   				pageContext.setAttribute("player_position", position); %>
+    	   				<td>${fn:escapeXml(player_position)}</td>   			
     	   			</tr>
     	   		<%} %>
     	   		</tbody>
