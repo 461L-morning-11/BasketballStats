@@ -35,6 +35,7 @@ public class databaseFillPlayers extends HttpServlet {
 		  Long id;
 		  String first_name;
 		  String last_name;
+		  String short_position;
 		  String position;
 		  long height_feet;
 		  long height_inches;
@@ -89,7 +90,7 @@ public class databaseFillPlayers extends HttpServlet {
 				    System.out.println(resultSet.getString(1));
 				  }
 				  
-				  for(int i=1;i<2000;i++) {	//only getting 2000 for now. There are more
+				  for(int i=1;i<3092;i++) {	//only getting 2000 for now. There are more
 					  count++;
 					  fill = false;
 					  while(!fill) {
@@ -185,7 +186,24 @@ public class databaseFillPlayers extends HttpServlet {
 					   		System.out.println(id);
 					   		first_name = (String) js.get("first_name");
 					   		last_name = (String) js.get("last_name");
-					   		position = (String) js.get("position");
+					   		short_position = (String) js.get("position");
+					   		position = "";
+							char[] position_letters = short_position.toCharArray();
+							for(int j =0; j <short_position.length(); j++){
+								try{
+								if(position_letters[j] == 'C'){
+									position += "Center";
+								} else if(position_letters[j] == 'G'){
+									position += "Guard";
+								} else if(position_letters[j] == 'F'){
+									position += "Forward";
+								} else if(position_letters[j] == 'C'){
+									position += "Center";
+								} else if(position_letters[j] == '-'){
+									position += "-";
+								}
+								}catch(Exception e){}
+							}
 					   		JSONObject t =(JSONObject)js.get("team");
 					   		team_id = (Long) t.get("id");
 					   		team_name = (String) t.get("full_name");

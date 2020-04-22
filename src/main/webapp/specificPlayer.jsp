@@ -215,7 +215,7 @@
 				%>
 				</h1>
 				<div class="center">	
-					<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the <a href="specificTeam.jsp?teamId=${fn:escapeXml(player_team_id)}">${fn:escapeXml(player_team_name_long)}</a> in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
+					<p>${fn:escapeXml(player_first_name)} is a ${fn:escapeXml(player_position)} for the <a class="teamLink" href="specificTeam.jsp?teamId=${fn:escapeXml(player_team_id)}">${fn:escapeXml(player_team_name_long)}</a> in the ${fn:escapeXml(player_team_conference)}ern Conference</p>
 				</div>
    			</div>
     	</div>

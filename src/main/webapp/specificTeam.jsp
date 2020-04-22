@@ -70,6 +70,8 @@
 	<%
 	pageContext.setAttribute("team_ID", request.getParameter("teamId"));
 	String team_ID = request.getParameter("teamId");
+	int total_tries = -1;
+	int total_champs = -1;
 	
 	String db="basketball_web";
 	String user = "root";
@@ -108,6 +110,12 @@
 			pageContext.setAttribute("team_conference", rs.getString("conference"));
 		
 			pageContext.setAttribute("team_ID", rs.getString("id"));
+			
+			pageContext.setAttribute("total_champs", rs.getInt("total_champ"));
+			total_champs = rs.getInt("total_champ");
+			pageContext.setAttribute("total_tries", rs.getInt("total_tries"));
+			total_tries = rs.getInt("total_tries");
+			pageContext.setAttribute("recent_champs", rs.getInt("recent_champ"));
 		
 			pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
 			%>
@@ -121,6 +129,14 @@
 						<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" align="middle" alt="Responsive image">
 						<h1>${fn:escapeXml(team_name_long)} (${fn:escapeXml(team_abbreviation)})</h1>	
 						<p>The ${fn:escapeXml(team_name_short)} from ${fn:escapeXml(team_city)} play in the ${fn:escapeXml(team_division)} division of the ${fn:escapeXml(team_conference)}ern Conference </p>
+						<br>
+						<%if(total_tries == 0){ %>
+						<p>The ${fn:escapeXml(team_name_short)} have never made it to an NBA Championship game :'(</p>
+						<%}else if(total_champs == 0){%>
+						<p>They've been in ${fn:escapeXml(total_tries)} NBA Championship game(s) but never won. Their last run was in ${fn:escapeXml(recent_champs)}.</p>
+						<%}else{ %>
+						<p>They've won ${fn:escapeXml(total_champs)} Championship(s) out of the ${fn:escapeXml(total_tries)} time(s) they've been to the Finals. Their last win was in ${fn:escapeXml(recent_champs)}.</p>
+						<%} %>
     				</div>
     			</div>
     		</div>
