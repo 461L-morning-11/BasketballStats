@@ -81,8 +81,8 @@
 		  		
 		  		
 		  		// sorting ---------------------------
-		  		int startInt = (pageInt * 27) - 26;
-		  		int endInt = pageInt * 27;
+		  		int startInt = (pageInt * 12) - 12;
+		  		int endInt = (pageInt * 12);
 		       
 		       String sortBy = request.getParameter("sortBy");
 		  	    if(sortBy == null) {
@@ -99,9 +99,11 @@
 	 				</button>
 					<div class="dropdown-menu">
 		  				<a class="dropdown-item" href="games.jsp?sortBy=id&page=${page}">Default</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=first_name&page=${page}">First Name</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=last_name&page=${page}">Last Name</a>
-	  					<a class="dropdown-item" href="games.jsp?sortBy=team_name&page=${page}">Team</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=date&page=${page}">Date</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=home_name&page=${page}">Home Team</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=visitor_name&page=${page}">Visitor Team</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=home_team_score&page=${page}">Home Score</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=visitor_team_score&page=${page}">Visitor Score</a>
 					</div>
 				</div>
 				<hr>
@@ -128,13 +130,13 @@
 		
 		   		Statement statement = c.createStatement();
 		   		
-		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT " + startInt + ", " + endInt);
+		   		ResultSet rs = statement.executeQuery("SELECT * FROM games ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
 		   		
 		   		%>
 				<div class="container">
 			<div class="row">
 				<% 
-				for(int i=0;i<25;i++)
+				for(int i=0;i<12;i++)
 				{
 		   			rs.next();
 		
@@ -201,26 +203,26 @@
 		<ul class="pagination justify-content-center">
 			
 			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
-				<a class="page-link" href="games.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+				<a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
 			<% if(pageInt > 3){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page-3}">${page-3}</a></li>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
 			<% } %>
 			<% if(pageInt > 2){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page-2}">${page-2}</a></li>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
 			<% } %>
 			<% if(pageInt > 1){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page-1}">${page-1}</a></li>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
 			<% } %>
 	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
-			<% if(pageInt < 488){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page+1}">${page+1}</a></li>
+			<% if(pageInt < 167){ %>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
 			<% } %>
-			<% if(pageInt < 487){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page+2}">${page+2}</a></li>
+			<% if(pageInt < 166){ %>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
 			<% } %>
-			<% if(pageInt < 486){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page+3}">${page+3}</a></li>
+			<% if(pageInt < 165){ %>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
 			<% } %>
 			<li class="page-item <% if(pageInt == 488){ %> disabled <% } %>">
 				<a class="page-link" href="games.jsp?page=${page+1}">Next</a>

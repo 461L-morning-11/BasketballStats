@@ -79,7 +79,7 @@
 		  		
 		  		
 		  		// sorting ---------------------------
-		  		int startInt = (pageInt * 27) - 26;
+		  		int startInt = (pageInt * 27) - 27;
 		  		int endInt = pageInt * 27;
 		       
 		       String sortBy = request.getParameter("sortBy");
