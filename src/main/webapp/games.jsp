@@ -69,7 +69,7 @@
 
       <div class="main-content">
         <h1>List of Games</h1>
-        <br><hr><br>
+        <hr>
         
 		        
 		<% 
@@ -84,56 +84,6 @@
 		
 		int startInt = (pageInt * 25) - 24;
 		int endInt = pageInt * 25;
-		
-	
-		
-   		
-   		// API pull ----------------------------
-   		/*
-		URL url = new URL("https://www.balldontlie.io/api/v1/games?per_page=100&page=" + pageNumber);
-		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.connect();
-		int responsecode = conn.getResponseCode();
-		String inline = "";
-		if(responsecode != 200)
-		    throw new RuntimeException("HttpResponseCode: " +responsecode);
-		else
-		{
-		
-		    Scanner sc = new Scanner(url.openStream());
-		
-		    while(sc.hasNext())
-		    {
-		        inline+=sc.nextLine();
-		    }
-		    System.out.println("\nJSON data in string format");
-		    System.out.println(inline);
-		    sc.close();
-		}
-		
-		JSONParser parse = new JSONParser();
-		
-		JSONObject jobj = (JSONObject)parse.parse(inline);
-		
-		JSONArray jsonarr_1 = (JSONArray) jobj.get("data");
-		
-		*/
-		%>
-	
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">Date</th>
-					<th scope="col">Home Team</th>
-					<th scope="col">Home Score</th>
-					<th scope="col">Visitor Score</th>
-					<th scope="col">Visitor Team</th>
-				</tr>
-			</thead>
-			<tbody>
-				
-			<%
 			
 			String db="basketball_web";
 			String user = "root";
@@ -156,7 +106,10 @@
 		   		
 		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT " + startInt + ", " + endInt);
 		   		
-			
+		   		%>
+				<div class="container">
+			<div class="row">
+				<% 
 				for(int i=0;i<25;i++)
 				{
 		   			rs.next();
@@ -164,7 +117,8 @@
 
 					pageContext.setAttribute("game_home_team", rs.getString("home_name"));
 					pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
-					
+					pageContext.setAttribute("home_id", rs.getString("home_team_id"));
+					pageContext.setAttribute("visitor_id", rs.getString("visitor_team_id"));
 					
 					
 			   		System.out.println("getting data for game " + rs.getString("id"));
@@ -180,34 +134,44 @@
 					
 					
 					pageContext.setAttribute("game_ID", rs.getString("id"));
+					pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
+					pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
 			   		
 		   		
 				
-			%>
-				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
-				
-				  	<td>${fn:escapeXml(game_date)}</td>
-				  	<td>${fn:escapeXml(game_home_team)}</td>
-				  	<td>${fn:escapeXml(game_home_score)}</td>
-				  	<td>${fn:escapeXml(game_visitor_score)}</td>
-				 	<td>${fn:escapeXml(game_visitor_team)}</td>
 					
-				  
-				</tr>
+					
+				%>
+					<div class="col-md-4">
+						<div class="card mb-4 shadow-sm">
+						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
+								<img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+								<img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+								<div class="card-body">
+									<p class="boldP"> ${fn:escapeXml(game_visitor_team)} @ ${fn:escapeXml(game_home_team)}</p>
+									<p class="card-text"> ${fn:escapeXml(game_visitor_score)} - ${fn:escapeXml(game_home_score)}</p>
+									<div class="d-flex justify-content-between align-items-center">
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
 				<% 
 				}
 				
 			   	
 	   		}
+	   		
 	   		catch(Exception e) {
 	   			e.printStackTrace();
 	   		}%>
-			</tbody>
-		</table>
+			
 		
 		
         
       </div>
+		</div>
+	</div>
       
       <nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">

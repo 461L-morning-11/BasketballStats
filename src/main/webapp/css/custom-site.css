@@ -39,6 +39,9 @@ body {
 .center {
     text-align: center;
 }
+.boldP{
+	font-weight: bold;
+}
 #wrapper{
 	text-align: center;
 }
