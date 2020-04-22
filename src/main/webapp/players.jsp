@@ -63,7 +63,7 @@
 
       <div class="main-content">
         <h1>List of Players</h1>
-      </div>
+      <hr>
       
      <%
 
@@ -75,22 +75,10 @@
   	    int pageInt = Integer.parseInt(pageNumber);
   		pageContext.setAttribute("page", pageInt);
   		
-  		int startInt = (pageInt * 25) - 24;
-  		int endInt = pageInt * 25;
+  		int startInt = (pageInt * 27) - 26;
+  		int endInt = pageInt * 27;
   		
- %>
-	
-	<table  class="table table-striped table-hover">
-		<thead>
-			<tr>
-				<th scope="col">First Name</th>
-				<th scope="col">Last Name</th>
-				<th scope="col">Team</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-	<%
+
 	
 	String db="basketball_web";
 	String user = "root";
@@ -112,9 +100,13 @@
    		Statement statement = c.createStatement();
    		
    		ResultSet rs = statement.executeQuery("SELECT * FROM players LIMIT " + startInt + ", " + endInt);
+   		%>
+   		<div class = "container">
+   			<div class = "row">
+   		<% 
    		
 	
-		for(int i=0;i<25;i++)
+		for(int i=0;i<27;i++)
 		{
    			rs.next();
 	
@@ -151,15 +143,19 @@
 		
 	
 	%>
-    
-    			<tr onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
+    		<div class="col-md-4">
+    			<div class="card mb-4 shadow-sm text-white bg-dark">
+    			<a class="itemCardLink" href="specificPlayer.jsp?playerId=${player_id}">
+    			<div class="card-body">
+    				<h5 class="card-text"> ${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)} </h1>
+    				<h7 class="card-text"> ${fn:escapeXml(player_team)} </h3>
+    				<div class="d-flex justify-content-between align-items-center">
+    				</div>
+    			</div>
+    			</a>
+    		</div>
+    		</div>
 				
-				  	<td>${fn:escapeXml(player_first_name)}</td>
-				  	<td>${fn:escapeXml(player_last_name)}</td>
-				  	<td>${fn:escapeXml(player_team)}</td>
-					
-				  
-				</tr>
 			<% 
 				}
 				
@@ -168,8 +164,10 @@
 	   		catch(Exception e) {
 	   			e.printStackTrace();
 	   		}%>
-		</tbody>
-	</table>
+    	</div>
+    </div>
+    </div>
+	
 	
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
