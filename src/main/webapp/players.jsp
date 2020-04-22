@@ -97,9 +97,9 @@
 	 				</button>
 					<div class="dropdown-menu">
 		  				<a class="dropdown-item" href="players.jsp?sortBy=id&page=${page}">Default</a>
-		  				<a class="dropdown-item" href="players.jsp?sortBy=first_name&page=${page}"">First Name</a>
-		  				<a class="dropdown-item" href="players.jsp?sortBy=last_name&page=${page}"">Last Name</a>
-	  					<a class="dropdown-item" href="players.jsp?sortBy=team_name&page=${page}"">Team</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=first_name&page=${page}">First Name</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=last_name&page=${page}">Last Name</a>
+	  					<a class="dropdown-item" href="players.jsp?sortBy=team_name&page=${page}">Team</a>
 					</div>
 				</div>
 				<hr>
