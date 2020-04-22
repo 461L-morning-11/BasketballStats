@@ -67,7 +67,9 @@
 	   	
 	   	//PLAYERS RESULTS
 	   	
-	   	String Query = "SELECT * FROM players WHERE MATCH(first_name, last_name, team_name, team_conference, position) AGAINST( '"+request.getParameter("search")+"')";
+	   	String search = request.getParameter("search");
+	   	String Query = "SELECT * FROM players WHERE(CONCAT(first_name, last_name, team_name, team_conference, position)) LIKE(\"%" + search + "%\")";
+	   	System.out.println(Query);
 	   	Statement stm = c.createStatement();
 	   	ResultSet rs = stm.executeQuery(Query);
 	   	%>
@@ -104,7 +106,7 @@
 	    
 	    //TEAMS RESULTS
 	    
-	   	String Query2 = "SELECT * FROM teams WHERE MATCH(abbreviation, city, conference, division, full_name, short_name) AGAINST('"+request.getParameter("search")+"')";
+	   	String Query2 = "SELECT * FROM teams WHERE(CONCAT(abbreviation, city, conference, division, full_name, short_name)) LIKE(\"%" + search + "%\")";
 	   	ResultSet rs2 = stm.executeQuery(Query2);
 	   	while(rs2.next()){
 	   		pageContext.setAttribute("team_ID", rs2.getString("id"));
@@ -133,7 +135,7 @@
 	   	
 	   	//GAMES RESULTS
 	   	
-	   	String Query3 = "SELECT * FROM games WHERE MATCH(home_name, visitor_name) AGAINST ('"+request.getParameter("search")+"')";
+	   	String Query3 = "SELECT * FROM games WHERE(CONCAT(home_name, visitor_name)) LIKE(\"%" + search + "%\")";
 	   	ResultSet rs3 = stm.executeQuery(Query3);
 	   	while(rs3.next()){
 	   		pageContext.setAttribute("game_ID", rs3.getString("id"));
