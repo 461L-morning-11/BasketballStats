@@ -62,7 +62,7 @@
     <main role="main" class="container">
 
 <%
-
+	int team_id = -1;
   // pagination ------------------------
 	String pageNumber = request.getParameter("page");
 	   if(pageNumber == null) {
@@ -123,7 +123,7 @@
 				pageContext.setAttribute("team_division", rs.getString("division"));
 				
 				pageContext.setAttribute("team_ID", rs.getString("id"));
-				
+				team_id =  rs.getInt("id");
 				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
 				
 				
@@ -132,7 +132,11 @@
 				<div class="col-md-4">
 					<div class="card mb-4 shadow-sm text-white bg-dark">
 					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+						<%if(team_id == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
 							<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
 							<div class="card-body">
 								<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
 								<div class="d-flex justify-content-between align-items-center">
