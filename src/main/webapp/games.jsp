@@ -67,48 +67,13 @@
 
     <main role="main" class="container">
 
-		<div class="main-content">
-			<h1>List of Games</h1>
-        		
-        		<%
-		    	// pagination ------------------------
-		       	String pageNumber = request.getParameter("page");
-		  	    if(pageNumber == null) {
-		  	    	pageNumber = "1";
-		  	    }
-		  	    int pageInt = Integer.parseInt(pageNumber);
-		  		pageContext.setAttribute("page", pageInt);
-		  		
-		  		
-		  		// sorting ---------------------------
-		  		int startInt = (pageInt * 27) - 26;
-		  		int endInt = pageInt * 27;
-		       
-		       String sortBy = request.getParameter("sortBy");
-		  	    if(sortBy == null) {
-		  	    	sortBy = "id";
-		  	    }
-		  		pageContext.setAttribute("sortBy", sortBy);
-		  		
-		       
-		       %>
-		       <!-- Sorting Setup -->
-				<div class="btn-group">
-	 				<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	   					Sort By
-	 				</button>
-					<div class="dropdown-menu">
-		  				<a class="dropdown-item" href="games.jsp?sortBy=id&page=${page}">Default</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=first_name&page=${page}">First Name</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=last_name&page=${page}">Last Name</a>
-	  					<a class="dropdown-item" href="games.jsp?sortBy=team_name&page=${page}">Team</a>
-					</div>
-				</div>
-				<hr>
+      <div class="main-content">
+        <h1>List of Games</h1>
+        <hr>
         
 		        
 		<% 
-
+		
 		// pagination ------------------------
 		String pageNumber = request.getParameter("page");
 	    if(pageNumber == null) {
@@ -117,10 +82,9 @@
 	    int pageInt = Integer.parseInt(pageNumber);
 		pageContext.setAttribute("page", pageInt);
 		
-		int startInt = (pageInt * 25) - 24;
-		int endInt = pageInt * 25;
+		int startInt = (pageInt * 27) - 26;
+		int endInt = pageInt * 27;
 			
-
 			String db="basketball_web";
 			String user = "root";
 			String pass="Sr4*8DNgZbvHqnee";
@@ -146,11 +110,10 @@
 				<div class="container">
 			<div class="row">
 				<% 
-				for(int i=0;i<25;i++)
+				for(int i=0;i<27;i++)
 				{
 		   			rs.next();
 		
-
 					pageContext.setAttribute("game_home_team", rs.getString("home_name"));
 					pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
 					pageContext.setAttribute("home_id", rs.getString("home_team_id"));
@@ -162,8 +125,6 @@
 			        String shortDate = (String) rs.getString("date");
 				    
 				    pageContext.setAttribute("game_date", shortDate.substring(5, 10));
-
-
 					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
 					
 					pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
@@ -179,7 +140,7 @@
 					
 				%>
 					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm">
+						<div class="card mb-4 shadow-sm text-white bg-dark">
 						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
 								<img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
 								<img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
