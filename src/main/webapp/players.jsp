@@ -69,6 +69,18 @@
 		       
 		       
 		       <%
+		    	// pagination ------------------------
+		       	String pageNumber = request.getParameter("page");
+		  	    if(pageNumber == null) {
+		  	    	pageNumber = "1";
+		  	    }
+		  	    int pageInt = Integer.parseInt(pageNumber);
+		  		pageContext.setAttribute("page", pageInt);
+		  		
+		  		
+		  		// sorting ---------------------------
+		  		int startInt = (pageInt * 27) - 26;
+		  		int endInt = pageInt * 27;
 		       
 		       String sortBy = request.getParameter("sortBy");
 		  	    if(sortBy == null) {
@@ -84,26 +96,18 @@
 	   					Sort By
 	 				</button>
 					<div class="dropdown-menu">
-		  				<a class="dropdown-item" href="players.jsp?sortBy=id">Default</a>
-		  				<a class="dropdown-item" href="players.jsp?sortBy=first_name">First Name</a>
-		  				<a class="dropdown-item" href="players.jsp?sortBy=last_name">Last Name</a>
-	  					<a class="dropdown-item" href="players.jsp?sortBy=team_name">Team</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=id&page=${page}">Default</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=first_name&page=${page}"">First Name</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=last_name&page=${page}"">Last Name</a>
+	  					<a class="dropdown-item" href="players.jsp?sortBy=team_name&page=${page}"">Team</a>
 					</div>
 				</div>
 				<hr>
       
      <%
 
-  // pagination ------------------------
-  		String pageNumber = request.getParameter("page");
-  	    if(pageNumber == null) {
-  	    	pageNumber = "1";
-  	    }
-  	    int pageInt = Integer.parseInt(pageNumber);
-  		pageContext.setAttribute("page", pageInt);
+  
   		
-  		int startInt = (pageInt * 27) - 26;
-  		int endInt = pageInt * 27;
   		
 
 	
