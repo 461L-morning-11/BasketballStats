@@ -1,5 +1,5 @@
 <%@ page import="java.net.URL" %>
-<%@ page import="org.xml.sax.SAXException" %> 
+<%@ page import="org.xml.sax.SAXException" %>
 <%@ page import="java.net.HttpURLConnection" %>
 <%@ page import="org.json.simple.parser.JSONParser" %>
 <%@ page import="org.json.simple.JSONObject" %>
@@ -59,12 +59,12 @@
       </div>
     </nav>
 
-    <main role="main" class="container">    
-    
+    <main role="main" class="container">
+
 	    <div class="main-content">
 	    	<h1>List of Teams</h1>
-    
-    
+
+
 
 <%
 
@@ -75,7 +75,7 @@
 		   }
 		   int pageInt = Integer.parseInt(pageNumber);
 		pageContext.setAttribute("page", pageInt);
-		
+
 		int startInt = (pageInt * 9) - 9;
 		int endInt = pageInt * 9;
 
@@ -85,8 +85,8 @@
 	    	sortBy = "id";
 	    }
 		pageContext.setAttribute("sortBy", sortBy);
-		
-   
+
+
    %>
 			   <!-- Sorting Setup -->
 				<div class="btn-group">
@@ -102,9 +102,9 @@
 				</div>
 				<hr>
 
-    
 
-<% 
+
+<%
 
 	String db="basketball_web";
 	String user = "root";
@@ -112,7 +112,7 @@
 	String ip="104.154.138.136";
 
 	try {
-		
+
 		System.out.println("trying to query from sql database;");
    	Class.forName("com.mysql.cj.jdbc.Driver");
    	String host = "jdbc:mysql://" + ip + ":3306/" + db;
@@ -121,18 +121,18 @@
     	user,
     	pass
     );
-   	
+
 
 		Statement statement = c.createStatement();
-		
+
 		ResultSet rs = statement.executeQuery("SELECT * FROM teams ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
-		
+
 
 	%>
 
    	<div class="container">
 		<div class="row">
-			<% 
+			<%
 			for(int i=0;i<9;i++)
 			{
 
@@ -143,20 +143,24 @@
 				pageContext.setAttribute("team_city", rs.getString("city"));
 
 				pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
-				
+
 				pageContext.setAttribute("team_division", rs.getString("division"));
-				
+
 				pageContext.setAttribute("team_ID", rs.getString("id"));
-				
+				team_id =  rs.getInt("id");
 				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
-				
-				
-				
+
+
+
 			%>
 				<div class="col-md-4">
 					<div class="card mb-4 shadow-sm text-white bg-dark">
 					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+						<%if(team_id == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
 							<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
 							<div class="card-body">
 								<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
 								<div class="d-flex justify-content-between align-items-center">
@@ -165,22 +169,22 @@
 						</a>
 					</div>
 				</div>
-			<% 
+			<%
 			}
-			
-		   	
+
+
    		}
    		catch(Exception e) {
    			e.printStackTrace();
    		}%>
 		</div>
 	</div>
-		
+
 	</div>
-	
+
 		<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
-			
+
 			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
 				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
@@ -208,10 +212,10 @@
 			</li>
 		</ul>
 	</nav>
-    
+
 
     </main><!-- /.container -->
-		
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

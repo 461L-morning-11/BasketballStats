@@ -71,6 +71,8 @@
 			<h1>List of Games</h1>
         		
         		<%
+        		int visitor_id = -1;
+        		int home_id = -1;
 		    	// pagination ------------------------
 		       	String pageNumber = request.getParameter("page");
 		  	    if(pageNumber == null) {
@@ -144,7 +146,9 @@
 					pageContext.setAttribute("game_home_team", rs.getString("home_name"));
 					pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
 					pageContext.setAttribute("home_id", rs.getString("home_team_id"));
+					home_id = rs.getInt("home_team_id");
 					pageContext.setAttribute("visitor_id", rs.getString("visitor_team_id"));
+					visitor_id = rs.getInt("visitor_team_id");
 					
 					
 			   		System.out.println("getting data for game " + rs.getString("id"));
@@ -171,8 +175,16 @@
 					<div class="col-md-4">
 						<div class="card mb-4 shadow-sm">
 						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
-								<img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-								<img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+								<%if(visitor_id == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
+							<img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
+								<%if(home_id == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
+							<img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
 								<div class="card-body">
 									<p class="boldP"> ${fn:escapeXml(game_visitor_team)} @ ${fn:escapeXml(game_home_team)}</p>
 									<p class="card-text"> ${fn:escapeXml(game_visitor_score)} - ${fn:escapeXml(game_home_score)}</p>
