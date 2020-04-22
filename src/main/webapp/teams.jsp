@@ -61,14 +61,27 @@
 
     <main role="main" class="container">
 
+<%
 
+  // pagination ------------------------
+	String pageNumber = request.getParameter("page");
+	   if(pageNumber == null) {
+	   	pageNumber = "1";
+	   }
+	   int pageInt = Integer.parseInt(pageNumber);
+	pageContext.setAttribute("page", pageInt);
+	
+	int startInt = (pageInt * 9) - 9;
+	int endInt = pageInt * 9;
+  		
+ %>
 
 <% 
 
-String db="basketball_web";
-String user = "root";
-String pass="Sr4*8DNgZbvHqnee";
-String ip="104.154.138.136";
+	String db="basketball_web";
+	String user = "root";
+	String pass="Sr4*8DNgZbvHqnee";
+	String ip="104.154.138.136";
 
 	try {
 		
@@ -84,7 +97,7 @@ String ip="104.154.138.136";
 
 		Statement statement = c.createStatement();
 		
-		ResultSet rs = statement.executeQuery("SELECT * FROM teams LIMIT 0, 31");
+		ResultSet rs = statement.executeQuery("SELECT * FROM teams LIMIT " + startInt + ", " + endInt);
 		
 
 	%>
@@ -93,51 +106,84 @@ String ip="104.154.138.136";
     <div class="main-content">
     <h1>List of Teams</h1>
     <hr>
-	   	<div class="container">
-			<div class="row">
-				<% 
-				for(int i=0;i<30;i++)
-				{
-					rs.next();
+   	<div class="container">
+		<div class="row">
+			<% 
+			for(int i=0;i<9;i++)
+			{
 
+				rs.next();
 
-				    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
+			    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
 
-					pageContext.setAttribute("team_city", rs.getString("city"));
+				pageContext.setAttribute("team_city", rs.getString("city"));
 
-					pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
-					
-					pageContext.setAttribute("team_division", rs.getString("division"));
-					
-					pageContext.setAttribute("team_ID", rs.getString("id"));
-					
-					pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
-					
-					
-				%>
-					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm">
-						<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
-								<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-								<div class="card-body">
-									<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
-									<div class="d-flex justify-content-between align-items-center">
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				<% 
-				}
+				pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
 				
-			   	
-	   		}
-	   		catch(Exception e) {
-	   			e.printStackTrace();
-	   		}%>
-			</div>
+				pageContext.setAttribute("team_division", rs.getString("division"));
+				
+				pageContext.setAttribute("team_ID", rs.getString("id"));
+				
+				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
+				
+				
+				
+			%>
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm">
+					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+							<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<div class="card-body">
+								<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
+								<div class="d-flex justify-content-between align-items-center">
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			<% 
+			}
+			
+		   	
+   		}
+   		catch(Exception e) {
+   			e.printStackTrace();
+   		}%>
 		</div>
 	</div>
+		
+	</div>
+	
+		<nav aria-label="Page navigation">
+		<ul class="pagination justify-content-center">
+			
+			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
+				<a class="page-link" href="teams.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+			</li>
+			<% if(pageInt > 3){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page-3}">${page-3}</a></li>
+			<% } %>
+			<% if(pageInt > 2){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page-2}">${page-2}</a></li>
+			<% } %>
+			<% if(pageInt > 1){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page-1}">${page-1}</a></li>
+			<% } %>
+	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
+			<% if(pageInt < 4){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page+1}">${page+1}</a></li>
+			<% } %>
+			<% if(pageInt < 3){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page+2}">${page+2}</a></li>
+			<% } %>
+			<% if(pageInt < 2){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page+3}">${page+3}</a></li>
+			<% } %>
+			<li class="page-item <% if(pageInt == 4){ %> disabled <% } %>">
+				<a class="page-link" href="teams.jsp?page=${page+1}">Next</a>
+			</li>
+		</ul>
+	</nav>
     
 
     </main><!-- /.container -->
