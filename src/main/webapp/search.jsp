@@ -68,7 +68,14 @@
 	   	//PLAYERS RESULTS
 	   	
 	   	String search = request.getParameter("search");
-	   	String Query = "SELECT * FROM players WHERE(CONCAT(first_name, last_name, team_name, team_conference, position)) LIKE(\"%" + search + "%\")";
+	   	if(search.contains("center")) search = search.replace("center", "C");
+	   	if(search.contains("guard")) search = search.replace("guard", "G");
+	   	if(search.contains("forward")) search = search.replace("forward", "F");
+	   	if(search.contains("eastern")) search = search.replace("eastern", "east");
+	   	if(search.contains("western")) search = search.replace("western", "west");
+	   	String Query = "SELECT * FROM players WHERE (CONCAT(first_name, last_name, team_name, team_conference, position)) LIKE(\"%" + search + "%\")" +
+	   				" UNION SELECT * FROM players WHERE MATCH(first_name, last_name, team_name, team_conference, position) AGAINST('" + search + "')" +
+	   			" UNION SELECT * FROM players WHERE position = '\"%" + search + "%\"' ";
 	   	System.out.println(Query);
 	   	Statement stm = c.createStatement();
 	   	ResultSet rs = stm.executeQuery(Query);
@@ -93,7 +100,7 @@
     		</div>
     		</div>
 	
-	   		<%} %>
+	   		<% } %>
 	   		</div>
 	   		</div>
 	   		<hr>
@@ -106,7 +113,8 @@
 	    
 	    //TEAMS RESULTS
 	    
-	   	String Query2 = "SELECT * FROM teams WHERE(CONCAT(abbreviation, city, conference, division, full_name, short_name)) LIKE(\"%" + search + "%\")";
+	   	String Query2 = "SELECT * FROM teams WHERE(CONCAT(abbreviation, city, conference, division, full_name, short_name)) LIKE(\"%" + search + "%\")" +
+	   	" UNION SELECT * FROM teams WHERE MATCH(abbreviation, city, conference, division, full_name, short_name) AGAINST('" + search + "')";
 	   	ResultSet rs2 = stm.executeQuery(Query2);
 	   	while(rs2.next()){
 	   		pageContext.setAttribute("team_ID", rs2.getString("id"));
@@ -135,7 +143,8 @@
 	   	
 	   	//GAMES RESULTS
 	   	
-	   	String Query3 = "SELECT * FROM games WHERE(CONCAT(home_name, visitor_name)) LIKE(\"%" + search + "%\")";
+	   	String Query3 = "SELECT * FROM games WHERE(CONCAT(home_name, visitor_name)) LIKE(\"%" + search + "%\")" + 
+	   			" UNION SELECT * FROM games WHERE MATCH(home_name, visitor_name) AGAINST('" + search + "')";
 	   	ResultSet rs3 = stm.executeQuery(Query3);
 	   	while(rs3.next()){
 	   		pageContext.setAttribute("game_ID", rs3.getString("id"));
