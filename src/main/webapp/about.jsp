@@ -63,7 +63,7 @@
         <h1>About our Page</h1>
       </div>
       
-      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, teams, and games in the history of the NBA and WNBA. This information is intended for people of all ages with any level of interest in professional basketball. </h3>
+      <h3>Welcome to Basketball Stats! This purpose of this site is to provide statistics on all players, teams, and games in the history of the NBA. This information is intended for people of all ages with any level of interest in professional basketball. </h3>
       <br>
       <h2>Meet the developers</h2>
       <br>
@@ -179,11 +179,11 @@
       }catch(Exception e){
     	  e.printStackTrace();
     	  //if github returns a "forbidden" error on api call, default to saved values
-    	  commits[2] = new Long(26); 
-    	  commits[0] = new Long(17); 
-    	  commits[1] = new Long(3); 
-    	  commits[4] = new Long(2); 
-    	  commits[3] = new Long(2);
+    	  commits[2] = new Long(52); 
+    	  commits[0] = new Long(47); 
+    	  commits[1] = new Long(7); 
+    	  commits[4] = new Long(14); 
+    	  commits[3] = new Long(3);
     	  issues[2] = 0; 
     	  issues[0] = 2; 
     	  issues[1] = 1; 
@@ -279,13 +279,13 @@
 	  
 	  <h2>Data</h2>
 	  <p><a href= "https://www.balldontlie.io/#get-a-specific-team"> Ball Don't Lie API</a>
-	  <br>We used the API linked above to gather data about players, teams, and games. A call to this API enabled us to extract and display specific information regarding each player, team, and game in the NBA's past and present. We will be using more sources to include data about the WNBA, as well team and 
-	  player historical data in the future.</p>
+	  <br>We used the API linked above to gather data about players, teams, and games. A call to this API enabled us to extract and display specific information regarding each player, team, and game in the NBA's past and present. We store this data in our database where it is accessed when a user loads a page.
+	  		We collected stats about player' season average and teams' runs at the NBA Championships in addition to more basic info like name, position, team, ect.</p>
 	  
 	  <br>
 	  
 	  <h2>Tools</h2>
-	  <p>We used the BallDon'tLie API and the Github statistics API to dynamically source content for our site. We also added json-simple and apache-commons JAR files to facilitate our desired functionality. We used the built-in google SQL service to store our data for this phase. In the future we intend to migrate to hosting the website ourselves, as well as using a more traditional database provider. As for the appearance, we used built in functions made available through Bootstrap to organize and display the acquired data throughout the site.</p>
+	  <p>We used the BallDon'tLie API and the Github statistics API to dynamically source content for our site. We also added json-simple and apache-commons JAR files to facilitate our desired functionality. We used the built-in google SQL service to store our data and the MySQL Workbench to see and alter talbes and columns during development. The website is hosted on an AWS Beanstalk environment generated from a .war file. As for the appearance, we used built in functions made available through Bootstrap to organize and display the acquired data throughout the site.</p>
 	  
 	  <br>
       
