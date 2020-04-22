@@ -19,15 +19,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    
     <link rel="icon" type="image/png" href="../img/basketball.png">
-
-    <title>Players</title>
-
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="../css/custom-site.css" rel="stylesheet">
+
+    <title>Players</title>
+
+
   </head>
 
   <body>
@@ -59,11 +61,36 @@
       </div>
     </nav>
 
-    <main role="main" class="container">
-
-      <div class="main-content">
-        <h1>List of Players</h1>
-      <hr>
+	<main role="main" class="container">
+	
+	
+		<div class="main-content">
+		       <h1>List of Players</h1>
+		       
+		       
+		       <%
+		       
+		       String sortBy = request.getParameter("sortBy");
+		  	    if(sortBy == null) {
+		  	    	sortBy = "id";
+		  	    }
+		  		pageContext.setAttribute("sortBy", sortBy);
+		  		
+		       
+		       %>
+		       <!-- Sorting Setup -->
+				<div class="btn-group">
+	 				<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	   					Sort By
+	 				</button>
+					<div class="dropdown-menu">
+		  				<a class="dropdown-item" href="players.jsp?sortBy=id">Default</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=first_name">First Name</a>
+		  				<a class="dropdown-item" href="players.jsp?sortBy=last_name">Last Name</a>
+	  					<a class="dropdown-item" href="players.jsp?sortBy=team_name">Team</a>
+					</div>
+				</div>
+				<hr>
       
      <%
 
@@ -99,7 +126,9 @@
 
    		Statement statement = c.createStatement();
    		
-   		ResultSet rs = statement.executeQuery("SELECT * FROM players LIMIT " + startInt + ", " + endInt);
+
+   		ResultSet rs = statement.executeQuery("SELECT * FROM players ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
+   		
    		%>
    		<div class = "container">
    			<div class = "row">
@@ -176,23 +205,23 @@
 				<a class="page-link" href="players.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
 			<% if(pageInt > 3){ %>
-			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-3}">${page-3}</a></li>
+			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
 			<% } %>
 			<% if(pageInt > 2){ %>
-			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-2}">${page-2}</a></li>
+			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
 			<% } %>
 			<% if(pageInt > 1){ %>
-			<li class="page-item"><a class="page-link" href="players.jsp?page=${page-1}">${page-1}</a></li>
+			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
 			<% } %>
 	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
 			<% if(pageInt < 33){ %>
-			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+1}">${page+1}</a></li>
+			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
 			<% } %>
 			<% if(pageInt < 32){ %>
-			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+2}">${page+2}</a></li>
+			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
 			<% } %>
 			<% if(pageInt < 31){ %>
-			<li class="page-item"><a class="page-link" href="players.jsp?page=${page+3}">${page+3}</a></li>
+			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
 			<% } %>
 			<li class="page-item <% if(pageInt == 33){ %> disabled <% } %>">
 				<a class="page-link" href="players.jsp?page=${page+1}">Next</a>
