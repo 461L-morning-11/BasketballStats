@@ -76,12 +76,10 @@
 		  	    }
 		  	    int pageInt = Integer.parseInt(pageNumber);
 		  		pageContext.setAttribute("page", pageInt);
-		  		
-		  		
-		  		// sorting ---------------------------
 		  		int startInt = (pageInt * 27) - 27;
 		  		int endInt = pageInt * 27;
-		       
+
+		  		// sorting ---------------------------
 		       String sortBy = request.getParameter("sortBy");
 		  	    if(sortBy == null) {
 		  	    	sortBy = "id";
