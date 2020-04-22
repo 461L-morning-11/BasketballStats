@@ -108,7 +108,19 @@
         
 		        
 		<% 
+
+		// pagination ------------------------
+		String pageNumber = request.getParameter("page");
+	    if(pageNumber == null) {
+	    	pageNumber = "1";
+	    }
+	    int pageInt = Integer.parseInt(pageNumber);
+		pageContext.setAttribute("page", pageInt);
 		
+		int startInt = (pageInt * 25) - 24;
+		int endInt = pageInt * 25;
+			
+
 			String db="basketball_web";
 			String user = "root";
 			String pass="Sr4*8DNgZbvHqnee";

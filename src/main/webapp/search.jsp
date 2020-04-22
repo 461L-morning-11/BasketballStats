@@ -65,75 +65,97 @@
         	pass
         );
 	   	
+	   	//PLAYERS RESULTS
+	   	
 	   	String Query = "SELECT * FROM players WHERE MATCH(first_name, last_name, team_name, team_conference, position) AGAINST( '"+request.getParameter("search")+"')";
 	   	Statement stm = c.createStatement();
 	   	ResultSet rs = stm.executeQuery(Query);
 	   	%>
-	   	<table  class="table table-hover table-sm">
-	   		<thead>
-	   			<tr>
-	   				<th scope="col">Players</th>
-	   			</tr>
-	   		</thead>
-	   		<tbody>
+		<h1>Player Results:</h1>
+		  <div class = "container">
+   		  <div class = "row">
 	   	<% 
 	   	while(rs.next()){
 	   		pageContext.setAttribute("player_id", rs.getString("id"));
 	   		%>
-	   			<tr onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
-	   				<td><%=rs.getString("first_name") %></td>
-	   				<td><%=rs.getString("last_name") %></td>	   			
-	   			</tr>
+	   			<div class="col-md-3">
+    			<div class="card mb-4 shadow-sm text-white bg-dark">
+    			<a class="itemCardLink" href="specificPlayer.jsp?playerId=${player_id}">
+    			<div class="card-body">
+    				<h5 class="card-text"> <%=rs.getString("first_name") %> <%=rs.getString("last_name") %></h5>
+    				<h7 class="card-text"> <%=rs.getString("team_name") %> </h7>
+    				<div class="d-flex justify-content-between align-items-center">
+    				</div>
+    			</div>
+    			</a>
+    		</div>
+    		</div>
+	
 	   		<%} %>
-	   		</tbody>
-		</table>
-		<br>
+	   		</div>
+	   		</div>
+	   		<hr>
 		
-		<table  class="table table-hover table-sm">
-	   		<thead>
-	   			<tr>
-	   				<th scope="col">Teams</th>
-	   			</tr>
-	   		</thead>
-	   		<tbody>
+		<h1>Team Results:</h1>
+		  <div class = "container">
+   		  <div class = "row">
 		
 	    <% 
+	    
+	    //TEAMS RESULTS
+	    
 	   	String Query2 = "SELECT * FROM teams WHERE MATCH(abbreviation, city, conference, division, full_name, short_name) AGAINST('"+request.getParameter("search")+"')";
 	   	ResultSet rs2 = stm.executeQuery(Query2);
 	   	while(rs2.next()){
 	   		pageContext.setAttribute("team_ID", rs2.getString("id"));
+	   		pageContext.setAttribute("team_logo", "../img/logos/" + rs2.getString("short_name") + ".png");
 	   	%>
-	   		<tr onclick="window.location='specificTeam.jsp?teamId=${team_ID}';">
-	   			<td><%=rs2.getString("full_name") %></td>	   			
-	   		</tr>
+	   			<div class="col-md-3">
+					<div class="card mb-3 shadow-sm text-white bg-dark">
+					<div class="card-body d-flex justify-content-center">
+					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+							<img src="${team_logo}" class="img-fluid img-thumbnail" alt="Responsive image">
+								<p class="card-text text-center" > <%=rs2.getString("short_name") %></p>
+							</a>
+						</div>
+					</div>
+				</div>
 	   		<%} %>
-	   		</tbody>
-		</table>
-		<br>
+	   		</div>
+	   		</div>
 	   	
-	   	<table  class="table table-hover table-sm">
-	   		<thead>
-	   			<tr>
-	   				<th scope="col">Games</th>
-	   			</tr>
-	   		</thead>
-	   		<tbody>
+	   	<hr>
+		
+		<h1>Game Results:</h1>
+		  <div class = "container">
+   		  <div class = "row">
 	   	<% 
+	   	
+	   	//GAMES RESULTS
+	   	
 	   	String Query3 = "SELECT * FROM games WHERE MATCH(home_name, visitor_name) AGAINST ('"+request.getParameter("search")+"')";
 	   	ResultSet rs3 = stm.executeQuery(Query3);
 	   	while(rs3.next()){
 	   		pageContext.setAttribute("game_ID", rs3.getString("id"));
+			pageContext.setAttribute("home_logo", "../img/logos/" + rs3.getString("home_name") + ".png");
+			pageContext.setAttribute("visitor_logo", "../img/logos/" + rs3.getString("visitor_name") + ".png");
 	   		%>
-	   	
-				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
-   					<td><%=rs3.getDate("date") %></td>		  				<td><%=rs3.getString("home_name") %></td>
-		  			<td><%=rs3.getInt("home_team_score") %></td>
-		  			<td><%=rs3.getString("visitor_name") %></td>
-		  			<td><%=rs3.getInt("visitor_team_score") %></td>
-				</tr>
+				<div class="col-md-4">
+						<div class="card mb-4 shadow-sm text-white bg-dark">
+						<div class="card-body d-flex justify-content-between align-items-center">
+						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
+								<img src="${visitor_logo}" class="img-fluid img-thumbnail" alt="Responsive image">
+								<img src="${home_logo}" class="img-fluid img-thumbnail" alt="Responsive image">
+									<p class="boldP text-center"> <%=rs3.getString("visitor_name") %> @ <%=rs3.getString("home_name") %></p>
+									<p class="card-text text-center"> <%=rs3.getString("visitor_team_score") %> - <%=rs3.getString("home_team_score") %></p>
+									
+								</div>
+							</a>
+						</div>
+					</div>
 	   		<%} %>
-	   		</tbody>
-		</table>
+	   		</div>
+		</div>
 	  <%  
     }
     catch(Exception ex){
