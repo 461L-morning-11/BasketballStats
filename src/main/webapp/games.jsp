@@ -67,24 +67,52 @@
 
     <main role="main" class="container">
 
-      <div class="main-content">
-        <h1>List of Games</h1>
-        <hr>
+		<div class="main-content">
+			<h1>List of Games</h1>
+        		
+        		<%
+        		int visitor_id = -1;
+        		int home_id = -1;
+		    	// pagination ------------------------
+		       	String pageNumber = request.getParameter("page");
+		  	    if(pageNumber == null) {
+		  	    	pageNumber = "1";
+		  	    }
+		  	    int pageInt = Integer.parseInt(pageNumber);
+		  		pageContext.setAttribute("page", pageInt);
+		  		
+		  		
+		  		// sorting ---------------------------
+		  		int startInt = (pageInt * 12) - 12;
+		  		int endInt = (pageInt * 12);
+		       
+		       String sortBy = request.getParameter("sortBy");
+		  	    if(sortBy == null) {
+		  	    	sortBy = "id";
+		  	    }
+		  		pageContext.setAttribute("sortBy", sortBy);
+		  		
+		       
+		       %>
+		       <!-- Sorting Setup -->
+				<div class="btn-group">
+	 				<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	   					Sort By
+	 				</button>
+					<div class="dropdown-menu">
+		  				<a class="dropdown-item" href="games.jsp?sortBy=id&page=${page}">Default</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=date&page=${page}">Date</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=home_name&page=${page}">Home Team</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=visitor_name&page=${page}">Visitor Team</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=home_team_score&page=${page}">Home Score</a>
+		  				<a class="dropdown-item" href="games.jsp?sortBy=visitor_team_score&page=${page}">Visitor Score</a>
+					</div>
+				</div>
+				<hr>
         
 		        
 		<% 
 		
-		// pagination ------------------------
-		String pageNumber = request.getParameter("page");
-	    if(pageNumber == null) {
-	    	pageNumber = "1";
-	    }
-	    int pageInt = Integer.parseInt(pageNumber);
-		pageContext.setAttribute("page", pageInt);
-		
-		int startInt = (pageInt * 27) - 26;
-		int endInt = pageInt * 27;
-			
 			String db="basketball_web";
 			String user = "root";
 			String pass="Sr4*8DNgZbvHqnee";
@@ -104,20 +132,23 @@
 		
 		   		Statement statement = c.createStatement();
 		   		
-		   		ResultSet rs = statement.executeQuery("SELECT * FROM games LIMIT " + startInt + ", " + endInt);
+		   		ResultSet rs = statement.executeQuery("SELECT * FROM games ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
 		   		
 		   		%>
 				<div class="container">
 			<div class="row">
 				<% 
-				for(int i=0;i<27;i++)
+				for(int i=0;i<12;i++)
 				{
 		   			rs.next();
 		
+
 					pageContext.setAttribute("game_home_team", rs.getString("home_name"));
 					pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
 					pageContext.setAttribute("home_id", rs.getString("home_team_id"));
+					home_id = rs.getInt("home_team_id");
 					pageContext.setAttribute("visitor_id", rs.getString("visitor_team_id"));
+					visitor_id = rs.getInt("visitor_team_id");
 					
 					
 			   		System.out.println("getting data for game " + rs.getString("id"));
@@ -125,6 +156,8 @@
 			        String shortDate = (String) rs.getString("date");
 				    
 				    pageContext.setAttribute("game_date", shortDate.substring(5, 10));
+
+
 					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
 					
 					pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
@@ -140,10 +173,18 @@
 					
 				%>
 					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm text-white bg-dark">
+						<div class="card mb-4 shadow-sm">
 						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
-								<img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-								<img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+								<%if(visitor_id == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
+							<img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
+								<%if(home_id == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
+							<img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
 								<div class="card-body">
 									<p class="boldP"> ${fn:escapeXml(game_visitor_team)} @ ${fn:escapeXml(game_home_team)}</p>
 									<p class="card-text"> ${fn:escapeXml(game_visitor_score)} - ${fn:escapeXml(game_home_score)}</p>
@@ -174,26 +215,26 @@
 		<ul class="pagination justify-content-center">
 			
 			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
-				<a class="page-link" href="games.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+				<a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
 			<% if(pageInt > 3){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page-3}">${page-3}</a></li>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
 			<% } %>
 			<% if(pageInt > 2){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page-2}">${page-2}</a></li>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
 			<% } %>
 			<% if(pageInt > 1){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page-1}">${page-1}</a></li>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
 			<% } %>
 	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
-			<% if(pageInt < 488){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page+1}">${page+1}</a></li>
+			<% if(pageInt < 167){ %>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
 			<% } %>
-			<% if(pageInt < 487){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page+2}">${page+2}</a></li>
+			<% if(pageInt < 166){ %>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
 			<% } %>
-			<% if(pageInt < 486){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?page=${page+3}">${page+3}</a></li>
+			<% if(pageInt < 165){ %>
+			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
 			<% } %>
 			<li class="page-item <% if(pageInt == 488){ %> disabled <% } %>">
 				<a class="page-link" href="games.jsp?page=${page+1}">Next</a>

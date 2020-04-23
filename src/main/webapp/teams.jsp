@@ -59,22 +59,50 @@
       </div>
     </nav>
 
-    <main role="main" class="container">
+    <main role="main" class="container">    
+    
+	    <div class="main-content">
+	    	<h1>List of Teams</h1>
+    
+    
 
 <%
+		int team_ID = -1;
+	  	// pagination ------------------------
+		String pageNumber = request.getParameter("page");
+		   if(pageNumber == null) {
+		   	pageNumber = "1";
+		   }
+		   int pageInt = Integer.parseInt(pageNumber);
+		pageContext.setAttribute("page", pageInt);
+		
+		int startInt = (pageInt * 9) - 9;
+		int endInt = pageInt * 9;
 
-  // pagination ------------------------
-	String pageNumber = request.getParameter("page");
-	   if(pageNumber == null) {
-	   	pageNumber = "1";
-	   }
-	   int pageInt = Integer.parseInt(pageNumber);
-	pageContext.setAttribute("page", pageInt);
-	
-	int startInt = (pageInt * 9) - 9;
-	int endInt = pageInt * 9;
-  		
- %>
+		// sorting ---------------------------
+   		String sortBy = request.getParameter("sortBy");
+	    if(sortBy == null) {
+	    	sortBy = "id";
+	    }
+		pageContext.setAttribute("sortBy", sortBy);
+		
+   
+   %>
+			   <!-- Sorting Setup -->
+				<div class="btn-group">
+						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Sort By
+						</button>
+					<div class="dropdown-menu">
+							<a class="dropdown-item" href="teams.jsp?sortBy=id&page=${page}">Default</a>
+							<a class="dropdown-item" href="teams.jsp?sortBy=short_name&page=${page}">Name</a>
+							<a class="dropdown-item" href="teams.jsp?sortBy=city&page=${page}">City</a>
+							<a class="dropdown-item" href="teams.jsp?sortBy=conference&page=${page}">Conference</a>
+					</div>
+				</div>
+				<hr>
+
+    
 
 <% 
 
@@ -97,15 +125,11 @@
 
 		Statement statement = c.createStatement();
 		
-		ResultSet rs = statement.executeQuery("SELECT * FROM teams LIMIT " + startInt + ", " + endInt);
+		ResultSet rs = statement.executeQuery("SELECT * FROM teams ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
 		
 
 	%>
-    
-    
-    <div class="main-content">
-    <h1>List of Teams</h1>
-    <hr>
+
    	<div class="container">
 		<div class="row">
 			<% 
@@ -123,7 +147,7 @@
 				pageContext.setAttribute("team_division", rs.getString("division"));
 				
 				pageContext.setAttribute("team_ID", rs.getString("id"));
-				
+			team_ID = rs.getInt("id");
 				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
 				
 				
@@ -132,7 +156,11 @@
 				<div class="col-md-4">
 					<div class="card mb-4 shadow-sm text-white bg-dark">
 					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+							<%if(team_ID == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
 							<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
 							<div class="card-body">
 								<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
 								<div class="d-flex justify-content-between align-items-center">
@@ -158,29 +186,29 @@
 		<ul class="pagination justify-content-center">
 			
 			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
-				<a class="page-link" href="teams.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
 			</li>
 			<% if(pageInt > 3){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page-3}">${page-3}</a></li>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
 			<% } %>
 			<% if(pageInt > 2){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page-2}">${page-2}</a></li>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
 			<% } %>
 			<% if(pageInt > 1){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page-1}">${page-1}</a></li>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
 			<% } %>
 	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
 			<% if(pageInt < 4){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page+1}">${page+1}</a></li>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
 			<% } %>
 			<% if(pageInt < 3){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page+2}">${page+2}</a></li>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
 			<% } %>
 			<% if(pageInt < 2){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?page=${page+3}">${page+3}</a></li>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
 			<% } %>
 			<li class="page-item <% if(pageInt == 4){ %> disabled <% } %>">
-				<a class="page-link" href="teams.jsp?page=${page+1}">Next</a>
+				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">Next</a>
 			</li>
 		</ul>
 	</nav>
