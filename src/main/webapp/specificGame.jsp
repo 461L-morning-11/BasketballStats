@@ -155,7 +155,7 @@
 			%>
 			<div class="row">
         <div class="col-md-4">
-            <h1>${fn:escapeXml(game_home_team)}</h2>
+            <h1 class="home_name">${fn:escapeXml(game_home_team)}</h2>
             
 								<%if(home_id == 21){ %>
 							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">

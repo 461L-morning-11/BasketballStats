@@ -27,7 +27,7 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com");
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com");
 
         WebElement we = wd.findElement(By.className("main-content"));
         String title = we.getText();
@@ -44,7 +44,7 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/about");
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/about");
 
         WebElement we = wd.findElement(By.className("main-content"));
         String title = we.getText();
@@ -60,9 +60,9 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/players");
-
-        WebElement we = wd.findElement(By.className("main-content"));
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/players");
+        //wd.get("http://localhost:8181/players");
+        WebElement we = wd.findElement(By.className("title"));
         String title = we.getText();
         System.out.println(title);
         String check = "List of Players";
@@ -76,7 +76,7 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/teams");
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/teams");
 
         WebElement we = wd.findElement(By.className("main-content"));
         String title = we.getText();
@@ -93,7 +93,7 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/games");
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/games");
 
         WebElement we = wd.findElement(By.className("main-content"));
         String title = we.getText();
@@ -110,13 +110,13 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/specificGame.jsp?gameId=47179");
-
-        WebElement we = wd.findElement(By.className("main-content"));
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/specificGame.jsp?gameId=37");
+        //wd.get("http://localhost:8181/specificGame.jsp?gameId=37");
+        WebElement we = wd.findElement(By.className("home_name"));
         String title = we.getText();
         System.out.println(title);
-        String shortTitle = title.substring(0,10);
-        String check = "BOS vs CHA";
+        String shortTitle = title.substring(0,7);
+        String check = "Thunder";
         assertEquals(check,shortTitle);
         wd.quit(); // close the browser window
     }
@@ -127,7 +127,7 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/specificTeam.jsp?teamId=1");
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/specificTeam.jsp?teamId=1");
 
         WebElement we = wd.findElement(By.className("center"));
         String title = we.getText();
@@ -144,7 +144,7 @@ class frontEndTest {
 
         WebDriver wd = new FirefoxDriver(); // launch the browser
 // edit the next line to enter the location of "min.html" on your file system
-        wd.get("http://basketballstats-web.appspot.com/specificPlayer.jsp?playerId=14");
+        wd.get("http://basketballstats-env.eba-mxfc6uzp.us-east-2.elasticbeanstalk.com/specificPlayer.jsp?playerId=14");
 
         WebElement we = wd.findElement(By.className("center"));
         String title = we.getText();

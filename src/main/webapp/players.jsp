@@ -65,7 +65,7 @@
 	
 	
 		<div class="main-content">
-		       <h1>List of Players</h1>
+		       <h1 class="title">List of Players</h1>
 		       
 		       
 		       <%
