@@ -93,9 +93,10 @@
 		        );
 			   	
 		
-		   		Statement statement = c.createStatement();
-		   		
-		   		ResultSet rs = statement.executeQuery("SELECT * FROM games WHERE id = " + game_ID);
+		   		Statement stm = c.createStatement();
+		   		Statement stm2 = c.createStatement();
+		   		Statement stm3 = c.createStatement();
+		   		ResultSet rs = stm.executeQuery("SELECT * FROM games WHERE id = " + game_ID);
 		   		
 
 	   			rs.next();
@@ -105,6 +106,22 @@
 				pageContext.setAttribute("game_home_team", rs.getString("home_name"));
 				pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
 				
+				//DB SEARCH FOR TEAM ID
+				
+				String homeTeam=rs.getString("home_name");
+				String visitorTeam=rs.getString("visitor_name");
+	
+	    
+	   	String Query2 = "SELECT * FROM teams WHERE short_name = '"+homeTeam+"' LIMIT 1";
+	   	ResultSet rs2 = stm2.executeQuery(Query2);
+	   	rs2.next();
+	   		pageContext.setAttribute("home_team_ID", rs2.getString("id"));
+	   	
+	   		String Query3 = "SELECT * FROM teams WHERE short_name = '"+visitorTeam+"' LIMIT 1";
+		   	ResultSet rs3 = stm3.executeQuery(Query3);
+		   	rs3.next();
+		   		pageContext.setAttribute("visitor_team_ID", rs3.getString("id"));
+				
 		   		
 		        String shortDate = (String) rs.getString("date");
 			    
@@ -113,49 +130,68 @@
 				pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
 				
 				pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
+				pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
+				pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
+				int vscore=Integer.parseInt(rs.getString("visitor_team_score"));
+				int hscore=Integer.parseInt(rs.getString("home_team_score"));
+				if(vscore>hscore){
+					pageContext.setAttribute("winner",rs.getString("visitor_name"));}
+				else if(vscore<hscore){
+					pageContext.setAttribute("winner",rs.getString("home_name"));}
+				else{
+					pageContext.setAttribute("winner","TIE");}
+
+					
+				
+				
+				
 				
 				
 			   		
 		   		
 				
 			%>
-			<h1>${fn:escapeXml(game_home_team)} vs ${fn:escapeXml(game_visitor_team)}</h1>
+			<div class="row">
+        <div class="col-md-4">
+            <h1>${fn:escapeXml(game_home_team)}</h2>
+            <img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+            <h3>Score: ${fn:escapeXml(game_home_score)}</h3>
+            <p><a href="specificTeam.jsp?teamId=${home_team_ID}" target="_blank" class="btn btn-success">Team Info &raquo;</a></p>
+        </div>
+    
+    <div class="col-md-4">
+            <img src="../img/vs.png" class="img-fluid img-thumbnail" alt="Responsive image">
+            </div>
+        
+        <div class="col-md-4">
+            <h1>${fn:escapeXml(game_visitor_team)}</h2>
+            <img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+			<h3>Score: ${fn:escapeXml(game_visitor_score)}</h3>
+            <p><a href="specificTeam.jsp?teamId=${visitor_team_ID}" target="_blank" class="btn btn-success">Team Info &raquo;</a></p>
+        </div>
+    </div>
+    
+		
        	 	<br><hr><br>
         
 	
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">Date</th>
-					<th scope="col">Home Team</th>
-					<th scope="col">Home Score</th>
-					<th scope="col">Visitor Score</th>
-					<th scope="col">Visitor Team</th>
-				</tr>
-			</thead>
-			<tbody>
+		
         
-				<tr onclick="window.location='specificGame.jsp?gameId=${game_ID}';">
-				
-				  	<td>${fn:escapeXml(game_date)}</td>
-				  	<td>${fn:escapeXml(game_home_team)}</td>
-				  	<td>${fn:escapeXml(game_home_score)}</td>
-				  	<td>${fn:escapeXml(game_visitor_score)}</td>
-				 	<td>${fn:escapeXml(game_visitor_team)}</td>
-					
-				  
-				</tr>
-				
-			<%   	
+      </div>
+      <br><br><br>
+      <div>
+        <h1 style="color:#FF0000;text-align:center;">WINNER:${fn:escapeXml(winner)} </h1>
+     <!-- <audio controls autoplay>  
+        <source src="../img/music.mp3" type="audio/mp3">   
+    </audio>  
+    -->
+      
+      <%   	
 	   		}
 	   		catch(Exception e) {
 	   			e.printStackTrace();
 	   		}%>
-			</tbody>
-		</table>
-        
-      </div>
-
+</div>
 
     </main><!-- /.container -->
 		
