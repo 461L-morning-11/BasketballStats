@@ -156,7 +156,7 @@
             <h1>${fn:escapeXml(game_home_team)}</h2>
             <img src="${fn:escapeXml(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
             <h3>Score: ${fn:escapeXml(game_home_score)}</h3>
-            <p><a href="specificTeam.jsp?teamId=${home_team_ID}" target="_blank" class="btn btn-success">Team Info &raquo;</a></p>
+            <p><a href="specificTeam.jsp?teamId=${home_team_ID}" class="btn btn-success">Team Info &raquo;</a></p>
         </div>
     
     <div class="col-md-4">
@@ -167,12 +167,13 @@
             <h1>${fn:escapeXml(game_visitor_team)}</h2>
             <img src="${fn:escapeXml(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
 			<h3>Score: ${fn:escapeXml(game_visitor_score)}</h3>
-            <p><a href="specificTeam.jsp?teamId=${visitor_team_ID}" target="_blank" class="btn btn-success">Team Info &raquo;</a></p>
+            <p><a href="specificTeam.jsp?teamId=${visitor_team_ID}" class="btn btn-success">Team Info &raquo;</a></p>
         </div>
     </div>
     
 		
        	 	<br><hr><br>
+       	 	<p>This was not a Postseason game.</p>
         
 	
 		
