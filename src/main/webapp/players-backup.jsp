@@ -80,8 +80,6 @@
 		  		pageContext.setAttribute("page", pageInt);
 		  		int startInt = (pageInt * 27) - 27;
 		  		int endInt = pageInt * 27;
-		  		pageContext.setAttribute("startInt", startInt);
-		  		pageContext.setAttribute("endInt", endInt);
 
 		  		// sorting ---------------------------
 		       String sortBy = request.getParameter("sortBy");
@@ -105,32 +103,101 @@
 					</div>
 				</div>
 				<hr>
+      
+     <%
+
   
-  			<sql:setDataSource var = "dataSource" driver = "com.mysql.jdbc.Driver"
-  				url = "jdbc:mysql://104.154.138.136/basketball_web"
-  				user = "root" password = "Sr4*8DNgZbvHqnee"/>
-  				
-  				<sql:query dataSource = "${dataSource}" var = "result">
-  					SELECT * FROM players ORDER BY id LIMIT ${startInt}, ${endInt};
-				</sql:query>
-  					
   		
- 
+  		
+
+	
+	String db="basketball_web";
+	String user = "root";
+	String pass="Sr4*8DNgZbvHqnee";
+	String ip="104.154.138.136";
+	
+		try {
+			
+			System.out.println("trying to query from sql database;");
+	   	Class.forName("com.mysql.cj.jdbc.Driver");
+	   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+	   	Connection c = DriverManager.getConnection(
+        	host,
+        	user,
+        	pass
+        );
+	   	
+
+   		Statement statement = c.createStatement();
+   		
+
+   		ResultSet rs = statement.executeQuery("SELECT * FROM players ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
+   		
+   		%>
+   		<div class = "container">
+   			<div class = "row">
+   		<% 
+   		
+	
+		for(int i=0;i<27;i++)
+		{
+   			rs.next();
+    
+    	pageContext.setAttribute("player_first_name", rs.getString("first_name"));
+
+		pageContext.setAttribute("player_last_name", rs.getString("last_name"));
+		
+		pageContext.setAttribute("player_team", rs.getString("team_name"));
+		//System.out.println(rs.getString("team_conference"));
+
+		pageContext.setAttribute("player_id", rs.getString("id"));
+		
+		String short_position = (String) rs.getString("position");
+		String position = "";
+		char[] position_letters = short_position.toCharArray();
+		for(int j =0; j <short_position.length(); j++){
+			try{
+			if(position_letters[j] == 'C'){
+				position += "Center";
+			} else if(position_letters[j] == 'G'){
+				position += "Guard";
+			} else if(position_letters[j] == 'F'){
+				position += "Forward";
+			} else if(position_letters[j] == 'C'){
+				position += "Center";
+			} else if(position_letters[j] == '-'){
+				position += "-";
+			}
+			}catch(Exception e){}
+		}
+		pageContext.setAttribute("player_position", position);
+		
+	
+	%>
     		<div class="col-md-4">
-    			<c:forEach var = "row" items = "${result.rows}">
-	    			<div class="card mb-4 shadow-sm text-white bg-dark">
-		    			<a class="itemCardLink" href="specificPlayer.jsp?playerId=${player_id}">
-			    			<div class="card-body">
-			    				<h5 class="card-text"> <c:out value = "${row.first_name}"/> <c:out value = "${row.last_name}"/> </h5>
-			    				<h6 class="card-text"> <c:out value = "${row.team_name}"/> </h6>
-			    				<div class="d-flex justify-content-between align-items-center">
-			    				</div>
-			    			</div>
-		    			</a>
-		    		</div>
-	    		</c:forEach>
+    			<div class="card mb-4 shadow-sm text-white bg-dark">
+    			<a class="itemCardLink" href="specificPlayer.jsp?playerId=${player_id}">
+    			<div class="card-body">
+    				<h5 class="card-text"> ${fn:escapeXml(player_first_name)} ${fn:escapeXml(player_last_name)} </h5>
+    				<h6 class="card-text"> ${fn:escapeXml(player_team)} </h6>
+    				<div class="d-flex justify-content-between align-items-center">
+    				</div>
+    			</div>
+    			</a>
     		</div>
+    		</div>
+				
+			<% 
+				}
+				
+			   	
+	   		}
+	   		catch(Exception e) {
+	   			e.printStackTrace();
+	   		}%>
     	</div>
+    </div>
+    </div>
 	
 	
 	<nav aria-label="Page navigation">
