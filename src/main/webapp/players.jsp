@@ -131,36 +131,37 @@
    	</div>
 	
 	
-	<nav aria-label="Page navigation">
-		<ul class="pagination justify-content-center">
-			
-			<li class="page-item <c:if test = "${pageInt == 1}"> disabled </c:if>">
-				<a class="page-link" href="players.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
-			</li>
-			<c:if test = "${pageInt > 3}">
-				<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt-3}">${pageInt-3}</a></li>
-			</c:if>
-			<c:if test = "${pageInt > 2}">
-				<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt-2}">${pageInt-2}</a></li>
-			</c:if>
-			<c:if test = "${pageInt > 1}">
-				<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt-1}">${pageInt-1}</a></li>
-			</c:if>
-	 		<li class="page-item disabled"><a class="page-link" href="#">${pageNumber}</a></li>
-				<c:if test = "${pageInt < 33}">
-			<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt+1}">${pageInt+1}</a></li>
-			</c:if>
-			<c:if test = "${pageInt < 32}">
-				<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt+2}">${pageInt+2}</a></li>
-			</c:if>
-			<c:if test = "${pageInt < 31}">
-				<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt+3}">${pageInt+3}</a></li>
-			</c:if>
-			<li class="page-item <c:if test = "${pageInt == 33}"> disabled </c:if>">
-				<a class="page-link" href="players.jsp?page=${page+1}">Next</a>
-			</li>
-		</ul>
-	</nav>
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center">
+				
+				<li class="page-item <c:if test = "${pageInt == 1}"> disabled </c:if>">
+					<a class="page-link" href="players.jsp?page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+				</li>
+				<c:if test = "${pageInt > 3}">
+					<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt-3}">${pageInt-3}</a></li>
+				</c:if>
+				<c:if test = "${pageInt > 2}">
+					<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt-2}">${pageInt-2}</a></li>
+				</c:if>
+				<c:if test = "${pageInt > 1}">
+					<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt-1}">${pageInt-1}</a></li>
+				</c:if>
+		 		<li class="page-item disabled"><a class="page-link" href="#">${pageNumber}</a></li>
+					<c:if test = "${pageInt < 33}">
+				<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt+1}">${pageInt+1}</a></li>
+				</c:if>
+				<c:if test = "${pageInt < 32}">
+					<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt+2}">${pageInt+2}</a></li>
+				</c:if>
+				<c:if test = "${pageInt < 31}">
+					<li class="page-item"><a class="page-link" href="players.jsp?sortBy=${sortBy}&page=${pageInt+3}">${pageInt+3}</a></li>
+				</c:if>
+				<li class="page-item <c:if test = "${pageInt == 33}"> disabled </c:if>">
+					<a class="page-link" href="players.jsp?page=${page+1}">Next</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 
     </main><!-- /.container -->
 
