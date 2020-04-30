@@ -1,24 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@ page import="java.net.URL" %>
-<%@ page import="org.xml.sax.SAXException" %> 
-<%@ page import="java.net.HttpURLConnection" %>
-<%@ page import="org.json.simple.parser.JSONParser" %>
-<%@ page import="org.json.simple.JSONObject" %>
-<%@ page import="org.json.simple.JSONArray" %>
-<%@ page import="java.util.Scanner" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.net.URL"%>
+<%@ page import="org.xml.sax.SAXException"%>
+<%@ page import="java.net.HttpURLConnection"%>
+<%@ page import="org.json.simple.parser.JSONParser"%>
+<%@ page import="org.json.simple.JSONObject"%>
+<%@ page import="org.json.simple.JSONArray"%>
+<%@ page import="java.util.Scanner"%>
 <%@ page import="java.net.URI"%>
-<%@ page import="java.time.*" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.util.*" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.util.*" %>
-<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
-<%@ page import="java.sql.*" %>
+<%@ page import="java.time.*"%>
+<%@ page import="java.time.LocalDateTime"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.util.*"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.sql.Connection"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.google.cloud.sql.jdbc.Driver"%>
+<%@ page import="java.sql.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,138 +26,148 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% 
-			int visitor_id = -1;
-			int home_id = -1;
-		
-			String game_ID = request.getParameter("gameId");
-		
-			
-			String db="basketball_web";
-			String user = "root";
-			String pass="Sr4*8DNgZbvHqnee";
-			String ip="104.154.138.136";
-			
-	   		try {
-	   			
-	   			System.out.println("trying to query from sql database;");
-			   	Class.forName("com.mysql.cj.jdbc.Driver");
-			   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
-			   	Connection c = DriverManager.getConnection(
-		        	host,
-		        	user,
-		        	pass
-		        );
-			   	
-		
-		   		Statement stm = c.createStatement();
-		   		Statement stm2 = c.createStatement();
-		   		Statement stm3 = c.createStatement();
-		   		ResultSet rs = stm.executeQuery("SELECT * FROM games WHERE id = " + game_ID);
-		   		
+	<%
+		int visitor_id = -1;
+	int home_id = -1;
 
-	   			rs.next();
-		   		System.out.println("getting data for game " + rs.getString("id"));
+	String game_ID = request.getParameter("gameId");
+
+	String db = "basketball_web";
+	String user = "root";
+	String pass = "Sr4*8DNgZbvHqnee";
+	String ip = "104.154.138.136";
+
+	try {
+
+		System.out.println("trying to query from sql database;");
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		String host = "jdbc:mysql://" + ip + ":3306/" + db;
+		Connection c = DriverManager.getConnection(host, user, pass);
+
+		Statement stm = c.createStatement();
+		Statement stm2 = c.createStatement();
+		Statement stm3 = c.createStatement();
+		ResultSet rs = stm.executeQuery("SELECT * FROM games WHERE id = " + game_ID);
+
+		rs.next();
+		System.out.println("getting data for game " + rs.getString("id"));
+
+		pageContext.setAttribute("game_home_team", rs.getString("home_name"));
+		pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
+
+		//DB SEARCH FOR TEAM ID
+
+		String homeTeam = rs.getString("home_name");
+		String visitorTeam = rs.getString("visitor_name");
+
+		String Query2 = "SELECT * FROM teams WHERE short_name = '" + homeTeam + "' LIMIT 1";
+		ResultSet rs2 = stm2.executeQuery(Query2);
+		rs2.next();
+		pageContext.setAttribute("home_team_ID", rs2.getString("id"));
+		home_id = rs2.getInt("id");
+		String Query3 = "SELECT * FROM teams WHERE short_name = '" + visitorTeam + "' LIMIT 1";
+		ResultSet rs3 = stm3.executeQuery(Query3);
+		rs3.next();
+		pageContext.setAttribute("visitor_team_ID", rs3.getString("id"));
+		visitor_id = rs3.getInt("id");
+
+		String shortDate = (String) rs.getString("date");
+
+		pageContext.setAttribute("game_date", shortDate.substring(5, 10));
+
+		pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
+
+		pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
+		pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
+		pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
+		int vscore = Integer.parseInt(rs.getString("visitor_team_score"));
+		int hscore = Integer.parseInt(rs.getString("home_team_score"));
+		if (vscore > hscore) {
+			pageContext.setAttribute("winner", rs.getString("visitor_name"));
+		} else if (vscore < hscore) {
+			pageContext.setAttribute("winner", rs.getString("home_name"));
+		} else {
+			pageContext.setAttribute("winner", "TIE");
+		}
+	%>
+	<div class="row">
+		<div class="col-md-4">
+			<h1 class="home_name">${(game_home_team)}</h2>
+
+				<%
+					if (home_id == 21) {
+				%>
+				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
+					alt="Responsive image">
+				<%
+					} else {
+				%>
+				<img src="${(home_logo)}" class="img-fluid img-thumbnail"
+					alt="Responsive image">
+				<%
+					}
+				%>
+				<h3>Score: ${(game_home_score)}</h3>
+				<p>
+					<a href="specificTeam.jsp?teamId=${home_team_ID}"
+						class="btn btn-success">Team Info &raquo;</a>
+				</p>
+		</div>
+
+		<div class="col-md-4">
+			<img src="../img/vs.png" class="img-fluid img-thumbnail"
+				alt="Responsive image">
+		</div>
+
+		<div class="col-md-4">
+			<h1>${(game_visitor_team)}</h2>
+				<%
+					if (visitor_id == 21) {
+				%>
+				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
+					alt="Responsive image">
+				<%
+					} else {
+				%>
+				<img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
+					alt="Responsive image">
+				<%
+					}
+				%>
+				<h3>Score: ${(game_visitor_score)}</h3>
+				<p>
+					<a href="specificTeam.jsp?teamId=${visitor_team_ID}"
+						class="btn btn-success">Team Info &raquo;</a>
+				</p>
+		</div>
+	</div>
 
 
-				pageContext.setAttribute("game_home_team", rs.getString("home_name"));
-				pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
-				
-				//DB SEARCH FOR TEAM ID
-				
-				String homeTeam=rs.getString("home_name");
-				String visitorTeam=rs.getString("visitor_name");
-	
-	    
-	   	String Query2 = "SELECT * FROM teams WHERE short_name = '"+homeTeam+"' LIMIT 1";
-	   	ResultSet rs2 = stm2.executeQuery(Query2);
-	   	rs2.next();
-	   		pageContext.setAttribute("home_team_ID", rs2.getString("id"));
-	   		home_id = rs2.getInt("id");
-	   		String Query3 = "SELECT * FROM teams WHERE short_name = '"+visitorTeam+"' LIMIT 1";
-		   	ResultSet rs3 = stm3.executeQuery(Query3);
-		   	rs3.next();
-		   		pageContext.setAttribute("visitor_team_ID", rs3.getString("id"));
-				visitor_id = rs3.getInt("id");
-		   		
-		        String shortDate = (String) rs.getString("date");
-			    
-			    pageContext.setAttribute("game_date", shortDate.substring(5, 10));
+	<br>
+	<hr>
+	<br>
+	<p>This was not a Postseason game.</p>
 
-				pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
-				
-				pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
-				pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
-				pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
-				int vscore=Integer.parseInt(rs.getString("visitor_team_score"));
-				int hscore=Integer.parseInt(rs.getString("home_team_score"));
-				if(vscore>hscore){
-					pageContext.setAttribute("winner",rs.getString("visitor_name"));}
-				else if(vscore<hscore){
-					pageContext.setAttribute("winner",rs.getString("home_name"));}
-				else{
-					pageContext.setAttribute("winner","TIE");}
 
-					
-				
-				
-				
-				
-				
-			   		
-		   		
-				
-			%>
-			<div class="row">
-        <div class="col-md-4">
-            <h1 class="home_name">${(game_home_team)}</h2>
-            
-								<%if(home_id == 21){ %>
-							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
-						<%}else{ %>
-							<img src="${(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-							<%} %>
-            <h3>Score: ${(game_home_score)}</h3>
-            <p><a href="specificTeam.jsp?teamId=${home_team_ID}" class="btn btn-success">Team Info &raquo;</a></p>
-        </div>
-    
-    <div class="col-md-4">
-            <img src="../img/vs.png" class="img-fluid img-thumbnail" alt="Responsive image">
-            </div>
-        
-        <div class="col-md-4">
-            <h1>${(game_visitor_team)}</h2>
-            <%if(visitor_id == 21){ %>
-							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
-						<%}else{ %>
-							<img src="${(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-							<%} %>
-			<h3>Score: ${(game_visitor_score)}</h3>
-            <p><a href="specificTeam.jsp?teamId=${visitor_team_ID}" class="btn btn-success">Team Info &raquo;</a></p>
-        </div>
-    </div>
-    
-		
-       	 	<br><hr><br>
-       	 	<p>This was not a Postseason game.</p>
-        
-	
-		
-        
-      </div>
-      <br><br><br>
-      <div>
-        <h1 style="color:#FF0000;text-align:center;">WINNER:${(winner)} </h1>
-     <!-- <audio controls autoplay>  
+
+
+	</div>
+	<br>
+	<br>
+	<br>
+	<div>
+		<h1 style="color: #FF0000; text-align: center;">WINNER:${(winner)}
+		</h1>
+		<!-- <audio controls autoplay>  
         <source src="../img/music.mp3" type="audio/mp3">   
     </audio>  
     -->
-      
-      <%   	
-	   		}
-	   		catch(Exception e) {
-	   			e.printStackTrace();
-	   		}%>
 
+		<%
+			} catch (Exception e) {
+			e.printStackTrace();
+		}
+		%>
+	
 </body>
 </html>

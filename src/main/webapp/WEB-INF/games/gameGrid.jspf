@@ -1,21 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.net.URL" %>
-<%@ page import="org.xml.sax.SAXException" %> 
-<%@ page import="java.net.HttpURLConnection" %>
-<%@ page import="org.json.simple.parser.JSONParser" %>
-<%@ page import="org.json.simple.JSONObject" %>
-<%@ page import="org.json.simple.JSONArray" %>
-<%@ page import="java.util.Scanner" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.net.URL"%>
+<%@ page import="org.xml.sax.SAXException"%>
+<%@ page import="java.net.HttpURLConnection"%>
+<%@ page import="org.json.simple.parser.JSONParser"%>
+<%@ page import="org.json.simple.JSONObject"%>
+<%@ page import="org.json.simple.JSONArray"%>
+<%@ page import="java.util.Scanner"%>
 <%@ page import="java.net.URI"%>
-<%@ page import="java.time.*" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.util.*" %>
-<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
-<%@ page import="java.sql.*" %>
-    
+<%@ page import="java.time.*"%>
+<%@ page import="java.time.LocalDateTime"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page import="java.sql.Connection"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.google.cloud.sql.jdbc.Driver"%>
+<%@ page import="java.sql.*"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
+	<%
         		int visitor_id = -1;
         		int home_id = -1;
 		    	// pagination ------------------------
@@ -47,24 +48,29 @@
 		  		
 		       
 		       %>
-		       <!-- Sorting Setup -->
-				<div class="btn-group">
-	 				<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	   					Sort By
-	 				</button>
-					<div class="dropdown-menu">
-		  				<a class="dropdown-item" href="games.jsp?sortBy=id&page=${page}">Default</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=date&page=${page}">Date</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=home_name&page=${page}">Home Team</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=visitor_name&page=${page}">Visitor Team</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=home_team_score&page=${page}">Home Score</a>
-		  				<a class="dropdown-item" href="games.jsp?sortBy=visitor_team_score&page=${page}">Visitor Score</a>
-					</div>
-				</div>
-				<hr>
-        
-		        
-		<% 
+	<!-- Sorting Setup -->
+	<div class="btn-group">
+		<button type="button" class="btn btn-success dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Sort By</button>
+		<div class="dropdown-menu">
+			<a class="dropdown-item" href="games.jsp?sortBy=id&page=${page}">Default</a>
+			<a class="dropdown-item" href="games.jsp?sortBy=date&page=${page}">Date</a>
+			<a class="dropdown-item"
+				href="games.jsp?sortBy=home_name&page=${page}">Home Team</a> <a
+				class="dropdown-item"
+				href="games.jsp?sortBy=visitor_name&page=${page}">Visitor Team</a> <a
+				class="dropdown-item"
+				href="games.jsp?sortBy=home_team_score&page=${page}">Home Score</a>
+			<a class="dropdown-item"
+				href="games.jsp?sortBy=visitor_team_score&page=${page}">Visitor
+				Score</a>
+		</div>
+	</div>
+	<hr>
+
+
+	<% 
 		
 			String db="basketball_web";
 			String user = "root";
@@ -88,9 +94,9 @@
 		   		ResultSet rs = statement.executeQuery("SELECT * FROM games ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
 		   		
 		   		%>
-				<div class="container">
-			<div class="row">
-				<% 
+	<div class="container">
+		<div class="row">
+			<% 
 				for(int i=0;i<12;i++)
 				{
 		   			rs.next();
@@ -125,29 +131,27 @@
 					
 					
 				%>
-					<div class="col-md-4">
-						<div class="card mb-4 shadow-sm">
-						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
-								<%if(visitor_id == 21){ %>
-							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
-						<%}else{ %>
-							<img src="${(visitor_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-							<%} %>
-								<%if(home_id == 21){ %>
-							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
-						<%}else{ %>
-							<img src="${(home_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-							<%} %>
-								<div class="card-body">
-									<p class="boldP"> ${(game_visitor_team)} @ ${(game_home_team)}</p>
-									<p class="card-text"> ${(game_visitor_score)} - ${(game_home_score)}</p>
-									<div class="d-flex justify-content-between align-items-center">
-									</div>
-								</div>
-							</a>
+			<div class="col-md-4">
+				<div class="card mb-4 shadow-sm">
+					<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
+						<%if(visitor_id == 21){ %> <img src="../img/Thun.png"
+						class="img-fluid img-thumbnail" alt="Responsive image"> <%}else{ %>
+						<img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
+						alt="Responsive image"> <%} %> <%if(home_id == 21){ %> <img
+						src="../img/Thun.png" class="img-fluid img-thumbnail"
+						alt="Responsive image"> <%}else{ %> <img src="${(home_logo)}"
+						class="img-fluid img-thumbnail" alt="Responsive image"> <%} %>
+						<div class="card-body">
+							<p class="boldP">${(game_visitor_team)} @ ${(game_home_team)}</p>
+							<p class="card-text">${(game_visitor_score)} -
+								${(game_home_score)}</p>
+							<div class="d-flex justify-content-between align-items-center">
+							</div>
 						</div>
-					</div>
-				<% 
+					</a>
+				</div>
+			</div>
+			<% 
 				}
 				
 			   	
@@ -156,37 +160,45 @@
 	   		catch(Exception e) {
 	   			e.printStackTrace();
 	   		}%>
-			
-		
-		
-        
-      </div>
+
+
+
+
 		</div>
-      
-      <nav aria-label="Page navigation">
+	</div>
+
+	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
-			
+
 			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
-				<a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+				<a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1"
+				aria-disabled="false">Previous</a>
 			</li>
 			<% if(pageInt > 3){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
+			<li class="page-item"><a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
 			<% } %>
 			<% if(pageInt > 2){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
+			<li class="page-item"><a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
 			<% } %>
 			<% if(pageInt > 1){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
+			<li class="page-item"><a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
 			<% } %>
-	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
+			<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
 			<% if(pageInt < 167){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
+			<li class="page-item"><a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
 			<% } %>
 			<% if(pageInt < 166){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
+			<li class="page-item"><a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
 			<% } %>
 			<% if(pageInt < 165){ %>
-			<li class="page-item"><a class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
+			<li class="page-item"><a class="page-link"
+				href="games.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
 			<% } %>
 			<li class="page-item <% if(pageInt == 488){ %> disabled <% } %>">
 				<a class="page-link" href="games.jsp?page=${page+1}">Next</a>

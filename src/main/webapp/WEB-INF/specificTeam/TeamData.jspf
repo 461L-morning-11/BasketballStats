@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="java.net.URL" %>
-<%@ page import="org.xml.sax.SAXException" %> 
-<%@ page import="java.net.HttpURLConnection" %>
-<%@ page import="org.json.simple.parser.JSONParser" %>
-<%@ page import="org.json.simple.JSONObject" %>
-<%@ page import="org.json.simple.JSONArray" %>
-<%@ page import="java.util.Scanner" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.net.URL"%>
+<%@ page import="org.xml.sax.SAXException"%>
+<%@ page import="java.net.HttpURLConnection"%>
+<%@ page import="org.json.simple.parser.JSONParser"%>
+<%@ page import="org.json.simple.JSONObject"%>
+<%@ page import="org.json.simple.JSONArray"%>
+<%@ page import="java.util.Scanner"%>
 <%@ page import="java.net.URI"%>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.util.*" %>
-<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
-<%@ page import="java.sql.*" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.sql.Connection"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.google.cloud.sql.jdbc.Driver"%>
+<%@ page import="java.sql.*"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,79 +20,90 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
-	pageContext.setAttribute("team_ID", request.getParameter("teamId"));
+	<%
+		pageContext.setAttribute("team_ID", request.getParameter("teamId"));
 	String team_ID = request.getParameter("teamId");
 	int total_tries = -1;
 	int total_champs = -1;
-	
-	String db="basketball_web";
+
+	String db = "basketball_web";
 	String user = "root";
-	String pass="Sr4*8DNgZbvHqnee";
-	String ip="104.154.138.136";
+	String pass = "Sr4*8DNgZbvHqnee";
+	String ip = "104.154.138.136";
 
-		try {
-			
-			System.out.println("trying to query from sql database;");
-		   	Class.forName("com.mysql.cj.jdbc.Driver");
-		   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
-		   	Connection c = DriverManager.getConnection(
-		    	host,
-		    	user,
-		    	pass
-		    );
-	   	
+	try {
 
-			Statement statement = c.createStatement();
-			
-			ResultSet rs = statement.executeQuery("SELECT * FROM teams WHERE id = " + team_ID);
+		System.out.println("trying to query from sql database;");
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		String host = "jdbc:mysql://" + ip + ":3306/" + db;
+		Connection c = DriverManager.getConnection(host, user, pass);
 
-			rs.next();
-					
-		
-		    pageContext.setAttribute("team_name_long", rs.getString("full_name"));
-		
-		    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
-		
-			pageContext.setAttribute("team_city", rs.getString("city"));
-		
-			pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
-			
-			pageContext.setAttribute("team_division", rs.getString("division"));
-			
-			pageContext.setAttribute("team_conference", rs.getString("conference"));
-		
-			pageContext.setAttribute("team_ID", rs.getString("id"));
-			
-			pageContext.setAttribute("total_champs", rs.getInt("total_champ"));
-			total_champs = rs.getInt("total_champ");
-			pageContext.setAttribute("total_tries", rs.getInt("total_tries"));
-			total_tries = rs.getInt("total_tries");
-			pageContext.setAttribute("recent_champs", rs.getInt("recent_champ"));
-		
-			pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
-			%>
+		Statement statement = c.createStatement();
+
+		ResultSet rs = statement.executeQuery("SELECT * FROM teams WHERE id = " + team_ID);
+
+		rs.next();
+
+		pageContext.setAttribute("team_name_long", rs.getString("full_name"));
+
+		pageContext.setAttribute("team_name_short", rs.getString("short_name"));
+
+		pageContext.setAttribute("team_city", rs.getString("city"));
+
+		pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
+
+		pageContext.setAttribute("team_division", rs.getString("division"));
+
+		pageContext.setAttribute("team_conference", rs.getString("conference"));
+
+		pageContext.setAttribute("team_ID", rs.getString("id"));
+
+		pageContext.setAttribute("total_champs", rs.getInt("total_champ"));
+		total_champs = rs.getInt("total_champ");
+		pageContext.setAttribute("total_tries", rs.getInt("total_tries"));
+		total_tries = rs.getInt("total_tries");
+		pageContext.setAttribute("recent_champs", rs.getInt("recent_champ"));
+
+		pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
+	%>
 
 
-			
-			<hr>
-			<div class="row">
-				<div class="specificTeam">
-					<div class="center">
-						<img src="${(team_logo)}" class="img-fluid img-thumbnail" align="middle" alt="Responsive image">
-						<h1>${(team_name_long)} (${(team_abbreviation)})</h1>	
-						<p>The ${(team_name_short)} from ${(team_city)} play in the ${(team_division)} division of the ${(team_conference)}ern Conference </p>
-						<br>
-						<%if(total_tries == 0){ %>
-						<p>The ${(team_name_short)} have never made it to an NBA Championship game :'(</p>
-						<%}else if(total_champs == 0){%>
-						<p>They've been in ${(total_tries)} NBA Championship game(s) but never won. Their last run was in ${(recent_champs)}.</p>
-						<%}else{ %>
-						<p>They've won ${(total_champs)} Championship(s) out of the ${(total_tries)} time(s) they've been to the Finals. Their last win was in ${(recent_champs)}.</p>
-						<%}} catch (Exception e){} %>
-    				</div>
-    			</div>
-    		</div>
+
+	<hr>
+	<div class="row">
+		<div class="specificTeam">
+			<div class="center">
+				<img src="${(team_logo)}" class="img-fluid img-thumbnail"
+					align="middle" alt="Responsive image">
+				<h1>${(team_name_long)}(${(team_abbreviation)})</h1>
+				<p>The ${(team_name_short)} from ${(team_city)} play in the
+					${(team_division)} division of the ${(team_conference)}ern
+					Conference</p>
+				<br>
+				<%
+					if (total_tries == 0) {
+				%>
+				<p>The ${(team_name_short)} have never made it to an NBA
+					Championship game :'(</p>
+				<%
+					} else if (total_champs == 0) {
+				%>
+				<p>They've been in ${(total_tries)} NBA Championship game(s) but
+					never won. Their last run was in ${(recent_champs)}.</p>
+				<%
+					} else {
+				%>
+				<p>They've won ${(total_champs)} Championship(s) out of the
+					${(total_tries)} time(s) they've been to the Finals. Their last win
+					was in ${(recent_champs)}.</p>
+				<%
+					}
+				} catch (Exception e) {
+				}
+				%>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

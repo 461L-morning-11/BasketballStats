@@ -1,107 +1,129 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" type="image/png" href="../img/basketball.png">
+<head>
+<meta charset="utf-8">
 
-    <title>Basketball Stats Web Application</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" type="image/png" href="../img/basketball.png">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+<title>Basketball Stats Web Application</title>
 
-    <!-- Custom styles for this template -->
-    <link href="../css/custom-site.css" rel="stylesheet">
-  </head>
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
 
-  <body>
+<!-- Custom styles for this template -->
+<link href="../css/custom-site.css" rel="stylesheet">
+</head>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a id="X" class="navbar-brand" href="/">Basketball Stats</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<body>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Models</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="/teams">Teams</a>
-              <a class="dropdown-item" href="/players">Players</a>
-              <a class="dropdown-item" href="/games">Games</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0" method="post" action="search.jsp">
-          <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
-    </nav>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<a id="X" class="navbar-brand" href="/">Basketball Stats</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarsExampleDefault"
+			aria-controls="navbarsExampleDefault" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-    <main role="main" class="container">
+		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="http://example.com"
+					id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">Models</a>
+					<div class="dropdown-menu" aria-labelledby="dropdown01">
+						<a class="dropdown-item" href="/teams">Teams</a> <a
+							class="dropdown-item" href="/players">Players</a> <a
+							class="dropdown-item" href="/games">Games</a>
+					</div></li>
+				<li class="nav-item"><a class="nav-link" href="/about">About</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0" method="post"
+				action="search.jsp">
+				<input class="form-control mr-sm-2" name="search" type="text"
+					placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
 
-      <div class="main-content">
-        <h1>Professional Basketball Statistics</h1>
-        <p class="lead">Welcome to Basketball Stats!<br> Feel free to look around at all the info we have to offer!</p>
-        <br>
-        
-        
- <div id="carousel" class="carousel slide" data-ride="carousel">
-			
-				  <!-- Indicators -->
+	<main role="main" class="container">
+
+		<div class="main-content">
+			<h1>Professional Basketball Statistics</h1>
+			<p class="lead">
+				Welcome to Basketball Stats!<br> Feel free to look around at
+				all the info we have to offer!
+			</p>
+			<br>
+
+
+			<div id="carousel" class="carousel slide" data-ride="carousel">
+
+				<!-- Indicators -->
 				<ul class="carousel-indicators">
-			  		<li data-target="#carousel" data-slide-to="0" class="active"></li>
-			  		<li data-target="#carousel" data-slide-to="1"></li>
-		  			<li data-target="#carousel" data-slide-to="2"></li>
-		  			<li data-target="#carousel" data-slide-to="2"></li>
+					<li data-target="#carousel" data-slide-to="0" class="active"></li>
+					<li data-target="#carousel" data-slide-to="1"></li>
+					<li data-target="#carousel" data-slide-to="2"></li>
+					<li data-target="#carousel" data-slide-to="2"></li>
 				</ul>
-				
+
 				<!-- The slideshow -->
 				<div class="carousel-inner">
-			 	 	<div class="carousel-item active">
-				    	<a href="/specificPlayer.jsp?playerId=735"><img border="0" src="/img/memes/shaq.png" alt="Shaq" width="auto" height="auto"></a>
-				  	</div>
-				  	<div class="carousel-item">
-				    	<a href="/specificPlayer.jsp?playerId=121"><img src="img/memes/nose.jpg" alt="Nose" width="auto" height="auto"></a>
-				  	</div>
-				  	<div class="carousel-item">
-				    	<a href="/specificPlayer.jsp?playerId=115"><img src="img/memes/cart.png" alt="Cart" width="auto" height="auto"></a>
-				  	</div>
-				  	<div class="carousel-item">
-				    	<a href="/specificPlayer.jsp?playerId=237"><img src="img/memes/smile.jpg" alt="Smile" width="auto" height="auto"></a>
-				  	</div>
+					<div class="carousel-item active">
+						<a href="/specificPlayer.jsp?playerId=735"><img border="0"
+							src="/img/memes/shaq.png" alt="Shaq" width="auto" height="auto"></a>
+					</div>
+					<div class="carousel-item">
+						<a href="/specificPlayer.jsp?playerId=121"><img
+							src="img/memes/nose.jpg" alt="Nose" width="auto" height="auto"></a>
+					</div>
+					<div class="carousel-item">
+						<a href="/specificPlayer.jsp?playerId=115"><img
+							src="img/memes/cart.png" alt="Cart" width="auto" height="auto"></a>
+					</div>
+					<div class="carousel-item">
+						<a href="/specificPlayer.jsp?playerId=237"><img
+							src="img/memes/smile.jpg" alt="Smile" width="auto" height="auto"></a>
+					</div>
 				</div>
-				
-					<!-- Left and right controls -->
-				  	<a class="carousel-control-prev" href="#carousel" data-slide="prev">
-				    	<span class="carousel-control-prev-icon"></span>
-				  	</a>
-			  		<a class="carousel-control-next" href="#carousel" data-slide="next">
-		    			<span class="carousel-control-next-icon"></span>
-			  		</a>
-				</div>
-				
-				</div>
-		
-		
 
-    </main><!-- /.container -->
+				<!-- Left and right controls -->
+				<a class="carousel-control-prev" href="#carousel" data-slide="prev">
+					<span class="carousel-control-prev-icon"></span>
+				</a> <a class="carousel-control-next" href="#carousel" data-slide="next">
+					<span class="carousel-control-next-icon"></span>
+				</a>
+			</div>
 
-    <!-- Bootstrap core JavaScript
+		</div>
+
+
+
+	</main>
+	<!-- /.container -->
+
+	<!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="../js/bootstrap.min.js"></script>
-  </body>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script>
+		window.jQuery
+				|| document
+						.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')
+	</script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="../js/bootstrap.min.js"></script>
+</body>
 </html>

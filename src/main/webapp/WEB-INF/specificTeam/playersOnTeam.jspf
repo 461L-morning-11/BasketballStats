@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@ page import="java.net.URL" %>
-<%@ page import="org.xml.sax.SAXException" %> 
-<%@ page import="java.net.HttpURLConnection" %>
-<%@ page import="org.json.simple.parser.JSONParser" %>
-<%@ page import="org.json.simple.JSONObject" %>
-<%@ page import="org.json.simple.JSONArray" %>
-<%@ page import="java.util.Scanner" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.net.URL"%>
+<%@ page import="org.xml.sax.SAXException"%>
+<%@ page import="java.net.HttpURLConnection"%>
+<%@ page import="org.json.simple.parser.JSONParser"%>
+<%@ page import="org.json.simple.JSONObject"%>
+<%@ page import="org.json.simple.JSONArray"%>
+<%@ page import="java.util.Scanner"%>
 <%@ page import="java.net.URI"%>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.util.*" %>
-<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
-<%@ page import="java.sql.*" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.sql.Connection"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.google.cloud.sql.jdbc.Driver"%>
+<%@ page import="java.sql.*"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,70 +20,67 @@
 <title>Insert title here</title>
 </head>
 <body>
-<br>
-    		<table  class="table table-hover">
-	   		<thead>
-	   			<tr>
-	   				<th scope="col">${fn:escapeXml(team_name_short)} Players</th>
-	   			</tr>
-	   		</thead>
-	   		<tbody>
-    		<% 
-    		pageContext.setAttribute("team_ID", request.getParameter("teamId"));
-    		
-    		
-    		
+	<br>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">${fn:escapeXml(team_name_short)}Players</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%
+				pageContext.setAttribute("team_ID", request.getParameter("teamId"));
 
-    			try {
-    				
-    				System.out.println("trying to query from sql database;");
-    			   	Class.forName("com.mysql.cj.jdbc.Driver");
-    			   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
-    			   	Connection c = DriverManager.getConnection(
-    			    	host,
-    			    	user,
-    			    	pass
-    			    );
-    		   	
+			try {
 
-    				Statement statement = c.createStatement();
-			ResultSet rs2 = statement.executeQuery("SELECT * FROM players WHERE team_id = " + team_ID);
-    		while(rs2.next()){
-    			pageContext.setAttribute("player_id", rs2.getString("id"));
-    	   		%>
-    	   			<tr onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
-    	   				<td><%=rs2.getString("first_name") %></td>
-    	   				<td><%=rs2.getString("last_name") %></td>
-    	   				<%String short_position = (String) rs2.getString("position");
-    	   				String position = "";
-    	   				char[] position_letters = short_position.toCharArray();
-    	   				for(int j =0; j <short_position.length(); j++){
-    	   					try{
-    	   					if(position_letters[j] == 'C'){
-    	   						position += "Center";
-    	   					} else if(position_letters[j] == 'G'){
-    	   						position += "Guard";
-    	   					} else if(position_letters[j] == 'F'){
-    	   						position += "Forward";
-    	   					} else if(position_letters[j] == 'C'){
-    	   						position += "Center";
-    	   					} else if(position_letters[j] == '-'){
-    	   						position += "-";
-    	   					}
-    	   					}catch(Exception e){}
-    	   				}
-    	   				pageContext.setAttribute("player_position", position); %>
-    	   				<td>${fn:escapeXml(player_position)}</td>   			
-    	   			</tr>
-    	   		<%} %>
-    	   		</tbody>
-    		</table>
-    		<br>
-    		<% 	
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+				System.out.println("trying to query from sql database;");
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				String host = "jdbc:mysql://" + ip + ":3306/" + db;
+				Connection c = DriverManager.getConnection(host, user, pass);
+
+				Statement statement = c.createStatement();
+				ResultSet rs2 = statement.executeQuery("SELECT * FROM players WHERE team_id = " + team_ID);
+				while (rs2.next()) {
+					pageContext.setAttribute("player_id", rs2.getString("id"));
+			%>
+			<tr
+				onclick="window.location='specificPlayer.jsp?playerId=${player_id}';">
+				<td><%=rs2.getString("first_name")%></td>
+				<td><%=rs2.getString("last_name")%></td>
+				<%
+					String short_position = (String) rs2.getString("position");
+				String position = "";
+				char[] position_letters = short_position.toCharArray();
+				for (int j = 0; j < short_position.length(); j++) {
+					try {
+						if (position_letters[j] == 'C') {
+					position += "Center";
+						} else if (position_letters[j] == 'G') {
+					position += "Guard";
+						} else if (position_letters[j] == 'F') {
+					position += "Forward";
+						} else if (position_letters[j] == 'C') {
+					position += "Center";
+						} else if (position_letters[j] == '-') {
+					position += "-";
+						}
+					} catch (Exception e) {
+					}
+				}
+				pageContext.setAttribute("player_position", position);
+				%>
+				<td>${fn:escapeXml(player_position)}</td>
+			</tr>
+			<%
+				}
+			%>
+		</tbody>
+	</table>
+	<br>
+	<%
+		} catch (Exception e) {
+		e.printStackTrace();
+	}
 	%>
 
 </body>
