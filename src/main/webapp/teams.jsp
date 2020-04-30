@@ -14,204 +14,25 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" type="image/png" href="../img/basketball.png">
 
-    <title>Teams</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="../css/custom-site.css" rel="stylesheet">
-  </head>
+  <%@ include file="../WEB-INF/generalHeader.jspf" %>
 
   <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="/">Basketball Stats</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Models</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="/teams">Teams</a>
-              <a class="dropdown-item" href="/players">Players</a>
-              <a class="dropdown-item" href="/games">Games</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0" method="post" action="search.jsp">
-          <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
-    </nav>
+    <%@ include file="../WEB-INF/navbar.jspf" %>
 
     <main role="main" class="container">    
     
 	    <div class="main-content">
 	    	<h1>List of Teams</h1>
     
+   	    <%@ include file="../WEB-INF/teams/teamGrid.jspf" %>
     
+    	</div>
 
-<%
-		int team_ID = -1;
-	  	// pagination ------------------------
-		String pageNumber = request.getParameter("page");
-		   if(pageNumber == null) {
-		   	pageNumber = "1";
-		   }
-		   int pageInt = Integer.parseInt(pageNumber);
-		pageContext.setAttribute("page", pageInt);
+
 		
-		int startInt = (pageInt * 9) - 9;
-		int endInt = pageInt * 9;
-
-		// sorting ---------------------------
-   		String sortBy = request.getParameter("sortBy");
-	    if(sortBy == null) {
-	    	sortBy = "id";
-	    }
-		pageContext.setAttribute("sortBy", sortBy);
-		
-   
-   %>
-			   <!-- Sorting Setup -->
-				<div class="btn-group">
-						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Sort By
-						</button>
-					<div class="dropdown-menu">
-							<a class="dropdown-item" href="teams.jsp?sortBy=id&page=${page}">Default</a>
-							<a class="dropdown-item" href="teams.jsp?sortBy=short_name&page=${page}">Name</a>
-							<a class="dropdown-item" href="teams.jsp?sortBy=city&page=${page}">City</a>
-							<a class="dropdown-item" href="teams.jsp?sortBy=conference&page=${page}">Conference</a>
-					</div>
-				</div>
-				<hr>
-
-    
-
-<% 
-
-	String db="basketball_web";
-	String user = "root";
-	String pass="Sr4*8DNgZbvHqnee";
-	String ip="104.154.138.136";
-
-	try {
-		
-		System.out.println("trying to query from sql database;");
-   	Class.forName("com.mysql.cj.jdbc.Driver");
-   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
-   	Connection c = DriverManager.getConnection(
-    	host,
-    	user,
-    	pass
-    );
-   	
-
-		Statement statement = c.createStatement();
-		
-		ResultSet rs = statement.executeQuery("SELECT * FROM teams ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
-		
-
-	%>
-
-   	<div class="container">
-		<div class="row">
-			<% 
-			for(int i=0;i<9;i++)
-			{
-
-				rs.next();
-
-			    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
-
-				pageContext.setAttribute("team_city", rs.getString("city"));
-
-				pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
-				
-				pageContext.setAttribute("team_division", rs.getString("division"));
-				
-				pageContext.setAttribute("team_ID", rs.getString("id"));
-			team_ID = rs.getInt("id");
-				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
-				
-				
-				
-			%>
-				<div class="col-md-4">
-					<div class="card mb-4 shadow-sm text-white bg-dark">
-					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
-							<%if(team_ID == 21){ %>
-							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
-						<%}else{ %>
-							<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
-							<%} %>
-							<div class="card-body">
-								<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
-								<div class="d-flex justify-content-between align-items-center">
-								</div>
-							</div>
-						</a>
-					</div>
-				</div>
-			<% 
-			}
-			
-		   	
-   		}
-   		catch(Exception e) {
-   			e.printStackTrace();
-   		}%>
-		</div>
-	</div>
-		
-	</div>
 	
-		<nav aria-label="Page navigation">
-		<ul class="pagination justify-content-center">
-			
-			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
-				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
-			</li>
-			<% if(pageInt > 3){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
-			<% } %>
-			<% if(pageInt > 2){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
-			<% } %>
-			<% if(pageInt > 1){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
-			<% } %>
-	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
-			<% if(pageInt < 4){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
-			<% } %>
-			<% if(pageInt < 3){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
-			<% } %>
-			<% if(pageInt < 2){ %>
-			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
-			<% } %>
-			<li class="page-item <% if(pageInt == 4){ %> disabled <% } %>">
-				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">Next</a>
-			</li>
-		</ul>
-	</nav>
     
 
     </main><!-- /.container -->
