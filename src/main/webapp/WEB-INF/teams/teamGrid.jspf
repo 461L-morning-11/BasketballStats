@@ -1,0 +1,169 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@ page import="java.net.URL" %>
+<%@ page import="org.xml.sax.SAXException" %> 
+<%@ page import="java.net.HttpURLConnection" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="java.util.Scanner" %>
+<%@ page import="java.net.URI"%>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.cloud.sql.jdbc.Driver" %>
+<%@ page import="java.sql.*" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<%
+		int team_ID = -1;
+	  	// pagination ------------------------
+		String pageNumber = request.getParameter("page");
+		   if(pageNumber == null) {
+		   	pageNumber = "1";
+		   }
+		   int pageInt = Integer.parseInt(pageNumber);
+		pageContext.setAttribute("page", pageInt);
+		
+		int startInt = (pageInt * 9) - 9;
+		int endInt = pageInt * 9;
+
+		// sorting ---------------------------
+   		String sortBy = request.getParameter("sortBy");
+	    if(sortBy == null) {
+	    	sortBy = "id";
+	    }
+		pageContext.setAttribute("sortBy", sortBy);
+		
+   
+   %>
+			   <!-- Sorting Setup -->
+				<div class="btn-group">
+						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Sort By
+						</button>
+					<div class="dropdown-menu">
+							<a class="dropdown-item" href="teams.jsp?sortBy=id&page=${page}">Default</a>
+							<a class="dropdown-item" href="teams.jsp?sortBy=short_name&page=${page}">Name</a>
+							<a class="dropdown-item" href="teams.jsp?sortBy=city&page=${page}">City</a>
+							<a class="dropdown-item" href="teams.jsp?sortBy=conference&page=${page}">Conference</a>
+					</div>
+				</div>
+				<hr>
+<% 
+
+
+	String db="basketball_web";
+	String user = "root";
+	String pass="Sr4*8DNgZbvHqnee";
+	String ip="104.154.138.136";
+
+	try {
+		
+		System.out.println("trying to query from sql database;");
+   	Class.forName("com.mysql.cj.jdbc.Driver");
+   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
+   	Connection c = DriverManager.getConnection(
+    	host,
+    	user,
+    	pass
+    );
+   	
+
+		Statement statement = c.createStatement();
+		
+		ResultSet rs = statement.executeQuery("SELECT * FROM teams ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
+		
+
+	%>
+
+
+<div class="container">
+		<div class="row">
+			<% 
+			for(int i=0;i<9;i++)
+			{
+
+				rs.next();
+
+			    pageContext.setAttribute("team_name_short", rs.getString("short_name"));
+
+				pageContext.setAttribute("team_city", rs.getString("city"));
+
+				pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
+				
+				pageContext.setAttribute("team_division", rs.getString("division"));
+				
+				pageContext.setAttribute("team_ID", rs.getString("id"));
+			team_ID = rs.getInt("id");
+				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
+				
+				
+				
+			%>
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm text-white bg-dark">
+					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+							<%if(team_ID == 21){ %>
+							<img src="../img/Thun.png" class="img-fluid img-thumbnail" alt="Responsive image">
+						<%}else{ %>
+							<img src="${fn:escapeXml(team_logo)}" class="img-fluid img-thumbnail" alt="Responsive image">
+							<%} %>
+							<div class="card-body">
+								<p class="card-text"> ${fn:escapeXml(team_name_short)}</p>
+								<div class="d-flex justify-content-between align-items-center">
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			<% 
+			}
+			
+		   	
+   		}
+   		catch(Exception e) {
+   			e.printStackTrace();
+   		}%>
+		</div>
+	</div>
+	
+	
+		<nav aria-label="Page navigation">
+		<ul class="pagination justify-content-center">
+			
+			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
+				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1" aria-disabled="false">Previous</a>
+			</li>
+			<% if(pageInt > 3){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
+			<% } %>
+			<% if(pageInt > 2){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
+			<% } %>
+			<% if(pageInt > 1){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
+			<% } %>
+	 		<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
+			<% if(pageInt < 4){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
+			<% } %>
+			<% if(pageInt < 3){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
+			<% } %>
+			<% if(pageInt < 2){ %>
+			<li class="page-item"><a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
+			<% } %>
+			<li class="page-item <% if(pageInt == 4){ %> disabled <% } %>">
+				<a class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">Next</a>
+			</li>
+		</ul>
+	</nav>
+</body>
+</html>
