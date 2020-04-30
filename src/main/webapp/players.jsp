@@ -79,7 +79,7 @@
 
 			<c:set var="pageNumber" value="${param.page}" />
 			<c:if test="${pageNumber == null || pageNumber < 1}">
-				<c:set var="pageNumber" value="${1}" />
+				<c:set var="pageNumber" value="1" />
 			</c:if>
 
 			<fmt:parseNumber var="pageInt" type="number" value="${pageNumber}" />

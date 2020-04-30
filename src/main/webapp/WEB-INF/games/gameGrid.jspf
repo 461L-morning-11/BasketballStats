@@ -16,6 +16,10 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.google.cloud.sql.jdbc.Driver"%>
 <%@ page import="java.sql.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -24,30 +28,46 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<c:set var="visitorId" value="-1" />
+	<h1>${visitorId}</h1>
+
+	<c:set var="pageNumber" value="${param.page}" />
+	<c:if test="${pageNumber == null || pageNumber < 1}">
+		<c:set var="pageNumber" value="${1}" />
+	</c:if>
+
+	<fmt:parseNumber var="pageInt" type="number" value="${pageNumber}" />
+
+	<c:set var="startInt" value="${(pageInt * 12) - 12 }" />
+	<c:set var="endInt" value="${(pageInt * 12)}" />
+
+	<c:set var="sortBy" value="${param.sortBy}" />
+	<c:if test="${sortBy == null}">
+		<c:set var="sortBy" value="id" />
+	</c:if>
+
 	<%
-        		int visitor_id = -1;
-        		int home_id = -1;
-		    	// pagination ------------------------
-		       	String pageNumber = request.getParameter("page");
-		  	    if(pageNumber == null) {
-		  	    	pageNumber = "1";
-		  	    }
-		  	    int pageInt = Integer.parseInt(pageNumber);
-		  		pageContext.setAttribute("page", pageInt);
-		  		
-		  		
-		  		// sorting ---------------------------
-		  		int startInt = (pageInt * 12) - 12;
-		  		int endInt = (pageInt * 12);
-		       
-		       String sortBy = request.getParameter("sortBy");
-		  	    if(sortBy == null) {
-		  	    	sortBy = "id";
-		  	    }
-		  		pageContext.setAttribute("sortBy", sortBy);
-		  		
-		       
-		       %>
+	int visitor_id = -1;
+	int home_id = -1;
+	// pagination ------------------------
+	String pageNumber = request.getParameter("page");
+	if (pageNumber == null) {
+		pageNumber = "1";
+	}
+	int pageInt = Integer.parseInt(pageNumber);
+	pageContext.setAttribute("page", pageInt);
+
+	// sorting ---------------------------
+	int startInt = (pageInt * 12) - 12;
+	int endInt = (pageInt * 12);
+
+	String sortBy = request.getParameter("sortBy");
+	if (sortBy == null) {
+		sortBy = "id";
+	}
+	pageContext.setAttribute("sortBy", sortBy);
+	%>
 	<!-- Sorting Setup -->
 	<div class="btn-group">
 		<button type="button" class="btn btn-success dropdown-toggle"
@@ -70,80 +90,74 @@
 	<hr>
 
 
-	<% 
-		
-			String db="basketball_web";
-			String user = "root";
-			String pass="Sr4*8DNgZbvHqnee";
-			String ip="104.154.138.136";
-			
-	   		try {
-	   			
-	   			System.out.println("trying to query from sql database;");
-			   	Class.forName("com.mysql.cj.jdbc.Driver");
-			   	String host = "jdbc:mysql://" + ip + ":3306/" + db;
-			   	Connection c = DriverManager.getConnection(
-		        	host,
-		        	user,
-		        	pass
-		        );
-			   	
-		
-		   		Statement statement = c.createStatement();
-		   		
-		   		ResultSet rs = statement.executeQuery("SELECT * FROM games ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
-		   		
-		   		%>
+	<%
+		String db = "basketball_web";
+	String user = "root";
+	String pass = "Sr4*8DNgZbvHqnee";
+	String ip = "104.154.138.136";
+
+	try {
+
+		System.out.println("trying to query from sql database;");
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		String host = "jdbc:mysql://" + ip + ":3306/" + db;
+		Connection c = DriverManager.getConnection(host, user, pass);
+
+		Statement statement = c.createStatement();
+
+		ResultSet rs = statement
+		.executeQuery("SELECT * FROM games ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
+	%>
 	<div class="container">
 		<div class="row">
-			<% 
-				for(int i=0;i<12;i++)
-				{
-		   			rs.next();
-		
+			<%
+				for (int i = 0; i < 12; i++) {
+				rs.next();
 
-					pageContext.setAttribute("game_home_team", rs.getString("home_name"));
-					pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
-					pageContext.setAttribute("home_id", rs.getString("home_team_id"));
-					home_id = rs.getInt("home_team_id");
-					pageContext.setAttribute("visitor_id", rs.getString("visitor_team_id"));
-					visitor_id = rs.getInt("visitor_team_id");
-					
-					
-			   		System.out.println("getting data for game " + rs.getString("id"));
-			   		
-			        String shortDate = (String) rs.getString("date");
-				    
-				    pageContext.setAttribute("game_date", shortDate.substring(5, 10));
+				pageContext.setAttribute("game_home_team", rs.getString("home_name"));
+				pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
+				pageContext.setAttribute("home_id", rs.getString("home_team_id"));
+				home_id = rs.getInt("home_team_id");
+				pageContext.setAttribute("visitor_id", rs.getString("visitor_team_id"));
+				visitor_id = rs.getInt("visitor_team_id");
 
+				System.out.println("getting data for game " + rs.getString("id"));
 
-					pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
-					
-					pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
-					
-					
-					pageContext.setAttribute("game_ID", rs.getString("id"));
-					pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
-					pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
-			   		
-		   		
-				
-					
-					
-				%>
+				String shortDate = (String) rs.getString("date");
+
+				pageContext.setAttribute("game_date", shortDate.substring(5, 10));
+
+				pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
+
+				pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
+
+				pageContext.setAttribute("game_ID", rs.getString("id"));
+				pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
+				pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
+			%>
 			<div class="col-md-4">
 				<div class="card mb-4 shadow-sm">
 					<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
-						<%if(visitor_id == 21){ %> <img src="../img/Thun.png"
-						class="img-fluid img-thumbnail" alt="Responsive image"> <%}else{ %>
-						<img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
-						alt="Responsive image"> <%} %> <%if(home_id == 21){ %> <img
-						src="../img/Thun.png" class="img-fluid img-thumbnail"
-						alt="Responsive image"> <%}else{ %> <img src="${(home_logo)}"
-						class="img-fluid img-thumbnail" alt="Responsive image"> <%} %>
+						<%
+							if (visitor_id == 21) {
+						%> <img src="../img/Thun.png" class="img-fluid img-thumbnail"
+						alt="Responsive image"> <%
+ 	} else {
+ %> <img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
+						alt="Responsive image"> <%
+ 	}
+ %> <%
+ 	if (home_id == 21) {
+ %> <img src="../img/Thun.png" class="img-fluid img-thumbnail"
+						alt="Responsive image"> <%
+ 	} else {
+ %> <img src="${(home_logo)}" class="img-fluid img-thumbnail"
+						alt="Responsive image"> <%
+ 	}
+ %>
 						<div class="card-body">
-							<p class="boldP">${(game_visitor_team)} @ ${(game_home_team)}</p>
-							<p class="card-text">${(game_visitor_score)} -
+							<p class="boldP">${(game_visitor_team)}@${(game_home_team)}</p>
+							<p class="card-text">${(game_visitor_score)}-
 								${(game_home_score)}</p>
 							<div class="d-flex justify-content-between align-items-center">
 							</div>
@@ -151,15 +165,15 @@
 					</a>
 				</div>
 			</div>
-			<% 
+			<%
 				}
-				
-			   	
-	   		}
-	   		
-	   		catch(Exception e) {
-	   			e.printStackTrace();
-	   		}%>
+
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			%>
 
 
 
@@ -170,37 +184,59 @@
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
 
-			<li class="page-item <% if(pageInt == 1){ %> disabled <% } %>">
-				<a class="page-link"
-				href="games.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1"
-				aria-disabled="false">Previous</a>
-			</li>
-			<% if(pageInt > 3){ %>
+			<li class="page-item <%if (pageInt == 1) {%> disabled <%}%>"><a
+				class="page-link" href="games.jsp?sortBy=${sortBy}&page=${page-1}"
+				tabindex="-1" aria-disabled="false">Previous</a></li>
+			<%
+				if (pageInt > 3) {
+			%>
 			<li class="page-item"><a class="page-link"
 				href="games.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
-			<% } %>
-			<% if(pageInt > 2){ %>
+			<%
+				}
+			%>
+			<%
+				if (pageInt > 2) {
+			%>
 			<li class="page-item"><a class="page-link"
 				href="games.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
-			<% } %>
-			<% if(pageInt > 1){ %>
+			<%
+				}
+			%>
+			<%
+				if (pageInt > 1) {
+			%>
 			<li class="page-item"><a class="page-link"
 				href="games.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
-			<% } %>
+			<%
+				}
+			%>
 			<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
-			<% if(pageInt < 167){ %>
+			<%
+				if (pageInt < 167) {
+			%>
 			<li class="page-item"><a class="page-link"
 				href="games.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
-			<% } %>
-			<% if(pageInt < 166){ %>
+			<%
+				}
+			%>
+			<%
+				if (pageInt < 166) {
+			%>
 			<li class="page-item"><a class="page-link"
 				href="games.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
-			<% } %>
-			<% if(pageInt < 165){ %>
+			<%
+				}
+			%>
+			<%
+				if (pageInt < 165) {
+			%>
 			<li class="page-item"><a class="page-link"
 				href="games.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
-			<% } %>
-			<li class="page-item <% if(pageInt == 488){ %> disabled <% } %>">
+			<%
+				}
+			%>
+			<li class="page-item <%if (pageInt == 488) {%> disabled <%}%>">
 				<a class="page-link" href="games.jsp?page=${page+1}">Next</a>
 			</li>
 		</ul>
