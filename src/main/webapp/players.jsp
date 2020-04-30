@@ -110,10 +110,12 @@
 				</sql:query>
   					
   		
- 
-    		<div class="col-md-4">
-    			<c:forEach var = "row" items = "${result.rows}">
-	    			<div class="card mb-4 shadow-sm text-white bg-dark">
+	<div class = "container">
+		<div class = "row">
+    		
+			<c:forEach var = "row" items = "${result.rows}">
+				<div class="col-md-4">
+   					<div class="card mb-4 shadow-sm text-white bg-dark">
 		    			<a class="itemCardLink" href="specificPlayer.jsp?playerId=${row.id}">
 			    			<div class="card-body">
 			    				<h5 class="card-text"> <c:out value = "${row.first_name}"/> <c:out value = "${row.last_name}"/> </h5>
@@ -122,10 +124,11 @@
 			    				</div>
 			    			</div>
 		    			</a>
-		    		</div>
-	    		</c:forEach>
-    		</div>
+	    			</div>
+    			</div>
+  			</c:forEach>
     	</div>
+   	</div>
 	
 	
 	<nav aria-label="Page navigation">
