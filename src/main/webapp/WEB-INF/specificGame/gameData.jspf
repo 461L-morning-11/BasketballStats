@@ -43,54 +43,58 @@
 	<sql:query dataSource="${dataSource}" var="resultGame">
 		SELECT * FROM games WHERE id = ${gameId};
 	</sql:query>
-	
+
 	<c:forEach var="row" items="${resultGame.rows}">
-		
+
 		<c:set var="homeId" value="${row.home_team_id}" />
 		<c:set var="visitorId" value="${row.visitor_team_id}" />
 		<c:set var="home_name" value="${row.home_name}" />
 		<c:set var="visitor_name" value="${row.visitor_name}" />
-		
-		<c:set var = "shortDate" value = "${fn:substring(row.date, 5, 10)}" />
-		
+
+		<c:set var="shortDate" value="${fn:substring(row.date, 5, 10)}" />
+
 		<c:set var="game_home_score" value="${row.home_team_score}" />
 		<c:set var="game_visitor_score" value="${row.visitor_team_score}" />
-		
+
 		<c:set var="home_logo" value="../img/logos/${row.home_name}.png" />
-		<c:set var="visitor_logo" value="../img/logos/${row.visitor_name }.png" />
-		
-		<fmt:parseNumber var="visitorScore" type="number" value="${row.visitor_team_score}" />
-		<fmt:parseNumber var="homeScore" type="number" value="${row.home_team_score}" />
-		
+		<c:set var="visitor_logo"
+			value="../img/logos/${row.visitor_name }.png" />
+
+		<fmt:parseNumber var="visitorScore" type="number"
+			value="${row.visitor_team_score}" />
+		<fmt:parseNumber var="homeScore" type="number"
+			value="${row.home_team_score}" />
+
 		<c:if test="${visitorScore < homeScore}">
-			<c:set var="winner" value="${visitor_name}"/>
+			<c:set var="winner" value="${visitor_name}" />
 		</c:if>
 		<c:if test="${visitorScore > homeScore}">
-			<c:set var="winner" value="${home_name}"/>
+			<c:set var="winner" value="${home_name}" />
 		</c:if>
 		<c:if test="${visitorScore == homeScore}">
-			<c:set var="winner" value="TIE"/>
+			<c:set var="winner" value="TIE" />
 		</c:if>
-	
-	
+
+
 	</c:forEach>
-	
+
 	<div class="row">
 		<div class="col-md-4">
 			<h1 class="home_name">${home_name}</h1>
 
-				<c:if test="${homeId == 21}">
+			<c:if test="${homeId == 21}">
 				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				</c:if> <c:if test="${homeId != 21}">
+			</c:if>
+			<c:if test="${homeId != 21}">
 				<img src="${(home_logo)}" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				</c:if> 
-				<h3>Score: ${game_home_score}</h3>
-				<p>
-					<a href="specificTeam.jsp?teamId=${homeId}"
-						class="btn btn-success">Team Info &raquo;</a>
-				</p>
+			</c:if>
+			<h3>Score: ${game_home_score}</h3>
+			<p>
+				<a href="specificTeam.jsp?teamId=${homeId}" class="btn btn-success">Team
+					Info &raquo;</a>
+			</p>
 		</div>
 
 		<div class="col-md-4">
@@ -100,18 +104,19 @@
 
 		<div class="col-md-4">
 			<h1>${visitor_name}</h1>
-				<c:if test="${visitorId == 21}">
+			<c:if test="${visitorId == 21}">
 				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				</c:if> <c:if test="${visitorId != 21}">
+			</c:if>
+			<c:if test="${visitorId != 21}">
 				<img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				</c:if>
-				<h3>Score: ${game_visitor_score}</h3>
-				<p>
-					<a href="specificTeam.jsp?teamId=${visitorId}"
-						class="btn btn-success">Team Info &raquo;</a>
-				</p>
+			</c:if>
+			<h3>Score: ${game_visitor_score}</h3>
+			<p>
+				<a href="specificTeam.jsp?teamId=${visitorId}"
+					class="btn btn-success">Team Info &raquo;</a>
+			</p>
 		</div>
 	</div>
 
@@ -135,7 +140,5 @@
         <source src="../img/music.mp3" type="audio/mp3">   
     </audio>  
     -->
-
-	
 </body>
 </html>
