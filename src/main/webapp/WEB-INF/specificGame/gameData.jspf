@@ -44,51 +44,51 @@
 		SELECT * FROM games WHERE id = ${gameId};
 	</sql:query>
 	
-	<c:set var="homeId" value="${row.home_team_id}" />
-	<c:set var="visitorId" value="${row.visitor_team_id}" />
+	<c:forEach var="row" items="${resultGame.rows}">
+		
+		<c:set var="homeId" value="${row.home_team_id}" />
+		<c:set var="visitorId" value="${row.visitor_team_id}" />
+		<c:set var="home_name" value="${row.home_name}" />
+		<c:set var="visitor_name" value="${row.visitor_name}" />
+		
+		<c:set var = "shortDate" value = "${fn:substring(row.date, 5, 10)}" />
+		
+		<c:set var="game_home_score" value="${row.home_team_score}" />
+		<c:set var="game_visitor_score" value="${row.visitor_team_score}" />
+		
+		<c:set var="home_logo" value="../img/logos/${row.home_name}.png" />
+		<c:set var="visitor_logo" value="../img/logos/${row.visitor_name }.png" />
+		
+		<fmt:parseNumber var="visitorScore" type="number" value="${row.visitor_team_score}" />
+		<fmt:parseNumber var="homeScore" type="number" value="${row.home_team_score}" />
+		
+		<c:if test="${visitorScore < homeScore}">
+			<c:set var="winner" value="${visitor_name}"/>
+		</c:if>
+		<c:if test="${visitorScore > homeScore}">
+			<c:set var="winner" value="${home_name}"/>
+		</c:if>
+		<c:if test="${visitorScore == homeScore}">
+			<c:set var="winner" value="TIE"/>
+		</c:if>
 	
-	<c:set var = "shortDate" value = "${fn:substring(row.date, 5, 10)}" />
 	
-	<c:set var="game_home_score" value="${row.home_team_score}" />
-	<c:set var="game_visitor_score" value="${row.visitor_team_score}" />
+	</c:forEach>
 	
-	<c:set var="home_logo" value="../img/logos/${row.home_name }.png" />
-	<c:set var="visitor_logo" value="../img/logos/${row.visitor_name }.png" />
-	
-	<fmt:parseNumber var="visitorScore" type="number" value="${pageNumber}" />
-
-	<%
-
-		int vscore = Integer.parseInt(rs.getString("visitor_team_score"));
-		int hscore = Integer.parseInt(rs.getString("home_team_score"));
-		if (vscore > hscore) {
-			pageContext.setAttribute("winner", rs.getString("visitor_name"));
-		} else if (vscore < hscore) {
-			pageContext.setAttribute("winner", rs.getString("home_name"));
-		} else {
-			pageContext.setAttribute("winner", "TIE");
-		}
-	%>
 	<div class="row">
 		<div class="col-md-4">
-			<h1 class="home_name">${(game_home_team)}</h2>
+			<h1 class="home_name">${home_name}</h1>
 
-				<%
-					if (home_id == 21) {
-				%>
+				<c:if test="${homeId == 21}">
 				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				<%
-					} else {
-				%>
+				</c:if> <c:if test="${homeId != 21}">
 				<img src="${(home_logo)}" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				<%
-					}
-				%>
-				<h3>Score: ${(game_home_score)}</h3>
+				</c:if> 
+				<h3>Score: ${game_home_score}</h3>
 				<p>
-					<a href="specificTeam.jsp?teamId=${home_team_ID}"
+					<a href="specificTeam.jsp?teamId=${homeId}"
 						class="btn btn-success">Team Info &raquo;</a>
 				</p>
 		</div>
@@ -99,23 +99,17 @@
 		</div>
 
 		<div class="col-md-4">
-			<h1>${(game_visitor_team)}</h2>
-				<%
-					if (visitor_id == 21) {
-				%>
+			<h1>${visitor_name}</h1>
+				<c:if test="${visitorId == 21}">
 				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				<%
-					} else {
-				%>
+				</c:if> <c:if test="${visitorId != 21}">
 				<img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-				<%
-					}
-				%>
-				<h3>Score: ${(game_visitor_score)}</h3>
+				</c:if>
+				<h3>Score: ${game_visitor_score}</h3>
 				<p>
-					<a href="specificTeam.jsp?teamId=${visitor_team_ID}"
+					<a href="specificTeam.jsp?teamId=${visitorId}"
 						class="btn btn-success">Team Info &raquo;</a>
 				</p>
 		</div>
@@ -135,18 +129,13 @@
 	<br>
 	<br>
 	<div>
-		<h1 style="color: #FF0000; text-align: center;">WINNER: ${(winner)}
+		<h1 style="color: #FF0000; text-align: center;">WINNER: ${winner}
 		</h1>
 		<!-- <audio controls autoplay>  
         <source src="../img/music.mp3" type="audio/mp3">   
     </audio>  
     -->
 
-		<%
-			} catch (Exception e) {
-			e.printStackTrace();
-		}
-		%>
 	
 </body>
 </html>
