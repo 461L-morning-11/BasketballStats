@@ -12,7 +12,10 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.google.cloud.sql.jdbc.Driver"%>
 <%@ page import="java.sql.*"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,26 +24,23 @@
 </head>
 <body>
 
-	<%
-		int team_ID = -1;
-	// pagination ------------------------
-	String pageNumber = request.getParameter("page");
-	if (pageNumber == null) {
-		pageNumber = "1";
-	}
-	int pageInt = Integer.parseInt(pageNumber);
-	pageContext.setAttribute("page", pageInt);
+	<c:set var="teamId" value="-1" />
 
-	int startInt = (pageInt * 9) - 9;
-	int endInt = pageInt * 9;
+	<c:set var="page" value="${param.page}" />
+	<c:if test="${page == null || page < 1}">
+		<c:set var="page" value="1" />
+	</c:if>
 
-	// sorting ---------------------------
-	String sortBy = request.getParameter("sortBy");
-	if (sortBy == null) {
-		sortBy = "id";
-	}
-	pageContext.setAttribute("sortBy", sortBy);
-	%>
+	<fmt:parseNumber var="pageInt" type="number" value="${page}" />
+
+	<c:set var="startInt" value="${(pageInt * 9) - 9 }" />
+	<c:set var="endInt" value="${(pageInt * 9)}" />
+
+	<c:set var="sortBy" value="${param.sortBy}" />
+	<c:if test="${sortBy == null}">
+		<c:set var="sortBy" value="id" />
+	</c:if>
+
 	<!-- Sorting Setup -->
 	<div class="btn-group">
 		<button type="button" class="btn btn-success dropdown-toggle"
@@ -56,73 +56,38 @@
 		</div>
 	</div>
 	<hr>
-	<%
-		String db = "basketball_web";
-	String user = "root";
-	String pass = "Sr4*8DNgZbvHqnee";
-	String ip = "104.154.138.136";
 
-	try {
+	<sql:setDataSource var="dataSource" driver="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://104.154.138.136/basketball_web" user="root"
+		password="Sr4*8DNgZbvHqnee" />
 
-		System.out.println("trying to query from sql database;");
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		String host = "jdbc:mysql://" + ip + ":3306/" + db;
-		Connection c = DriverManager.getConnection(host, user, pass);
-
-		Statement statement = c.createStatement();
-
-		ResultSet rs = statement
-		.executeQuery("SELECT * FROM teams ORDER BY " + sortBy + " LIMIT " + startInt + ", " + endInt);
-	%>
+	<sql:query dataSource="${dataSource}" var="result" maxRows="12">
+		SELECT * FROM teams ORDER BY ${sortBy} LIMIT ${startInt}, ${endInt};
+	</sql:query>
 
 
 	<div class="container">
 		<div class="row">
-			<%
-				for (int i = 0; i < 9; i++) {
-
-				rs.next();
-
-				pageContext.setAttribute("team_name_short", rs.getString("short_name"));
-
-				pageContext.setAttribute("team_city", rs.getString("city"));
-
-				pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
-
-				pageContext.setAttribute("team_division", rs.getString("division"));
-
-				pageContext.setAttribute("team_ID", rs.getString("id"));
-				team_ID = rs.getInt("id");
-				pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
-			%>
-			<div class="col-md-4">
-				<div class="card mb-4 shadow-sm text-white bg-dark">
-					<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
-						<%
-							if (team_ID == 21) {
-						%> <img src="../img/Thun.png"
-						class="img-fluid img-thumbnail" alt="Responsive image"> <%
- 	} else {
- %>
-						<img src="${fn:escapeXml(team_logo)}"
-						class="img-fluid img-thumbnail" alt="Responsive image"> <%
- 	}
- %>
-						<div class="card-body">
-							<p class="card-text">${fn:escapeXml(team_name_short)}</p>
-							<div class="d-flex justify-content-between align-items-center">
+			<c:forEach var="row" items="${result.rows}">
+				<div class="col-md-4">
+					<div class="card mb-4 shadow-sm text-white bg-dark">
+						<a class="itemCardLink" href="specificTeam.jsp?teamId=${row.id}">
+							<c:if test="${row.id == 21}">
+								<img src="../img/Thun.png" class="img-fluid img-thumbnail"
+									alt="Responsive image">
+							</c:if> <c:if test="${row.visitor_team_id != 21}">
+								<img src="..img/logos/${fn:escapeXml(row.sort_name)}"
+									class="img-fluid img-thumbnail" alt="Responsive image">
+							</c:if>
+							<div class="card-body">
+								<p class="card-text">${fn:escapeXml(team_name_short)}</p>
+								<div class="d-flex justify-content-between align-items-center">
+								</div>
 							</div>
-						</div>
-					</a>
+						</a>
+					</div>
 				</div>
-			</div>
-			<%
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			%>
+			</c:forEach>
 		</div>
 	</div>
 
@@ -130,63 +95,38 @@
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
 
-			<li class="page-item <%if (pageInt == 1) {%> disabled <%}%>">
-				<a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page-1}" tabindex="-1"
-				aria-disabled="false">Previous</a>
-			</li>
-			<%
-				if (pageInt > 3) {
-			%>
-			<li class="page-item"><a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
-			<%
-				}
-			%>
-			<%
-				if (pageInt > 2) {
-			%>
-			<li class="page-item"><a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
-			<%
-				}
-			%>
-			<%
-				if (pageInt > 1) {
-			%>
-			<li class="page-item"><a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
-			<%
-				}
-			%>
+			<li
+				class="page-item <c:if test = "${pageInt == 1}"> disabled </c:if>"><a
+				class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page-1}"
+				tabindex="-1" aria-disabled="false">Previous</a></li>
+			<c:if test="${pageInt > 3}">
+				<li class="page-item"><a class="page-link"
+					href="teams.jsp?sortBy=${sortBy}&page=${page-3}">${page-3}</a></li>
+			</c:if>
+			<c:if test="${pageInt > 2}">
+				<li class="page-item"><a class="page-link"
+					href="teams.jsp?sortBy=${sortBy}&page=${page-2}">${page-2}</a></li>
+			</c:if>
+			<c:if test="${pageInt > 1}">
+				<li class="page-item"><a class="page-link"
+					href="teams.jsp?sortBy=${sortBy}&page=${page-1}">${page-1}</a></li>
+			</c:if>
 			<li class="page-item disabled"><a class="page-link" href="#">${page}</a></li>
-			<%
-				if (pageInt < 4) {
-			%>
-			<li class="page-item"><a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
-			<%
-				}
-			%>
-			<%
-				if (pageInt < 3) {
-			%>
-			<li class="page-item"><a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
-			<%
-				}
-			%>
-			<%
-				if (pageInt < 2) {
-			%>
-			<li class="page-item"><a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
-			<%
-				}
-			%>
-			<li class="page-item <%if (pageInt == 4) {%> disabled <%}%>">
-				<a class="page-link"
-				href="teams.jsp?sortBy=${sortBy}&page=${page+1}">Next</a>
+			<c:if test="${pageInt < 4}">
+				<li class="page-item"><a class="page-link"
+					href="teams.jsp?sortBy=${sortBy}&page=${page+1}">${page+1}</a></li>
+			</c:if>
+			<c:if test="${pageInt < 3}">
+				<li class="page-item"><a class="page-link"
+					href="teams.jsp?sortBy=${sortBy}&page=${page+2}">${page+2}</a></li>
+			</c:if>
+			<c:if test="${pageInt < 2}">
+				<li class="page-item"><a class="page-link"
+					href="teams.jsp?sortBy=${sortBy}&page=${page+3}">${page+3}</a></li>
+			</c:if>
+			<li
+				class="page-item <c:if test = "${pageInt == 4}"> disabled </c:if>"><a
+				class="page-link" href="teams.jsp?sortBy=${sortBy}&page=${page+1}">Next</a>
 			</li>
 		</ul>
 	</nav>

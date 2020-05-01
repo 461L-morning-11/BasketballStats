@@ -30,12 +30,8 @@
 
 		</div>
 
-
-
-
-
-
 	</main>
+
 	<!-- /.container -->
 
 	<!-- Bootstrap core JavaScript
