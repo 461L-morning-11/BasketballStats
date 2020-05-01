@@ -41,9 +41,7 @@
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>
 	<script>
-		window.jQuer
-				|| document
-						.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')
+		window.jQuery|| document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')
 	</script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"

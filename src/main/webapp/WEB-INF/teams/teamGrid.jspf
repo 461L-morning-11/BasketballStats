@@ -75,12 +75,12 @@
 							<c:if test="${row.id == 21}">
 								<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 									alt="Responsive image">
-							</c:if> <c:if test="${row.visitor_team_id != 21}">
-								<img src="..img/logos/${fn:escapeXml(row.sort_name)}"
+							</c:if> <c:if test="${row.id != 21}">
+								<img src="../img/logos/${row.short_name}.png"
 									class="img-fluid img-thumbnail" alt="Responsive image">
 							</c:if>
 							<div class="card-body">
-								<p class="card-text">${fn:escapeXml(team_name_short)}</p>
+								<p class="card-text">${row.short_name}</p>
 								<div class="d-flex justify-content-between align-items-center">
 								</div>
 							</div>

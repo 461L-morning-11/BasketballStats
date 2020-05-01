@@ -19,6 +19,10 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.google.cloud.sql.jdbc.Driver"%>
 <%@ page import="java.sql.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,60 +30,35 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<c:set var="visitorId" value="-1" />
+	<c:set var="homeId" value="-1" />
+
+	<c:set var="gameId" value="${param.gameId}" />
+
+	<sql:setDataSource var="dataSource" driver="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://104.154.138.136/basketball_web" user="root"
+		password="Sr4*8DNgZbvHqnee" />
+
+	<sql:query dataSource="${dataSource}" var="resultGame">
+		SELECT * FROM games WHERE id = ${gameId};
+	</sql:query>
+	
+	<c:set var="homeId" value="${row.home_team_id}" />
+	<c:set var="visitorId" value="${row.visitor_team_id}" />
+	
+	<c:set var = "shortDate" value = "${fn:substring(row.date, 5, 10)}" />
+	
+	<c:set var="game_home_score" value="${row.home_team_score}" />
+	<c:set var="game_visitor_score" value="${row.visitor_team_score}" />
+	
+	<c:set var="home_logo" value="../img/logos/${row.home_name }.png" />
+	<c:set var="visitor_logo" value="../img/logos/${row.visitor_name }.png" />
+	
+	<fmt:parseNumber var="visitorScore" type="number" value="${pageNumber}" />
+
 	<%
-		int visitor_id = -1;
-	int home_id = -1;
 
-	String game_ID = request.getParameter("gameId");
-
-	String db = "basketball_web";
-	String user = "root";
-	String pass = "Sr4*8DNgZbvHqnee";
-	String ip = "104.154.138.136";
-
-	try {
-
-		System.out.println("trying to query from sql database;");
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		String host = "jdbc:mysql://" + ip + ":3306/" + db;
-		Connection c = DriverManager.getConnection(host, user, pass);
-
-		Statement stm = c.createStatement();
-		Statement stm2 = c.createStatement();
-		Statement stm3 = c.createStatement();
-		ResultSet rs = stm.executeQuery("SELECT * FROM games WHERE id = " + game_ID);
-
-		rs.next();
-		System.out.println("getting data for game " + rs.getString("id"));
-
-		pageContext.setAttribute("game_home_team", rs.getString("home_name"));
-		pageContext.setAttribute("game_visitor_team", rs.getString("visitor_name"));
-
-		//DB SEARCH FOR TEAM ID
-
-		String homeTeam = rs.getString("home_name");
-		String visitorTeam = rs.getString("visitor_name");
-
-		String Query2 = "SELECT * FROM teams WHERE short_name = '" + homeTeam + "' LIMIT 1";
-		ResultSet rs2 = stm2.executeQuery(Query2);
-		rs2.next();
-		pageContext.setAttribute("home_team_ID", rs2.getString("id"));
-		home_id = rs2.getInt("id");
-		String Query3 = "SELECT * FROM teams WHERE short_name = '" + visitorTeam + "' LIMIT 1";
-		ResultSet rs3 = stm3.executeQuery(Query3);
-		rs3.next();
-		pageContext.setAttribute("visitor_team_ID", rs3.getString("id"));
-		visitor_id = rs3.getInt("id");
-
-		String shortDate = (String) rs.getString("date");
-
-		pageContext.setAttribute("game_date", shortDate.substring(5, 10));
-
-		pageContext.setAttribute("game_home_score", rs.getString("home_team_score"));
-
-		pageContext.setAttribute("game_visitor_score", rs.getString("visitor_team_score"));
-		pageContext.setAttribute("home_logo", "../img/logos/" + rs.getString("home_name") + ".png");
-		pageContext.setAttribute("visitor_logo", "../img/logos/" + rs.getString("visitor_name") + ".png");
 		int vscore = Integer.parseInt(rs.getString("visitor_team_score"));
 		int hscore = Integer.parseInt(rs.getString("home_team_score"));
 		if (vscore > hscore) {
@@ -156,7 +135,7 @@
 	<br>
 	<br>
 	<div>
-		<h1 style="color: #FF0000; text-align: center;">WINNER:${(winner)}
+		<h1 style="color: #FF0000; text-align: center;">WINNER: ${(winner)}
 		</h1>
 		<!-- <audio controls autoplay>  
         <source src="../img/music.mp3" type="audio/mp3">   
