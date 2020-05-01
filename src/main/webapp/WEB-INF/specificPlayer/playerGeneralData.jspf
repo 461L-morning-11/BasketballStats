@@ -1,0 +1,117 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+		//pageContext.setAttribute("team_ID", request.getParameter("teamId"));
+		String height_feet = null;
+		String weight_pounds = null;
+		int team_id = -1;
+		
+		String player_ID = request.getParameter("playerId");
+
+		String db = "basketball_web";
+		String user = "root";
+		String pass = "Sr4*8DNgZbvHqnee";
+		String ip = "104.154.138.136";
+
+		try {
+
+			System.out.println("trying to query from sql database;");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			String host = "jdbc:mysql://" + ip + ":3306/" + db;
+			Connection c = DriverManager.getConnection(host, user, pass);
+
+			Statement statement = c.createStatement();
+
+			ResultSet rs = statement.executeQuery("SELECT * FROM players WHERE id = " + player_ID);
+
+			rs.next();
+			System.out.println("getting data for player " + rs.getString("id"));
+
+			pageContext.setAttribute("player_first_name", rs.getString("first_name"));
+
+			pageContext.setAttribute("player_last_name", rs.getString("last_name"));
+
+			pageContext.setAttribute("player_height_feet", rs.getString("height_feet"));
+			height_feet = rs.getString("height_feet");
+			pageContext.setAttribute("player_height_inches", rs.getString("height_inches"));
+
+			pageContext.setAttribute("player_weight", rs.getString("weight_pounds"));
+			weight_pounds = rs.getString("weight_pounds");
+
+			pageContext.setAttribute("player_team_name_short", rs.getString("team_name"));
+
+			team_id = rs.getInt("team_id");
+			pageContext.setAttribute("player_team_id", team_id);
+
+			pageContext.setAttribute("player_team_name_long", rs.getString("team_name"));
+
+			pageContext.setAttribute("player_team_conference", rs.getString("team_conference"));
+
+			pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("team_name") + ".png");
+
+			String short_position = (String) rs.getString("position");
+			String position = "";
+			char[] position_letters = short_position.toCharArray();
+			for (int j = 0; j < short_position.length(); j++) {
+				try {
+					if (position_letters[j] == 'C') {
+						position += "Center";
+					} else if (position_letters[j] == 'G') {
+						position += "Guard";
+					} else if (position_letters[j] == 'F') {
+						position += "Forward";
+					} else if (position_letters[j] == 'C') {
+						position += "Center";
+					} else if (position_letters[j] == '-') {
+						position += "-";
+					}
+				} catch (Exception e) {
+				}
+			}
+			pageContext.setAttribute("player_position", position);
+
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	%>
+	<div class="row">
+		<div class="specificTeam">
+			<div class="center">
+				<h1>
+					<b>${(player_first_name)} ${(player_last_name)}</b>
+					<%
+						if (height_feet != null) {
+					%><br> - ${(player_height_feet)}'${(player_height_inches)}''
+					<%
+						}
+						if (weight_pounds != null) {
+					%>
+					${(player_weight)} lbs
+					<%
+						}
+					%>
+				</h1>
+				<div class="center">
+					<p>${(player_first_name)}
+						is a ${(player_position)} for the <a class="teamLink"
+							href="specificTeam.jsp?teamId=${(player_team_id)}">${(player_team_name_long)}</a>
+						in the ${(player_team_conference)}ern Conference
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

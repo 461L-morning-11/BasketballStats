@@ -1,0 +1,63 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Game Results:</h1>
+	<div class="container">
+		<div class="row">
+			<%
+				//GAMES RESULTS
+				String search2 = request.getParameter("search");
+				String Query3 = "SELECT * FROM games WHERE(CONCAT(home_name, visitor_name)) LIKE(\"%" + search2 + "%\")"
+						+ " UNION SELECT * FROM games WHERE MATCH(home_name, visitor_name) AGAINST('" + search2 + "')";
+				try {
+					System.out.println("trying to query from sql database;");
+					Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+					String host = "jdbc:mysql://" + ip + ":3306/" + db;
+					Connection c = DriverManager.getConnection(host, user, pass);
+					Statement stm = c.createStatement();
+					ResultSet rs3 = stm.executeQuery(Query3);
+					while (rs3.next()) {
+						pageContext.setAttribute("game_ID", rs3.getString("id"));
+						pageContext.setAttribute("home_logo", "../img/logos/" + rs3.getString("home_name") + ".png");
+						pageContext.setAttribute("visitor_logo", "../img/logos/" + rs3.getString("visitor_name") + ".png");
+			%>
+			<div class="col-md-4">
+				<div class="card mb-4 shadow-sm text-white bg-dark">
+					<div
+						class="card-body d-flex justify-content-between align-items-center">
+						<a class="itemCardLink" href="specificGame.jsp?gameId=${game_ID}">
+							<img src="${visitor_logo}" class="img-fluid img-thumbnail"
+							alt="Responsive image"> <img src="${home_logo}"
+							class="img-fluid img-thumbnail" alt="Responsive image">
+							<p class="boldP text-center">
+								<%=rs3.getString("visitor_name")%>
+								@
+								<%=rs3.getString("home_name")%>
+							</p>
+							<p class="card-text text-center">
+								<%=rs3.getString("visitor_team_score")%>
+								-
+								<%=rs3.getString("home_team_score")%>
+							</p>
+						</a>
+					</div>
+				</div>
+			</div>
+			<%
+				}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			%>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+		String db = "basketball_web";
+		String user = "root";
+		String pass = "Sr4*8DNgZbvHqnee";
+		String ip = "104.154.138.136";
+
+		try {
+			System.out.println("trying to query from sql database;");
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			String host = "jdbc:mysql://" + ip + ":3306/" + db;
+			Connection c = DriverManager.getConnection(host, user, pass);
+
+			//PLAYERS RESULTS
+
+			String search = request.getParameter("search");
+			if (search.contains("center"))
+				search = search.replace("center", "C");
+			if (search.contains("guard"))
+				search = search.replace("guard", "G");
+			if (search.contains("forward"))
+				search = search.replace("forward", "F");
+			if (search.contains("eastern"))
+				search = search.replace("eastern", "east");
+			if (search.contains("western"))
+				search = search.replace("western", "west");
+			String Query = "SELECT * FROM players WHERE (CONCAT(first_name, last_name, team_name, team_conference, position)) LIKE(\"%"
+					+ search + "%\")"
+					+ " UNION SELECT * FROM players WHERE MATCH(first_name, last_name, team_name, team_conference, position) AGAINST('"
+					+ search + "')" + " UNION SELECT * FROM players WHERE position = '\"%" + search + "%\"' ";
+			System.out.println(Query);
+			Statement stm = c.createStatement();
+			ResultSet rs = stm.executeQuery(Query);
+	%>
+	<h1>Player Results:</h1>
+	<div class="container">
+		<div class="row">
+			<%
+				while (rs.next()) {
+						pageContext.setAttribute("player_id", rs.getString("id"));
+			%>
+			<div class="col-md-3">
+				<div class="card mb-4 shadow-sm text-white bg-dark">
+					<a class="itemCardLink"
+						href="specificPlayer.jsp?playerId=${player_id}">
+						<div class="card-body">
+							<h5 class="card-text">
+								<%=rs.getString("first_name")%>
+								<%=rs.getString("last_name")%></h5>
+							<h7 class="card-text"> <%=rs.getString("team_name")%> </h7>
+							<div class="d-flex justify-content-between align-items-center">
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<%
+				}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			%>
+		</div>
+	</div>
+	<hr>
+
+</body>
+</html>
