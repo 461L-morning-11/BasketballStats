@@ -32,16 +32,10 @@ import java.util.Map;
 
 @SuppressWarnings("serial")
 public class databaseFillTeams extends HttpServlet {
-	Long id;
-	String division;
-	String abbreviation;
-	String city;
-	String short_name;
-	String long_name;
-	String conference;
+
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
+		APIProperties team = new APIProperties();
 		String instance = "basketball-db";
 		String db = "basketball_web";
 		String user = "root";
@@ -65,7 +59,7 @@ public class databaseFillTeams extends HttpServlet {
 			int[] recent_champ = { 1958, 2008, 2003, 0, 1998, 2016, 2011, 0, 2004, 2018, 1995, 2000, 0, 2010, 0, 2013,
 					1971, 0, 0, 1973, 1979, 2009, 1983, 1993, 1977, 1951, 2014, 2019, 1998, 1978 };
 			for (int i = 1; i < 31; i++) {
-				fetchAPI(i);
+				team = API.fetchAPI(i, "teams");
 
 				PreparedStatement ps = null;
 
@@ -73,13 +67,13 @@ public class databaseFillTeams extends HttpServlet {
 				c.setAutoCommit(false);
 
 				ps = c.prepareStatement(ins);
-				ps.setLong(1, id);
-				ps.setString(2, division);
-				ps.setString(3, abbreviation);
-				ps.setString(4, city);
-				ps.setString(5, long_name);
-				ps.setString(6, short_name);
-				ps.setString(7, conference);
+				ps.setLong(1, team.id);
+				ps.setString(2, team.division);
+				ps.setString(3, team.abbreviation);
+				ps.setString(4, team.city);
+				ps.setString(5, team.long_name);
+				ps.setString(6, team.short_name);
+				ps.setString(7, team.conference);
 				ps.setInt(8, total_champ[i - 1]);
 				ps.setInt(9, total_tries[i - 1]);
 				ps.setInt(10, recent_champ[i - 1]);
@@ -102,41 +96,5 @@ public class databaseFillTeams extends HttpServlet {
 
 	}
 
-	public void fetchAPI(int pageNum) {
-		JSONParser parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/teams/" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200)
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			else {
-
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject jobj = (JSONObject) parse.parse(inline);
-
-					id = (Long) jobj.get("id");
-					System.out.println(id);
-					division = (String) jobj.get("division");
-					abbreviation = (String) jobj.get("abbreviation");
-					city = (String) jobj.get("city");
-					long_name = (String) jobj.get("full_name");
-					short_name = (String) jobj.get("name");
-					conference = (String) jobj.get("conference");
-				}
-
-			}
-			conn.disconnect();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }

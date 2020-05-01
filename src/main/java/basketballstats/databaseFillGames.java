@@ -28,29 +28,17 @@ import com.google.cloud.sql.jdbc.Driver;
 
 @SuppressWarnings("serial")
 public class databaseFillGames extends HttpServlet {
-	boolean fill;
-	Long id;
+	
 	java.util.Date date;
-	int home_score;
-	int visitor_score;
-	int season;
-	short period;
-	String status;
-	String time;
-	boolean postseason;
-	short home_id;
-	short visitor_id;
-	String home_name;
-	String visitor_name;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		fill = false;
 		String instance = "basketball-db";
 		String db = "basketball_web";
 		String user = "root";
 		String pass = "Sr4*8DNgZbvHqnee";
 		String ip = "104.154.138.136";
+		APIProperties game = new APIProperties();
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -64,9 +52,9 @@ public class databaseFillGames extends HttpServlet {
 			}
 
 			for (int i = 1; i < 489; i++) {
-				fill = false;
-				while (!fill) {
-					fetchAPI(i);
+				game.fill = false;
+				while (!game.fill) {
+					game = API.fetchAPI(i, "games");
 					System.out.println("waiting..");
 				}
 
@@ -76,20 +64,20 @@ public class databaseFillGames extends HttpServlet {
 				c.setAutoCommit(false);
 
 				ps = c.prepareStatement(ins);
-				ps.setLong(1, id);
+				ps.setLong(1, game.id);
 				java.sql.Date sd = new java.sql.Date(date.getTime());
 				ps.setDate(2, sd);
-				ps.setInt(3, home_score);
-				ps.setInt(4, visitor_score);
-				ps.setInt(5, season);
-				ps.setShort(6, period);
-				ps.setString(7, status);
-				ps.setString(8, time);
-				ps.setBoolean(9, postseason);
-				ps.setShort(10, home_id);
-				ps.setShort(11, visitor_id);
-				ps.setString(12, home_name);
-				ps.setString(13, visitor_name);
+				ps.setInt(3, game.home_score);
+				ps.setInt(4, game.visitor_score);
+				ps.setInt(5, game.season);
+				ps.setShort(6, game.period);
+				ps.setString(7, game.status);
+				ps.setString(8, game.time);
+				ps.setBoolean(9, game.postseason);
+				ps.setShort(10, game.home_id);
+				ps.setShort(11, game.visitor_id);
+				ps.setString(12, game.home_name);
+				ps.setString(13, game.visitor_name);
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {
@@ -108,62 +96,6 @@ public class databaseFillGames extends HttpServlet {
 
 	}
 
-	public void fetchAPI(int pageNum) {
-		JSONParser parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/games?per_page=100&page=" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200) {
-				fill = false;
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			} else {
-				fill = true;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject jobj = (JSONObject) parse.parse(inline);
-					JSONArray jsonarr = (JSONArray) jobj.get("data");
-
-					for (Object o : jsonarr) {
-						JSONObject js = (JSONObject) o;
-						Long longtemp;
-						id = (Long) js.get("id");
-						System.out.println(id);
-						String dateTemp = js.get("date") + "";
-						dateTemp = dateTemp.substring(0, 10);
-						date = new SimpleDateFormat("dd-MM-yyyy").parse(dateTemp);
-						home_score = Integer.valueOf((js.get("home_team_score") + ""));
-
-						visitor_score = Integer.valueOf((js.get("visitor_team_score") + ""));
-
-						season = Integer.valueOf((js.get("season") + ""));
-						longtemp = (long) js.get("period");
-						period = longtemp.shortValue();
-						status = js.get("status") + "";
-						time = js.get("time") + "";
-						postseason = (boolean) js.get("postseason");
-						JSONObject g = (JSONObject) js.get("home_team");
-						longtemp = (long) g.get("id");
-						home_name = (String) g.get("name");
-						home_id = longtemp.shortValue();
-						JSONObject gg = (JSONObject) js.get("visitor_team");
-						longtemp = (long) gg.get("id");
-						visitor_name = (String) gg.get("name");
-						visitor_id = longtemp.shortValue();
-					}
-
-				}
-			}
-			conn.disconnect();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 
 }

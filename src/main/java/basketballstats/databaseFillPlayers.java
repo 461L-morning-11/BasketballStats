@@ -32,38 +32,11 @@ import java.util.Map;
 
 @SuppressWarnings("serial")
 public class databaseFillPlayers extends HttpServlet {
-	Long id;
-	String first_name;
-	String last_name;
-	String short_position;
-	String position;
-	long height_feet;
-	long height_inches;
-	long weight_pounds;
-	Long team_id;
-	String team_name;
-	String team_conference;
-	Double nine_pts;
-	Double nine_ast;
-	Double nine_rbs;
-	Double nine_ft_pct;
-	Double eight_pts;
-	Double eight_ast;
-	Double eight_rbs;
-	Double eight_ft_pct;
-	Double seven_pts;
-	Double seven_ast;
-	Double seven_rbs;
-	Double seven_ft_pct;
-	Double six_pts;
-	Double six_ast;
-	Double six_rbs;
-	Double six_ft_pct;
-	int count;
-	boolean fill;
+	
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		count = 0;
+		APIProperties player = new APIProperties();
+		player.count = 0;
 		String instance = "basketball-db";
 		String db = "basketball_web";
 		String user = "root";
@@ -82,10 +55,10 @@ public class databaseFillPlayers extends HttpServlet {
 			}
 
 			for (int i = 1; i < 3092; i++) { // only getting 2000 for now. There are more
-				count++;
-				fill = false;
-				while (!fill) {
-					fetchAPI(i);
+				player.count++;
+				player.fill = false;
+				while (!player.fill) {
+					player = API.fetchAPI(i, "players");
 					System.out.println("waiting..!");
 				}
 
@@ -95,41 +68,41 @@ public class databaseFillPlayers extends HttpServlet {
 				c.setAutoCommit(false);
 
 				ps = c.prepareStatement(ins);
-				ps.setLong(1, id);
-				ps.setString(2, first_name);
-				ps.setString(3, last_name);
-				ps.setString(4, position);
-				ps.setLong(5, height_feet);
-				ps.setLong(6, height_inches);
-				ps.setLong(7, weight_pounds);
-				ps.setLong(8, team_id);
-				ps.setString(9, team_name);
-				ps.setString(10, team_conference);
-				ps.setDouble(11, nine_pts);
-				ps.setDouble(12, nine_ast);
-				ps.setDouble(13, nine_rbs);
-				ps.setDouble(14, nine_ft_pct);
-				ps.setDouble(15, eight_pts);
-				ps.setDouble(16, eight_ast);
-				ps.setDouble(17, eight_rbs);
-				ps.setDouble(18, eight_ft_pct);
-				ps.setDouble(19, seven_pts);
-				ps.setDouble(20, seven_ast);
-				ps.setDouble(21, seven_rbs);
-				ps.setDouble(22, seven_ft_pct);
-				ps.setDouble(23, six_pts);
-				ps.setDouble(24, six_ast);
-				ps.setDouble(25, six_rbs);
-				ps.setDouble(26, six_ft_pct);
+				ps.setLong(1, player.id);
+				ps.setString(2, player.first_name);
+				ps.setString(3, player.last_name);
+				ps.setString(4, player.position);
+				ps.setLong(5, player.height_feet);
+				ps.setLong(6, player.height_inches);
+				ps.setLong(7, player.weight_pounds);
+				ps.setLong(8, player.team_id);
+				ps.setString(9, player.team_name);
+				ps.setString(10, player.team_conference);
+				ps.setDouble(11, player.nine_pts);
+				ps.setDouble(12, player.nine_ast);
+				ps.setDouble(13, player.nine_rbs);
+				ps.setDouble(14, player.nine_ft_pct);
+				ps.setDouble(15, player.eight_pts);
+				ps.setDouble(16, player.eight_ast);
+				ps.setDouble(17, player.eight_rbs);
+				ps.setDouble(18, player.eight_ft_pct);
+				ps.setDouble(19, player.seven_pts);
+				ps.setDouble(20, player.seven_ast);
+				ps.setDouble(21, player.seven_rbs);
+				ps.setDouble(22, player.seven_ft_pct);
+				ps.setDouble(23, player.six_pts);
+				ps.setDouble(24, player.six_ast);
+				ps.setDouble(25, player.six_rbs);
+				ps.setDouble(26, player.six_ft_pct);
 				/*
 				 * try { Thread.sleep(10); } catch (InterruptedException e) {
 				 * e.printStackTrace(); }
 				 */
 				ps.executeUpdate();
 				c.commit();
-				if (count == 11) {
+				if (player.count == 11) {
 					Thread.sleep(60000);
-					count = 0;
+					player.count = 0;
 				}
 
 			}
@@ -141,232 +114,6 @@ public class databaseFillPlayers extends HttpServlet {
 
 	}
 
-	public void fetchAPI(int pageNum) {
-		JSONParser parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/players/" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200) {
-				fill = false;
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			} else {
-				fill = true;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject js = (JSONObject) parse.parse(inline);
-
-					id = (Long) js.get("id");
-					System.out.println(id);
-					first_name = (String) js.get("first_name");
-					last_name = (String) js.get("last_name");
-					short_position = (String) js.get("position");
-					position = "";
-					char[] position_letters = short_position.toCharArray();
-					for (int j = 0; j < short_position.length(); j++) {
-						try {
-							if (position_letters[j] == 'C') {
-								position += "Center";
-							} else if (position_letters[j] == 'G') {
-								position += "Guard";
-							} else if (position_letters[j] == 'F') {
-								position += "Forward";
-							} else if (position_letters[j] == 'C') {
-								position += "Center";
-							} else if (position_letters[j] == '-') {
-								position += "-";
-							}
-						} catch (Exception e) {
-						}
-					}
-					JSONObject t = (JSONObject) js.get("team");
-					team_id = (Long) t.get("id");
-					team_name = (String) t.get("full_name");
-					team_conference = (String) t.get("conference");
-					height_feet = (long) js.get("height_feet");
-					weight_pounds = (long) js.get("weight_pounds");
-					height_inches = (long) js.get("height_inches");
-
-				}
-			}
-			conn.disconnect();
-
-		} catch (Exception e0) {
-			e0.printStackTrace();
-		}
-
-		// 2019 stats
-		parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2019&player_ids[]=" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200) {
-				fill = false;
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			} else {
-				fill = true;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject js = (JSONObject) parse.parse(inline);
-
-					JSONArray t = (JSONArray) js.get("data");
-					if (t.size() != 0) {
-						JSONObject g = (JSONObject) t.get(0);
-
-						nine_pts = (Double) g.get("pts");
-						nine_ast = (Double) g.get("ast");
-						nine_rbs = (Double) g.get("reb");
-						nine_ft_pct = (Double) g.get("ft_pct");
-					} else {
-						nine_pts = -1.0;
-						nine_ast = -1.0;
-						nine_rbs = -1.0;
-						nine_ft_pct = -1.0;
-					}
-
-				}
-			}
-			conn.disconnect();
-
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-
-		// 2018 stats
-		parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2018&player_ids[]=" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200) {
-				fill = false;
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			} else {
-				fill = true;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject js = (JSONObject) parse.parse(inline);
-
-					JSONArray t = (JSONArray) js.get("data");
-					if (t.size() != 0) {
-						JSONObject g = (JSONObject) t.get(0);
-
-						eight_pts = (Double) g.get("pts");
-						eight_ast = (Double) g.get("ast");
-						eight_rbs = (Double) g.get("reb");
-						eight_ft_pct = (Double) g.get("ft_pct");
-					} else {
-						eight_pts = -1.0;
-						eight_ast = -1.0;
-						eight_rbs = -1.0;
-						eight_ft_pct = -1.0;
-					}
-
-				}
-			}
-			conn.disconnect();
-
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
-
-		// 2017 stats
-		parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2017&player_ids[]=" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200) {
-				fill = false;
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			} else {
-				fill = true;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject js = (JSONObject) parse.parse(inline);
-
-					JSONArray t = (JSONArray) js.get("data");
-					if (t.size() != 0) {
-						JSONObject g = (JSONObject) t.get(0);
-
-						seven_pts = (Double) g.get("pts");
-						seven_ast = (Double) g.get("ast");
-						seven_rbs = (Double) g.get("reb");
-						seven_ft_pct = (Double) g.get("ft_pct");
-					} else {
-						seven_pts = -1.0;
-						seven_ast = -1.0;
-						seven_rbs = -1.0;
-						seven_ft_pct = -1.0;
-					}
-
-				}
-			}
-			conn.disconnect();
-
-		} catch (Exception e3) {
-			e3.printStackTrace();
-		}
-
-		// 2016 stats
-		parse = new JSONParser();
-		try {
-			URL url = new URL("https://www.balldontlie.io/api/v1/season_averages?season=2016&player_ids[]=" + pageNum);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			String inline = "";
-			if (responsecode != 200) {
-				fill = false;
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			} else {
-				fill = true;
-				BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-				while ((inline = in.readLine()) != null) {
-					JSONObject js = (JSONObject) parse.parse(inline);
-
-					JSONArray t = (JSONArray) js.get("data");
-					if (t.size() != 0) {
-						JSONObject g = (JSONObject) t.get(0);
-
-						six_pts = (Double) g.get("pts");
-						six_ast = (Double) g.get("ast");
-						six_rbs = (Double) g.get("reb");
-						six_ft_pct = (Double) g.get("ft_pct");
-					} else {
-						six_pts = -1.0;
-						six_ast = -1.0;
-						six_rbs = -1.0;
-						six_ft_pct = -1.0;
-					}
-
-				}
-			}
-			conn.disconnect();
-
-		} catch (Exception e4) {
-			e4.printStackTrace();
-		}
-
-	}
+	
 
 }
