@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Team Results:</h1>
+	<div class="container">
+		<div class="row">
+
+			<%
+				//TEAMS RESULTS
+				String search = request.getParameter("search");
+				String Query2 = "SELECT * FROM teams WHERE(CONCAT(abbreviation, city, conference, division, full_name, short_name)) LIKE(\"%"
+						+ search + "%\")"
+						+ " UNION SELECT * FROM teams WHERE MATCH(abbreviation, city, conference, division, full_name, short_name) AGAINST('"
+						+ search + "')";
+
+				try {
+					System.out.println("trying to query from sql database;");
+					Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+					String host = "jdbc:mysql://" + ip + ":3306/" + db;
+					Connection c = DriverManager.getConnection(host, user, pass);
+					Statement stm = c.createStatement();
+					ResultSet rs2 = stm.executeQuery(Query2);
+					while (rs2.next()) {
+						pageContext.setAttribute("team_ID", rs2.getString("id"));
+						pageContext.setAttribute("team_logo", "../img/logos/" + rs2.getString("short_name") + ".png");
+			%>
+			<div class="col-md-3">
+				<div class="card mb-3 shadow-sm text-white bg-dark">
+					<div class="card-body d-flex justify-content-center">
+						<a class="itemCardLink" href="specificTeam.jsp?teamId=${team_ID}">
+							<img src="${team_logo}" class="img-fluid img-thumbnail"
+							alt="Responsive image">
+							<p class="card-text text-center">
+								<%=rs2.getString("short_name")%></p>
+						</a>
+					</div>
+				</div>
+			</div>
+			<%
+				}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			%>
+		</div>
+	</div>
+
+	<hr>
+
+</body>
+</html>
