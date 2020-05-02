@@ -67,13 +67,13 @@ public class databaseFillTeams extends HttpServlet {
 				c.setAutoCommit(false);
 
 				ps = c.prepareStatement(ins);
-				ps.setLong(1, team.id);
-				ps.setString(2, team.division);
-				ps.setString(3, team.abbreviation);
-				ps.setString(4, team.city);
-				ps.setString(5, team.long_name);
-				ps.setString(6, team.short_name);
-				ps.setString(7, team.conference);
+				ps.setLong(1, team.getId());
+				ps.setString(2, team.getDivision());
+				ps.setString(3, team.getAbbreviation());
+				ps.setString(4, team.getCity());
+				ps.setString(5, team.getLong_name());
+				ps.setString(6, team.getShort_name());
+				ps.setString(7, team.getConference());
 				ps.setInt(8, total_champ[i - 1]);
 				ps.setInt(9, total_tries[i - 1]);
 				ps.setInt(10, recent_champ[i - 1]);

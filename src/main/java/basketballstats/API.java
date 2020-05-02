@@ -36,14 +36,14 @@ public class API {
 					while ((inline = in.readLine()) != null) {
 						JSONObject jobj = (JSONObject) parse.parse(inline);
 
-						instance.id = (Long) jobj.get("id");
-						System.out.println(instance.id);
-						instance.division = (String) jobj.get("division");
-						instance.abbreviation = (String) jobj.get("abbreviation");
-						instance.city = (String) jobj.get("city");
-						instance.long_name = (String) jobj.get("full_name");
-						instance.short_name = (String) jobj.get("name");
-						instance.conference = (String) jobj.get("conference");
+						instance.setId((Long) jobj.get("id"));
+						System.out.println(instance.getId());
+						instance.setDivision((String) jobj.get("division"));
+						instance.setAbbreviation((String) jobj.get("abbreviation"));
+						instance.setCity((String) jobj.get("city"));
+						instance.setLong_name((String) jobj.get("full_name"));
+						instance.setShort_name((String) jobj.get("name")); 
+						instance.setConference((String) jobj.get("conference"));
 					}
 
 				}
@@ -65,45 +65,45 @@ public class API {
 				int responsecode = conn.getResponseCode();
 				String inline = "";
 				if (responsecode != 200) {
-					instance.fill = false;
+					instance.setFill(false);
 					throw new RuntimeException("HttpResponseCode: " + responsecode);
 				} else {
-					instance.fill = true;
+					instance.setFill(true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 					while ((inline = in.readLine()) != null) {
 						JSONObject js = (JSONObject) parse.parse(inline);
 
-						instance.id = (Long) js.get("id");
-						System.out.println(instance.id);
-						instance.first_name = (String) js.get("first_name");
-						instance.last_name = (String) js.get("last_name");
-						instance.short_position = (String) js.get("position");
-						instance.position = "";
-						char[] position_letters = instance.short_position.toCharArray();
-						for (int j = 0; j < instance.short_position.length(); j++) {
+						instance.setId((Long) js.get("id"));
+						System.out.println(instance.getId());
+						instance.setFirst_name((String) js.get("first_name"));
+						instance.setLast_name((String) js.get("last_name")); 
+						instance.setShort_position((String) js.get("position"));
+						instance.setPosition(""); 
+						char[] position_letters = instance.getShort_position().toCharArray();
+						for (int j = 0; j < instance.getShort_position().length(); j++) {
 							try {
 								if (position_letters[j] == 'C') {
-									instance.position += "Center";
+									instance.setPosition(instance.getPosition() + "Center"); 
 								} else if (position_letters[j] == 'G') {
-									instance.position += "Guard";
+									instance.setPosition(instance.getPosition() + "Guard");
 								} else if (position_letters[j] == 'F') {
-									instance.position += "Forward";
+									instance.setPosition(instance.getPosition() + "Forward");
 								} else if (position_letters[j] == 'C') {
-									instance.position += "Center";
+									instance.setPosition(instance.getPosition() + "Center");
 								} else if (position_letters[j] == '-') {
-									instance.position += "-";
+									instance.setPosition(instance.getPosition() + "-");
 								}
 							} catch (Exception e) {
 							}
 						}
 						JSONObject t = (JSONObject) js.get("team");
-						instance.team_id = (Long) t.get("id");
-						instance.team_name = (String) t.get("full_name");
-						instance.team_conference = (String) t.get("conference");
-						instance.height_feet = (long) js.get("height_feet");
-						instance.weight_pounds = (long) js.get("weight_pounds");
-						instance.height_inches = (long) js.get("height_inches");
+						instance.setTeam_id((Long) t.get("id"));
+						instance.setTeam_name((String) t.get("full_name"));
+						instance.setTeam_conference((String) t.get("conference"));
+						instance.setHeight_feet((long) js.get("height_feet"));
+						instance.setWeight_pounds((long) js.get("weight_pounds"));
+						instance.setHeight_inches((long) js.get("height_inches"));
 
 					}
 				}
@@ -123,10 +123,10 @@ public class API {
 				int responsecode = conn.getResponseCode();
 				String inline = "";
 				if (responsecode != 200) {
-					instance.fill = false;
+					instance.setFill(false);
 					throw new RuntimeException("HttpResponseCode: " + responsecode);
 				} else {
-					instance.fill = true;
+					instance.setFill(true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 					while ((inline = in.readLine()) != null) {
@@ -136,15 +136,15 @@ public class API {
 						if (t.size() != 0) {
 							JSONObject g = (JSONObject) t.get(0);
 
-							instance.nine_pts = (Double) g.get("pts");
-							instance.nine_ast = (Double) g.get("ast");
-							instance.nine_rbs = (Double) g.get("reb");
-							instance.nine_ft_pct = (Double) g.get("ft_pct");
+							instance.setNine_pts((Double) g.get("pts")); 
+							instance.setNine_ast((Double) g.get("ast")); 
+							instance.setNine_rbs((Double) g.get("reb")); 
+							instance.setNine_ft_pct((Double) g.get("ft_pct"));
 						} else {
-							instance.nine_pts = -1.0;
-							instance.nine_ast = -1.0;
-							instance.nine_rbs = -1.0;
-							instance.nine_ft_pct = -1.0;
+							instance.setNine_pts(-1.0); 
+							instance.setNine_ast(-1.0); 
+							instance.setNine_rbs(-1.0); 
+							instance.setNine_ft_pct(-1.0);
 						}
 
 					}
@@ -165,10 +165,10 @@ public class API {
 				int responsecode = conn.getResponseCode();
 				String inline = "";
 				if (responsecode != 200) {
-					instance.fill = false;
+					instance.setFill(false); 
 					throw new RuntimeException("HttpResponseCode: " + responsecode);
 				} else {
-					instance.fill = true;
+					instance.setFill(true); 
 					BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 					while ((inline = in.readLine()) != null) {
@@ -178,15 +178,15 @@ public class API {
 						if (t.size() != 0) {
 							JSONObject g = (JSONObject) t.get(0);
 
-							instance.eight_pts = (Double) g.get("pts");
-							instance.eight_ast = (Double) g.get("ast");
-							instance.eight_rbs = (Double) g.get("reb");
-							instance.eight_ft_pct = (Double) g.get("ft_pct");
+							instance.setNine_pts((Double) g.get("pts")); 
+							instance.setNine_ast((Double) g.get("ast")); 
+							instance.setNine_rbs((Double) g.get("reb")); 
+							instance.setNine_ft_pct((Double) g.get("ft_pct"));
 						} else {
-							instance.eight_pts = -1.0;
-							instance.eight_ast = -1.0;
-							instance.eight_rbs = -1.0;
-							instance.eight_ft_pct = -1.0;
+							instance.setNine_pts(-1.0); 
+							instance.setNine_ast(-1.0); 
+							instance.setNine_rbs(-1.0); 
+							instance.setNine_ft_pct(-1.0);
 						}
 
 					}
@@ -207,10 +207,10 @@ public class API {
 				int responsecode = conn.getResponseCode();
 				String inline = "";
 				if (responsecode != 200) {
-					instance.fill = false;
+					instance.setFill(false);
 					throw new RuntimeException("HttpResponseCode: " + responsecode);
 				} else {
-					instance.fill = true;
+					instance.setFill(true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 					while ((inline = in.readLine()) != null) {
@@ -220,15 +220,15 @@ public class API {
 						if (t.size() != 0) {
 							JSONObject g = (JSONObject) t.get(0);
 
-							instance.seven_pts = (Double) g.get("pts");
-							instance.seven_ast = (Double) g.get("ast");
-							instance.seven_rbs = (Double) g.get("reb");
-							instance.seven_ft_pct = (Double) g.get("ft_pct");
+							instance.setNine_pts((Double) g.get("pts")); 
+							instance.setNine_ast((Double) g.get("ast")); 
+							instance.setNine_rbs((Double) g.get("reb")); 
+							instance.setNine_ft_pct((Double) g.get("ft_pct"));
 						} else {
-							instance.seven_pts = -1.0;
-							instance.seven_ast = -1.0;
-							instance.seven_rbs = -1.0;
-							instance.seven_ft_pct = -1.0;
+							instance.setNine_pts(-1.0); 
+							instance.setNine_ast(-1.0); 
+							instance.setNine_rbs(-1.0); 
+							instance.setNine_ft_pct(-1.0);
 						}
 
 					}
@@ -249,10 +249,10 @@ public class API {
 				int responsecode = conn.getResponseCode();
 				String inline = "";
 				if (responsecode != 200) {
-					instance.fill = false;
+					instance.setFill(false);
 					throw new RuntimeException("HttpResponseCode: " + responsecode);
 				} else {
-					instance.fill = true;
+					instance.setFill(true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 					while ((inline = in.readLine()) != null) {
@@ -262,15 +262,15 @@ public class API {
 						if (t.size() != 0) {
 							JSONObject g = (JSONObject) t.get(0);
 
-							instance.six_pts = (Double) g.get("pts");
-							instance.six_ast = (Double) g.get("ast");
-							instance.six_rbs = (Double) g.get("reb");
-							instance.six_ft_pct = (Double) g.get("ft_pct");
+							instance.setNine_pts((Double) g.get("pts")); 
+							instance.setNine_ast((Double) g.get("ast")); 
+							instance.setNine_rbs((Double) g.get("reb")); 
+							instance.setNine_ft_pct((Double) g.get("ft_pct"));
 						} else {
-							instance.six_pts = -1.0;
-							instance.six_ast = -1.0;
-							instance.six_rbs = -1.0;
-							instance.six_ft_pct = -1.0;
+							instance.setNine_pts(-1.0); 
+							instance.setNine_ast(-1.0); 
+							instance.setNine_rbs(-1.0); 
+							instance.setNine_ft_pct(-1.0);
 						}
 
 					}
@@ -293,10 +293,10 @@ public class API {
 				int responsecode = conn.getResponseCode();
 				String inline = "";
 				if (responsecode != 200) {
-					instance.fill = false;
+					instance.setFill(false);
 					throw new RuntimeException("HttpResponseCode: " + responsecode);
 				} else {
-					instance.fill = true;
+					instance.setFill(true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 					while ((inline = in.readLine()) != null) {
@@ -306,29 +306,29 @@ public class API {
 						for (Object o : jsonarr) {
 							JSONObject js = (JSONObject) o;
 							Long longtemp;
-							instance.id = (Long) js.get("id");
-							System.out.println(instance.id);
+							instance.setId((Long) js.get("id"));
+							System.out.println(instance.getId());
 							String dateTemp = js.get("date") + "";
 							dateTemp = dateTemp.substring(0, 10);
-							instance.date = new SimpleDateFormat("dd-MM-yyyy").parse(dateTemp);
-							instance.home_score = Integer.valueOf((js.get("home_team_score") + ""));
+							instance.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(dateTemp)); 
+							instance.setHome_score(Integer.valueOf((js.get("home_team_score") + "")));
 
-							instance.visitor_score = Integer.valueOf((js.get("visitor_team_score") + ""));
+							instance.setVisitor_score(Integer.valueOf((js.get("visitor_team_score") + ""))); 
 
-							instance.season = Integer.valueOf((js.get("season") + ""));
+							instance.setSeason(Integer.valueOf((js.get("season") + "")));
 							longtemp = (long) js.get("period");
-							instance.period = longtemp.shortValue();
-							instance.status = js.get("status") + "";
-							instance.time = js.get("time") + "";
-							instance.postseason = (boolean) js.get("postseason");
+							instance.setPeriod(longtemp.shortValue()); 
+							instance.setStatus(js.get("status") + ""); 
+							instance.setTime(js.get("time") + ""); 
+							instance.setPostseason((boolean) js.get("postseason")); 
 							JSONObject g = (JSONObject) js.get("home_team");
 							longtemp = (long) g.get("id");
-							instance.home_name = (String) g.get("name");
-							instance.home_id = longtemp.shortValue();
+							instance.setHome_name((String) g.get("name"));
+							instance.setHome_id(longtemp.shortValue()); 
 							JSONObject gg = (JSONObject) js.get("visitor_team");
 							longtemp = (long) gg.get("id");
-							instance.visitor_name = (String) gg.get("name");
-							instance.visitor_id = longtemp.shortValue();
+							instance.setVisitor_name((String) gg.get("name")); 
+							instance.setVisitor_id(longtemp.shortValue()); 
 						}
 
 					}

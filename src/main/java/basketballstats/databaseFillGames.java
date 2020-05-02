@@ -52,8 +52,8 @@ public class databaseFillGames extends HttpServlet {
 			}
 
 			for (int i = 1; i < 489; i++) {
-				game.fill = false;
-				while (!game.fill) {
+				game.setFill(false);
+				while (!game.isFill()) {
 					game = API.fetchAPI(i, "games");
 					System.out.println("waiting..");
 				}
@@ -64,20 +64,20 @@ public class databaseFillGames extends HttpServlet {
 				c.setAutoCommit(false);
 
 				ps = c.prepareStatement(ins);
-				ps.setLong(1, game.id);
+				ps.setLong(1, game.getId());
 				java.sql.Date sd = new java.sql.Date(date.getTime());
 				ps.setDate(2, sd);
-				ps.setInt(3, game.home_score);
-				ps.setInt(4, game.visitor_score);
-				ps.setInt(5, game.season);
-				ps.setShort(6, game.period);
-				ps.setString(7, game.status);
-				ps.setString(8, game.time);
-				ps.setBoolean(9, game.postseason);
-				ps.setShort(10, game.home_id);
-				ps.setShort(11, game.visitor_id);
-				ps.setString(12, game.home_name);
-				ps.setString(13, game.visitor_name);
+				ps.setInt(3, game.getHome_score());
+				ps.setInt(4, game.getVisitor_score());
+				ps.setInt(5, game.getSeason());
+				ps.setShort(6, game.getPeriod());
+				ps.setString(7, game.getStatus());
+				ps.setString(8, game.getTime());
+				ps.setBoolean(9, game.isPostseason());
+				ps.setShort(10, game.getHome_id());
+				ps.setShort(11, game.getVisitor_id());
+				ps.setString(12, game.getHome_name());
+				ps.setString(13, game.getVisitor_name());
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {

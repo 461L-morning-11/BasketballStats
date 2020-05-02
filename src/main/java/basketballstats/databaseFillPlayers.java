@@ -36,7 +36,7 @@ public class databaseFillPlayers extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		APIProperties player = new APIProperties();
-		player.count = 0;
+		player.setCount(0);
 		String instance = "basketball-db";
 		String db = "basketball_web";
 		String user = "root";
@@ -55,9 +55,9 @@ public class databaseFillPlayers extends HttpServlet {
 			}
 
 			for (int i = 1; i < 3092; i++) { // only getting 2000 for now. There are more
-				player.count++;
-				player.fill = false;
-				while (!player.fill) {
+				player.setCount(player.getCount()+1);
+				player.setFill(false); 
+				while (!player.isFill()) {
 					player = API.fetchAPI(i, "players");
 					System.out.println("waiting..!");
 				}
@@ -68,41 +68,41 @@ public class databaseFillPlayers extends HttpServlet {
 				c.setAutoCommit(false);
 
 				ps = c.prepareStatement(ins);
-				ps.setLong(1, player.id);
-				ps.setString(2, player.first_name);
-				ps.setString(3, player.last_name);
-				ps.setString(4, player.position);
-				ps.setLong(5, player.height_feet);
-				ps.setLong(6, player.height_inches);
-				ps.setLong(7, player.weight_pounds);
-				ps.setLong(8, player.team_id);
-				ps.setString(9, player.team_name);
-				ps.setString(10, player.team_conference);
-				ps.setDouble(11, player.nine_pts);
-				ps.setDouble(12, player.nine_ast);
-				ps.setDouble(13, player.nine_rbs);
-				ps.setDouble(14, player.nine_ft_pct);
-				ps.setDouble(15, player.eight_pts);
-				ps.setDouble(16, player.eight_ast);
-				ps.setDouble(17, player.eight_rbs);
-				ps.setDouble(18, player.eight_ft_pct);
-				ps.setDouble(19, player.seven_pts);
-				ps.setDouble(20, player.seven_ast);
-				ps.setDouble(21, player.seven_rbs);
-				ps.setDouble(22, player.seven_ft_pct);
-				ps.setDouble(23, player.six_pts);
-				ps.setDouble(24, player.six_ast);
-				ps.setDouble(25, player.six_rbs);
-				ps.setDouble(26, player.six_ft_pct);
+				ps.setLong(1, player.getId());
+				ps.setString(2, player.getFirst_name());
+				ps.setString(3, player.getLast_name());
+				ps.setString(4, player.getPosition());
+				ps.setLong(5, player.getHeight_feet());
+				ps.setLong(6, player.getHeight_inches());
+				ps.setLong(7, player.getWeight_pounds());
+				ps.setLong(8, player.getTeam_id());
+				ps.setString(9, player.getTeam_name());
+				ps.setString(10, player.getTeam_conference());
+				ps.setDouble(11, player.getNine_pts());
+				ps.setDouble(12, player.getNine_ast());
+				ps.setDouble(13, player.getNine_rbs());
+				ps.setDouble(14, player.getNine_ft_pct());
+				ps.setDouble(15, player.getEight_pts());
+				ps.setDouble(16, player.getEight_ast());
+				ps.setDouble(17, player.getEight_rbs());
+				ps.setDouble(18, player.getEight_ft_pct());
+				ps.setDouble(19, player.getSeven_pts());
+				ps.setDouble(20, player.getSeven_ast());
+				ps.setDouble(21, player.getSeven_rbs());
+				ps.setDouble(22, player.getSeven_ft_pct());
+				ps.setDouble(23, player.getSix_pts());
+				ps.setDouble(24, player.getSix_ast());
+				ps.setDouble(25, player.getSix_rbs());
+				ps.setDouble(26, player.getSix_ft_pct());
 				/*
 				 * try { Thread.sleep(10); } catch (InterruptedException e) {
 				 * e.printStackTrace(); }
 				 */
 				ps.executeUpdate();
 				c.commit();
-				if (player.count == 11) {
+				if (player.getCount() == 11) {
 					Thread.sleep(60000);
-					player.count = 0;
+					player.setCount(0);
 				}
 
 			}
