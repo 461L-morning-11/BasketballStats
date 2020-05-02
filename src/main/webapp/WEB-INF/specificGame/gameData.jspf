@@ -34,72 +34,29 @@
 	<c:set var="visitorId" value="-1" />
 	<c:set var="homeId" value="-1" />
 	
-	<jsp:useBean id="thisGame" class="basketballstats.GameModel" scope="page">
-		<jsp:setProperty name="thisGame" property="id" value="12"/>
-	</jsp:useBean>
-	<h1>ID: <jsp:getProperty name="thisGame" property="id" /></h1>
-	<% thisGame.getData();%>
-	<h1>Status: <jsp:getProperty name="thisGame" property="status" /></h1>
-
-	<c:set var="gameId" value="${param.gameId}" />
-
-	<sql:setDataSource var="dataSource" driver="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://104.154.138.136/basketball_web" user="root"
-		password="Sr4*8DNgZbvHqnee" />
-
-	<sql:query dataSource="${dataSource}" var="resultGame">
-		SELECT * FROM games WHERE id = ${gameId};
-	</sql:query>
-
-	<c:forEach var="row" items="${resultGame.rows}">
-
-		<c:set var="homeId" value="${row.home_team_id}" />
-		<c:set var="visitorId" value="${row.visitor_team_id}" />
-		<c:set var="home_name" value="${row.home_name}" />
-		<c:set var="visitor_name" value="${row.visitor_name}" />
-
-		<c:set var="shortDate" value="${fn:substring(row.date, 5, 10)}" />
-
-		<c:set var="game_home_score" value="${row.home_team_score}" />
-		<c:set var="game_visitor_score" value="${row.visitor_team_score}" />
-
-		<c:set var="home_logo" value="../img/logos/${row.home_name}.png" />
-		<c:set var="visitor_logo"
-			value="../img/logos/${row.visitor_name }.png" />
-
-		<fmt:parseNumber var="visitorScore" type="number"
-			value="${row.visitor_team_score}" />
-		<fmt:parseNumber var="homeScore" type="number"
-			value="${row.home_team_score}" />
-
-		<c:if test="${visitorScore < homeScore}">
-			<c:set var="winner" value="${visitor_name}" />
-		</c:if>
-		<c:if test="${visitorScore > homeScore}">
-			<c:set var="winner" value="${home_name}" />
-		</c:if>
-		<c:if test="${visitorScore == homeScore}">
-			<c:set var="winner" value="TIE" />
-		</c:if>
+	<jsp:useBean id="gameBean" class="basketballstats.GameModel" scope="page"/>
+	
+	<jsp:setProperty name="gameBean" property="id" value="${param.gameId}" />
+	
+	<% gameBean.fillData();%>
 
 
-	</c:forEach>
 
 	<div class="row">
 		<div class="col-md-4">
-			<h1 class="home_name">${home_name}</h1>
+			<h1 class="home_name"><jsp:getProperty name="gameBean" property="homeName" /></h1>
 
-			<c:if test="${homeId == 21}">
+			<%if(gameBean.getHomeID() == "21") {%>
 				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-			</c:if>
-			<c:if test="${homeId != 21}">
-				<img src="${(home_logo)}" class="img-fluid img-thumbnail"
+			<%} %>
+			<%if(gameBean.getHomeID() != "21") {%>
+				<img src="<jsp:getProperty name="gameBean" property="homeLogo" />" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-			</c:if>
-			<h3>Score: ${game_home_score}</h3>
+			<%} %>
+			<h3>Score: <jsp:getProperty name="gameBean" property="homeScore" /></h3>
 			<p>
-				<a href="specificTeam.jsp?teamId=${homeId}" class="btn btn-success">Team
+				<a href="specificTeam.jsp?teamId=<jsp:getProperty name="gameBean" property="homeID" />" class="btn btn-success">Team
 					Info &raquo;</a>
 			</p>
 		</div>
@@ -110,18 +67,17 @@
 		</div>
 
 		<div class="col-md-4">
-			<h1>${visitor_name}</h1>
-			<c:if test="${visitorId == 21}">
+			<h1><jsp:getProperty name="gameBean" property="visitorName" /></h1>
+			<%if(gameBean.getVisitorID() == "21") {%>
 				<img src="../img/Thun.png" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-			</c:if>
-			<c:if test="${visitorId != 21}">
-				<img src="${(visitor_logo)}" class="img-fluid img-thumbnail"
+			<%} else {%>
+				<img src="<jsp:getProperty name="gameBean" property="visitorLogo" />" class="img-fluid img-thumbnail"
 					alt="Responsive image">
-			</c:if>
-			<h3>Score: ${game_visitor_score}</h3>
+			<%} %>
+			<h3>Score: <jsp:getProperty name="gameBean" property="visitorScore" /></h3>
 			<p>
-				<a href="specificTeam.jsp?teamId=${visitorId}"
+				<a href="specificTeam.jsp?teamId=<jsp:getProperty name="gameBean" property="visitorID" />"
 					class="btn btn-success">Team Info &raquo;</a>
 			</p>
 		</div>
@@ -141,7 +97,7 @@
 	<br>
 	<br>
 	<div>
-		<h1 style="color: #FF0000; text-align: center;">WINNER: ${winner}
+		<h1 style="color: #FF0000; text-align: center;">WINNER: <jsp:getProperty name="gameBean" property="winner" />
 		</h1>
 		<!-- <audio controls autoplay>  
         <source src="../img/music.mp3" type="audio/mp3">   
