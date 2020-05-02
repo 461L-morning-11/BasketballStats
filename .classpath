@@ -41,13 +41,13 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/mongo-java-driver-3.12.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/mysql-connector-java-8.0.19.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/org-apache-commons-codec.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/jackson-annotations-2.10.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/jackson-core-2.10.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/jackson-databind-2.10.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Barrett/eclipse-workspace/BasketballStats/src/main/webapp/WEB-INF/lib/jstl-1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/mongo-java-driver-3.12.2.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/mysql-connector-java-8.0.19.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/org-apache-commons-codec.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/jackson-annotations-2.10.0.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/jackson-core-2.10.0.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/jackson-databind-2.10.0.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/hiplandic/developer/BasketballStats/BasketballStats/src/main/webapp/WEB-INF/lib/jstl-1.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -33,6 +33,13 @@
 
 	<c:set var="visitorId" value="-1" />
 	<c:set var="homeId" value="-1" />
+	
+	<jsp:useBean id="thisGame" class="basketballstats.GameModel" scope="page">
+		<jsp:setProperty name="thisGame" property="id" value="12"/>
+	</jsp:useBean>
+	<h1>ID: <jsp:getProperty name="thisGame" property="id" /></h1>
+	<% thisGame.getData();%>
+	<h1>Status: <jsp:getProperty name="thisGame" property="status" /></h1>
 
 	<c:set var="gameId" value="${param.gameId}" />
 

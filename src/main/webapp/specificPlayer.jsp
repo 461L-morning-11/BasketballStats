@@ -11,6 +11,10 @@
 <%@ page import="com.google.cloud.sql.jdbc.Driver"%>
 <%@ page import="java.sql.*"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,8 +30,6 @@
 		<div class="main-content"></div>
 
 		<%@ include file="../WEB-INF/specificPlayer/playerGeneralData.jspf"%>
-		
-		<%@ include file="../WEB-INF/specificPlayer/playerStats.jspf"%>
 		
 	</main>
 	<!-- /.container -->
