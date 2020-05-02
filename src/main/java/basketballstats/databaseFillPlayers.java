@@ -32,10 +32,10 @@ import java.util.Map;
 
 @SuppressWarnings("serial")
 public class databaseFillPlayers extends HttpServlet {
-	
+	private APIProperties player;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		APIProperties player = new APIProperties();
+		player = new APIProperties();
 		player.setCount(0);
 		String instance = "basketball-db";
 		String db = "basketball_web";

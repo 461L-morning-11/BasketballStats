@@ -30,7 +30,8 @@ import com.google.cloud.sql.jdbc.Driver;
 public class databaseFillGames extends HttpServlet {
 	
 	java.util.Date date;
-
+	private APIProperties game;
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		String instance = "basketball-db";
@@ -38,7 +39,7 @@ public class databaseFillGames extends HttpServlet {
 		String user = "root";
 		String pass = "Sr4*8DNgZbvHqnee";
 		String ip = "104.154.138.136";
-		APIProperties game = new APIProperties();
+		game = new APIProperties();
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");

@@ -32,7 +32,7 @@ import java.util.Map;
 
 @SuppressWarnings("serial")
 public class databaseFillTeams extends HttpServlet {
-
+	private APIProperties team;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		APIProperties team = new APIProperties();
