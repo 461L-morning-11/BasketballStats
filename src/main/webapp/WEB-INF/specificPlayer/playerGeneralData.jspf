@@ -13,37 +13,47 @@
 </head>
 <body>
 
-	<jsp:useBean id="playerBean" class="basketballstats.PlayerModel" scope="page" />
-	
-	<jsp:setProperty name="playerBean" property="id" value="${param.playerId}"/>
-	
+	<jsp:useBean id="playerBean" class="basketballstats.PlayerModel"
+		scope="page" />
+
+	<jsp:setProperty name="playerBean" property="id"
+		value="${param.playerId}" />
+
 	<% playerBean.fillData();%>
-	
+
 	<div class="row">
 		<div class="specificTeam">
 			<div class="center">
 				<h1>
-					<b><jsp:getProperty name="playerBean" property="firstName" /> <jsp:getProperty name="playerBean" property="lastName" /></b>
+					<b><jsp:getProperty name="playerBean" property="firstName" />
+						<jsp:getProperty name="playerBean" property="lastName" /></b>
 					<%if (playerBean.getHeightFeet() != null) {%>
-						<br> - <jsp:getProperty name="playerBean" property="heightFeet" />'<jsp:getProperty name="playerBean" property="heightInches" />''
+					<br> -
+					<jsp:getProperty name="playerBean" property="heightFeet" />'<jsp:getProperty
+						name="playerBean" property="heightInches" />''
 					<%} %>
 					<%if (playerBean.getWeight() != null) {%>
-						<jsp:getProperty name="playerBean" property="weight" /> lbs
+					<jsp:getProperty name="playerBean" property="weight" />
+					lbs
 					<%} %>
 				</h1>
 				<div class="center">
 					<p><jsp:getProperty name="playerBean" property="firstName" />
-						is a <jsp:getProperty name="playerBean" property="position" /> for the <a class="teamLink"
-							href="specificTeam.jsp?teamId=<jsp:getProperty name="playerBean" property="teamId" />"><jsp:getProperty name="playerBean" property="teamName" /></a>
-						in the <jsp:getProperty name="playerBean" property="teamConference" />ern Conference
+						is a
+						<jsp:getProperty name="playerBean" property="position" />
+						for the <a class="teamLink"
+							href="specificTeam.jsp?teamId=<jsp:getProperty name="playerBean" property="teamId" />"><jsp:getProperty
+								name="playerBean" property="teamName" /></a> in the
+						<jsp:getProperty name="playerBean" property="teamConference" />ern
+						Conference
 					</p>
 				</div>
 			</div>
 		</div>
 
 	</div>
-	
-		<br>
+
+	<br>
 	<div id="wrapper">
 
 		<%

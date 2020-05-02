@@ -92,29 +92,33 @@
 		scope="page" />
 	<jsp:setProperty name="rosterBean" property="teamId"
 		value="${param.teamId}" />
-		<%rosterBean.fillData(); %>
+	<%
+		rosterBean.fillData();
+	%>
 
 
 	<br>
 	<table class="table table-hover">
-	<thead>
+		<thead>
 			<tr>
-				<th scope="col"><jsp:getProperty name="teamBean" property="shortName" /> Players</th>
+				<th scope="col"><jsp:getProperty name="teamBean"
+						property="shortName" /> Players</th>
 			</tr>
 		</thead>
 		<tbody>
 		<tbody>
-			<% for(int i = 0; i < rosterBean.getPlayers().size(); i++) { %>
-			<tr onclick="window.location='specificPlayer.jsp?playerId=<%=rosterBean.getPlayers().get(i).getId()%>';">
-				<td>
-					<%=rosterBean.getPlayers().get(i).getFirstName()%>
-				</td>
-				<td>
-					<%=rosterBean.getPlayers().get(i).getLastName()%>
-				</td>
+			<%
+				for (int i = 0; i < rosterBean.getPlayers().size(); i++) {
+			%>
+			<tr
+				onclick="window.location='specificPlayer.jsp?playerId=<%=rosterBean.getPlayers().get(i).getId()%>';">
+				<td><%=rosterBean.getPlayers().get(i).getFirstName()%></td>
+				<td><%=rosterBean.getPlayers().get(i).getLastName()%></td>
 				<td><%=rosterBean.getPlayers().get(i).getPosition()%></td>
 			</tr>
-			<% } %>
+			<%
+				}
+			%>
 		</tbody>
 	</table>
 	<br>

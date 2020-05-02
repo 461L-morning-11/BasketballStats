@@ -27,7 +27,7 @@
 
 	<main role="main" class="container">
 
-	<%@ include file="../WEB-INF/players/playersTable.jspf"%>
+		<%@ include file="../WEB-INF/players/playersTable.jspf"%>
 
 	</main>
 	<!-- /.container -->

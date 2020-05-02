@@ -25,11 +25,11 @@ public class RosterModel implements Serializable {
 	public ArrayList<PlayerModel> getPlayers() {
 		return players;
 	}
-	
+
 	public String getTeamId() {
 		return teamId;
 	}
-	
+
 	public int getRosterSize() {
 		return rosterSize;
 	}
@@ -52,9 +52,9 @@ public class RosterModel implements Serializable {
 		String user = "root";
 		String pass = "Sr4*8DNgZbvHqnee";
 		String ip = "104.154.138.136";
-		
+
 		players = new ArrayList<PlayerModel>();
-		
+
 		try {
 
 			System.out.println("trying to query from sql database;");
@@ -66,14 +66,13 @@ public class RosterModel implements Serializable {
 			ResultSet rs2 = statement.executeQuery("SELECT * FROM players WHERE team_id = " + teamId);
 
 			while (rs2.next()) {
-				
+
 				PlayerModel newPlayer = new PlayerModel();
 				newPlayer.setId(rs2.getString("id"));
 				newPlayer.setFirstName(rs2.getString("first_name"));
 				newPlayer.setLastName(rs2.getString("last_name"));
 				newPlayer.setPosition(rs2.getString("position"));
 				players.add(newPlayer);
-				
 
 				System.out.println(rosterSize);
 

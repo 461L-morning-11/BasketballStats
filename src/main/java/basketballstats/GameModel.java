@@ -28,13 +28,14 @@ public class GameModel implements java.io.Serializable {
 	private String homeLogo;
 	private String visitorLogo;
 	private String winner;
-	
+
 	public GameModel() {
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -118,40 +119,51 @@ public class GameModel implements java.io.Serializable {
 	public String getDate() {
 		return date;
 	}
+
 	public String getHomeScore() {
 		return homeScore;
 	}
+
 	public String getVisitorScore() {
 		return visitorScore;
 	}
+
 	public String getSeason() {
 		return season;
 	}
+
 	public String getPeriod() {
 		return period;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public String getTime() {
 		return time;
 	}
+
 	public String getPostseason() {
 		return postseason;
 	}
+
 	public String getHomeID() {
 		return homeID;
 	}
+
 	public String getVisitorID() {
 		return visitorID;
 	}
+
 	public String getHomeName() {
 		return homeName;
 	}
+
 	public String getVisitorName() {
 		return visitorName;
 	}
-	
+
 	public void fillData() {
 		String db = "basketball_web";
 		String user = "root";
@@ -171,31 +183,29 @@ public class GameModel implements java.io.Serializable {
 			ResultSet rs = statement.executeQuery("SELECT * FROM games WHERE id = " + id);
 
 			rs.next();
-			
-			
+
 			homeID = rs.getString("home_team_id");
 			visitorID = rs.getString("visitor_team_id");
 			homeName = rs.getString("home_name");
 			visitorName = rs.getString("visitor_name");
-			date =  rs.getString("date").substring(5,10);
+			date = rs.getString("date").substring(5, 10);
 			homeScore = rs.getString("home_team_score");
 			visitorScore = rs.getString("visitor_team_score");
 			homeLogo = "../img/logos/" + homeName + ".png";
 			visitorLogo = "../img/logos/" + visitorName + ".png";
 			int homeScoreInt = Integer.valueOf(homeScore);
 			int visitorScoreInt = Integer.valueOf(visitorScore);
-			if(homeScoreInt < visitorScoreInt) {
+			if (homeScoreInt < visitorScoreInt) {
 				winner = homeName;
-			}else if(visitorScoreInt < homeScoreInt){
+			} else if (visitorScoreInt < homeScoreInt) {
 				winner = visitorName;
 			} else {
 				winner = "TIE";
 			}
-			
-			
+
 		} catch (Exception e) {
 		}
 
 	}
-	
+
 }

@@ -30,7 +30,7 @@
 		<div class="main-content"></div>
 
 		<%@ include file="../WEB-INF/specificPlayer/playerGeneralData.jspf"%>
-		
+
 	</main>
 	<!-- /.container -->
 
