@@ -1,115 +1,170 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Player Data</title>
 </head>
 <body>
-	<%
-		//pageContext.setAttribute("team_ID", request.getParameter("teamId"));
-		String height_feet = null;
-		String weight_pounds = null;
-		int team_id = -1;
-		
-		String player_ID = request.getParameter("playerId");
 
-		String db = "basketball_web";
-		String user = "root";
-		String pass = "Sr4*8DNgZbvHqnee";
-		String ip = "104.154.138.136";
-
-		try {
-
-			System.out.println("trying to query from sql database;");
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String host = "jdbc:mysql://" + ip + ":3306/" + db;
-			Connection c = DriverManager.getConnection(host, user, pass);
-
-			Statement statement = c.createStatement();
-
-			ResultSet rs = statement.executeQuery("SELECT * FROM players WHERE id = " + player_ID);
-
-			rs.next();
-			System.out.println("getting data for player " + rs.getString("id"));
-
-			pageContext.setAttribute("player_first_name", rs.getString("first_name"));
-
-			pageContext.setAttribute("player_last_name", rs.getString("last_name"));
-
-			pageContext.setAttribute("player_height_feet", rs.getString("height_feet"));
-			height_feet = rs.getString("height_feet");
-			pageContext.setAttribute("player_height_inches", rs.getString("height_inches"));
-
-			pageContext.setAttribute("player_weight", rs.getString("weight_pounds"));
-			weight_pounds = rs.getString("weight_pounds");
-
-			pageContext.setAttribute("player_team_name_short", rs.getString("team_name"));
-
-			team_id = rs.getInt("team_id");
-			pageContext.setAttribute("player_team_id", team_id);
-
-			pageContext.setAttribute("player_team_name_long", rs.getString("team_name"));
-
-			pageContext.setAttribute("player_team_conference", rs.getString("team_conference"));
-
-			pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("team_name") + ".png");
-
-			String short_position = (String) rs.getString("position");
-			String position = "";
-			char[] position_letters = short_position.toCharArray();
-			for (int j = 0; j < short_position.length(); j++) {
-				try {
-					if (position_letters[j] == 'C') {
-						position += "Center";
-					} else if (position_letters[j] == 'G') {
-						position += "Guard";
-					} else if (position_letters[j] == 'F') {
-						position += "Forward";
-					} else if (position_letters[j] == 'C') {
-						position += "Center";
-					} else if (position_letters[j] == '-') {
-						position += "-";
-					}
-				} catch (Exception e) {
-				}
-			}
-			pageContext.setAttribute("player_position", position);
-
-			
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	%>
+	<jsp:useBean id="playerBean" class="basketballstats.PlayerModel" scope="page" />
+	
+	<jsp:setProperty name="playerBean" property="id" value="${param.playerId}"/>
+	
+	<% playerBean.fillData();%>
+	
 	<div class="row">
 		<div class="specificTeam">
 			<div class="center">
 				<h1>
-					<b>${(player_first_name)} ${(player_last_name)}</b>
-					<%
-						if (height_feet != null) {
-					%><br> - ${(player_height_feet)}'${(player_height_inches)}''
-					<%
-						}
-						if (weight_pounds != null) {
-					%>
-					${(player_weight)} lbs
-					<%
-						}
-					%>
+					<b><jsp:getProperty name="playerBean" property="firstName" /> <jsp:getProperty name="playerBean" property="lastName" /></b>
+					<%if (playerBean.getHeightFeet() != null) {%>
+						<br> - <jsp:getProperty name="playerBean" property="heightFeet" />'<jsp:getProperty name="playerBean" property="heightInches" />''
+					<%} %>
+					<%if (playerBean.getWeight() != null) {%>
+						<jsp:getProperty name="playerBean" property="weight" /> lbs
+					<%} %>
 				</h1>
 				<div class="center">
-					<p>${(player_first_name)}
-						is a ${(player_position)} for the <a class="teamLink"
-							href="specificTeam.jsp?teamId=${(player_team_id)}">${(player_team_name_long)}</a>
-						in the ${(player_team_conference)}ern Conference
+					<p><jsp:getProperty name="playerBean" property="firstName" />
+						is a <jsp:getProperty name="playerBean" property="position" /> for the <a class="teamLink"
+							href="specificTeam.jsp?teamId=<jsp:getProperty name="playerBean" property="teamId" />"><jsp:getProperty name="playerBean" property="teamName" /></a>
+						in the <jsp:getProperty name="playerBean" property="teamConference" />ern Conference
 					</p>
 				</div>
 			</div>
 		</div>
+
+	</div>
+	
+		<br>
+	<div id="wrapper">
+
+		<%
+		if(playerBean.getPts2019() != -1){
+		%>
+		<div class="seasonAverages">
+			<header class="title">2019 Season Stats</header>
+
+			<table style="width: 100%">
+				<tr>
+					<td>Average Points:</td>
+					<td><jsp:getProperty name="playerBean" property="pts2019" /></td>
+				</tr>
+				<tr>
+					<td>Average Assists:</td>
+					<td><jsp:getProperty name="playerBean" property="ast2019" /></td>
+				</tr>
+				<tr>
+					<td>Average Rebounds:</td>
+					<td><jsp:getProperty name="playerBean" property="rbs2019" /></td>
+				</tr>
+				<tr>
+					<td>Free Throw Percent:</td>
+					<td><jsp:getProperty name="playerBean" property="ftPct2019" /></td>
+				</tr>
+			</table>
+		</div>
+		<%
+			}
+		%>
+		<%
+			if (playerBean.getPts2018() != -1) {
+		%>
+		<div class="seasonAverages">
+			<header class="title">2018 Season Stats</header>
+
+			<table style="width: 100%">
+				<tr>
+					<td>Average Points:</td>
+					<td><jsp:getProperty name="playerBean" property="pts2018" /></td>
+				</tr>
+				<tr>
+					<td>Average Assists:</td>
+					<td><jsp:getProperty name="playerBean" property="ast2018" /></td>
+				</tr>
+				<tr>
+					<td>Average Rebounds:</td>
+					<td><jsp:getProperty name="playerBean" property="rbs2018" /></td>
+				</tr>
+				<tr>
+					<td>Free Throw Percent:</td>
+					<td><jsp:getProperty name="playerBean" property="ftPct2018" /></td>
+				</tr>
+			</table>
+		</div>
+		<%
+			}
+		%>
+		<%
+			if (playerBean.getPts2017() != -1) {
+		%>
+		<div class="seasonAverages">
+			<header class="title">2017 Season Stats</header>
+			<table style="width: 100%">
+				<tr>
+					<td>Average Points:</td>
+					<td><jsp:getProperty name="playerBean" property="pts2017" /></td>
+				</tr>
+				<tr>
+					<td>Average Assists:</td>
+					<td><jsp:getProperty name="playerBean" property="ast2017" /></td>
+				</tr>
+				<tr>
+					<td>Average Rebounds:</td>
+					<td><jsp:getProperty name="playerBean" property="rbs2017" /></td>
+				</tr>
+				<tr>
+					<td>Free Throw Percent:</td>
+					<td><jsp:getProperty name="playerBean" property="ftPct2017" /></td>
+				</tr>
+			</table>
+		</div>
+		<%
+			}
+		%>
+		<%
+			if (playerBean.getPts2016() != -1) {
+		%>
+		<div class="seasonAverages">
+			<header class="title">2016 Season Stats</header>
+			<table style="width: 100%">
+				<tr>
+					<td>Average Points:</td>
+					<td><jsp:getProperty name="playerBean" property="pts2016" /></td>
+				</tr>
+				<tr>
+					<td>Average Assists:</td>
+					<td><jsp:getProperty name="playerBean" property="ast2016" /></td>
+				</tr>
+				<tr>
+					<td>Average Rebounds:</td>
+					<td><jsp:getProperty name="playerBean" property="rbs2016" /></td>
+				</tr>
+				<tr>
+					<td>Free Throw Percent:</td>
+					<td><jsp:getProperty name="playerBean" property="ftPct2016" /></td>
+				</tr>
+			</table>
+		</div>
+		<%
+			}
+		%>
+		<%
+			if (playerBean.getPts2016() == -1 && playerBean.getPts2017() == -1 && playerBean.getPts2018() == -1 && playerBean.getPts2019() == -1) {
+		%>
+		<p>We have no record of this player playing in the NBA since at
+			least 2015</p>
+		<%
+			}
+
+		%>
 
 	</div>
 
