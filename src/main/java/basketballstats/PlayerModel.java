@@ -228,6 +228,181 @@ public class PlayerModel implements Serializable {
 
 
 
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+
+
+
+	public void setHeightFeet(String heightFeet) {
+		this.heightFeet = heightFeet;
+	}
+
+
+
+
+	public void setHeightInches(String heightInches) {
+		this.heightInches = heightInches;
+	}
+
+
+
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+
+
+
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
+	}
+
+
+
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+
+
+
+
+	public void setTeamConference(String teamConference) {
+		this.teamConference = teamConference;
+	}
+
+
+
+
+	public void setAst2019(String ast2019) {
+		this.ast2019 = ast2019;
+	}
+
+
+
+
+	public void setRbs2019(String rbs2019) {
+		this.rbs2019 = rbs2019;
+	}
+
+
+
+
+	public void setFtPct2019(String ftPct2019) {
+		this.ftPct2019 = ftPct2019;
+	}
+
+
+
+
+	public void setPts2018(int pts2018) {
+		this.pts2018 = pts2018;
+	}
+
+
+
+
+	public void setAst2018(String ast2018) {
+		this.ast2018 = ast2018;
+	}
+
+
+
+
+	public void setRbs2018(String rbs2018) {
+		this.rbs2018 = rbs2018;
+	}
+
+
+
+
+	public void setFtPct2018(String ftPct2018) {
+		this.ftPct2018 = ftPct2018;
+	}
+
+
+
+
+	public void setAst2017(String ast2017) {
+		this.ast2017 = ast2017;
+	}
+
+
+
+
+	public void setRbs2017(String rbs2017) {
+		this.rbs2017 = rbs2017;
+	}
+
+
+
+
+	public void setFtPct2017(String ftPct2017) {
+		this.ftPct2017 = ftPct2017;
+	}
+
+
+
+
+	public void setPts2016(int pts2016) {
+		this.pts2016 = pts2016;
+	}
+
+
+
+
+	public void setAst2016(String ast2016) {
+		this.ast2016 = ast2016;
+	}
+
+
+
+
+	public void setRbs2016(String rbs2016) {
+		this.rbs2016 = rbs2016;
+	}
+
+
+
+
+	public void setFtPct2016(String ftPct2016) {
+		this.ftPct2016 = ftPct2016;
+	}
+
+
+
+
+	public void setPts2019(int pts2019) {
+		this.pts2019 = pts2019;
+	}
+
+
+
+
+	public void setPts2017(int pts2017) {
+		this.pts2017 = pts2017;
+	}
+
+
+
+
 	public String getFtPct2016() {
 		return ftPct2016;
 	}

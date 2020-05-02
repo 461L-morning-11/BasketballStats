@@ -17,93 +17,107 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Team Info</title>
 </head>
 <body>
+
+
+	<jsp:useBean id="teamBean" class="basketballstats.TeamModel"
+		scope="page" />
+	<jsp:setProperty name="teamBean" property="id" value="${param.teamId}" />
+
 	<%
-		pageContext.setAttribute("team_ID", request.getParameter("teamId"));
-	String team_ID = request.getParameter("teamId");
-	int total_tries = -1;
-	int total_champs = -1;
-
-	String db = "basketball_web";
-	String user = "root";
-	String pass = "Sr4*8DNgZbvHqnee";
-	String ip = "104.154.138.136";
-
-	try {
-
-		System.out.println("trying to query from sql database;");
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		String host = "jdbc:mysql://" + ip + ":3306/" + db;
-		Connection c = DriverManager.getConnection(host, user, pass);
-
-		Statement statement = c.createStatement();
-
-		ResultSet rs = statement.executeQuery("SELECT * FROM teams WHERE id = " + team_ID);
-
-		rs.next();
-
-		pageContext.setAttribute("team_name_long", rs.getString("full_name"));
-
-		pageContext.setAttribute("team_name_short", rs.getString("short_name"));
-
-		pageContext.setAttribute("team_city", rs.getString("city"));
-
-		pageContext.setAttribute("team_abbreviation", rs.getString("abbreviation"));
-
-		pageContext.setAttribute("team_division", rs.getString("division"));
-
-		pageContext.setAttribute("team_conference", rs.getString("conference"));
-
-		pageContext.setAttribute("team_ID", rs.getString("id"));
-
-		pageContext.setAttribute("total_champs", rs.getInt("total_champ"));
-		total_champs = rs.getInt("total_champ");
-		pageContext.setAttribute("total_tries", rs.getInt("total_tries"));
-		total_tries = rs.getInt("total_tries");
-		pageContext.setAttribute("recent_champs", rs.getInt("recent_champ"));
-
-		pageContext.setAttribute("team_logo", "../img/logos/" + rs.getString("short_name") + ".png");
+		teamBean.fillData();
 	%>
-
-
 
 	<hr>
 	<div class="row">
 		<div class="specificTeam">
 			<div class="center">
-				<img src="${(team_logo)}" class="img-fluid img-thumbnail"
-					align="middle" alt="Responsive image">
-				<h1>${(team_name_long)}(${(team_abbreviation)})</h1>
-				<p>The ${(team_name_short)} from ${(team_city)} play in the
-					${(team_division)} division of the ${(team_conference)}ern
-					Conference</p>
+				<img src="<jsp:getProperty name="teamBean" property="teamLogo" />"
+					class="img-fluid img-thumbnail" align="middle"
+					alt="Responsive image">
+				<h1><jsp:getProperty name="teamBean" property="fullName" />(<jsp:getProperty
+						name="teamBean" property="abbreviation" />)
+				</h1>
+				<p>
+					The
+					<jsp:getProperty name="teamBean" property="shortName" />
+					from
+					<jsp:getProperty name="teamBean" property="city" />
+					play in the
+					<jsp:getProperty name="teamBean" property="division" />
+					division of the
+					<jsp:getProperty name="teamBean" property="conference" />ern
+					Conference
+				</p>
 				<br>
 				<%
-					if (total_tries == 0) {
+					if (teamBean.getTotalTries() == 0) {
 				%>
-				<p>The ${(team_name_short)} have never made it to an NBA
-					Championship game :'(</p>
+				<p>
+					The
+					<jsp:getProperty name="teamBean" property="shortName" />
+					have never made it to an NBA Championship game :'(
+				</p>
 				<%
-					} else if (total_champs == 0) {
+					} else if (teamBean.getChampsCount() == 0) {
 				%>
-				<p>They've been in ${(total_tries)} NBA Championship game(s) but
-					never won. Their last run was in ${(recent_champs)}.</p>
+				<p>
+					They've been in
+					<jsp:getProperty name="teamBean" property="totalTries" />
+					NBA Championship game(s) but never won. Their last run was in
+					<jsp:getProperty name="teamBean" property="champsRecent" />.
+				</p>
 				<%
 					} else {
 				%>
-				<p>They've won ${(total_champs)} Championship(s) out of the
-					${(total_tries)} time(s) they've been to the Finals. Their last win
-					was in ${(recent_champs)}.</p>
+				<p>
+					They've won
+					<jsp:getProperty name="teamBean" property="champsCount" />
+					Championship(s) out of the
+					<jsp:getProperty name="teamBean" property="totalTries" />
+					time(s) they've been to the Finals. Their last win was in
+					<jsp:getProperty name="teamBean" property="champsRecent" />.
+				</p>
 				<%
 					}
-				} catch (Exception e) {
-				}
 				%>
 			</div>
 		</div>
 	</div>
+
+
+	<jsp:useBean id="rosterBean" class="basketballstats.RosterModel"
+		scope="page" />
+	<jsp:setProperty name="rosterBean" property="teamId"
+		value="${param.teamId}" />
+		<%rosterBean.fillData(); %>
+
+
+	<br>
+	<table class="table table-hover">
+	<thead>
+			<tr>
+				<th scope="col"><jsp:getProperty name="teamBean" property="shortName" /> Players</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tbody>
+			<% for(int i = 0; i < rosterBean.getPlayers().size(); i++) { %>
+			<tr onclick="window.location='specificPlayer.jsp?playerId=<%=rosterBean.getPlayers().get(i).getId()%>';">
+				<td>
+					<%=rosterBean.getPlayers().get(i).getFirstName()%>
+				</td>
+				<td>
+					<%=rosterBean.getPlayers().get(i).getLastName()%>
+				</td>
+				<td><%=rosterBean.getPlayers().get(i).getPosition()%></td>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+	<br>
 
 </body>
 </html>

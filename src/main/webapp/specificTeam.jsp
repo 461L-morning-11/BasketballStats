@@ -29,8 +29,6 @@
 
 		<%@ include file="../WEB-INF/specificTeam/TeamData.jspf"%>
 
-		<%@ include file="../WEB-INF/specificTeam/playersOnTeam.jspf"%>
-
 
 
 
