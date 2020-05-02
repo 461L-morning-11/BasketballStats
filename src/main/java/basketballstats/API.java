@@ -17,7 +17,7 @@ public class API {
 	public static APIProperties fetchAPI(int pageNum, String type) {
 		instance = new APIProperties();
 		JSONParser parse = new JSONParser();
-		instance.fill = false;
+		instance.setFill(false); 
 		
 		if(type == "teams") {
 			try {
